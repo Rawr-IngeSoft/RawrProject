@@ -1,0 +1,29 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="tamano_logo_alto">300dp</dimen>
+    <dimen name="tamano_logo_ancho">300dp</dimen>
+    <dimen name="tamano_iconos_login">50dp</dimen>
+    <dimen name="tamano_img_personas">150dp</dimen>
+    <dimen name="tamano_img_animales">150dp</dimen>
+    <dimen name="tamano_img_empresas">150dp</dimen>
+    <dimen name="tamano_img_amigos">60dp</dimen>
+    <dimen name="tamano_logo_icono">60dp</dimen>
+    <dimen name="size_img_prospects">80dp</dimen>
+    <dimen name="width_label_prospects">180dp</dimen>
+    <dimen name="size_img_likeU">50dp</dimen>
+    <dimen name="width_prospect_item">100dp</dimen>
+    <dimen name = "width_prospect_img_layout">100dp</dimen>
+    <dimen name = "size_newsfeed_icons">40dp</dimen>
+    <dimen name= "margin_principal_icons">15dp</dimen>
+    <dimen name= "width_actual_pet_label">100dp</dimen>
+    <dimen name="height_actual_pet_label">40dp</dimen>
+    <dimen name="size_actual_pet_img">50dp</dimen>
+    <dimen name="size_owner_petProfile_icon">50dp</dimen>
+    <dimen name="padding_petProfile_grid_vertical">10dp</dimen>
+    <dimen name="padding_petProfile_grid_horizontal">10dp</dimen>
+    <dimen name="width_petProfile_grid">100dp</dimen>
+    <dimen name="size_petFriends_name_text">20dp</dimen>
+    <dimen name="size_comment_picture">40dp</dimen>
+</resources>

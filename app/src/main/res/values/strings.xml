@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Rawr</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">Login</string>
+    <string name="user">Username</string>
+    <string name="pass">Password</string>
+    <string name="name">Name</string>
+    <string name="lastname">Lastname</string>
+    <string name="iniciarSesion">Sign In</string>
+    <string name="registro">Sign up</string>
+    <string name="title_activity_lista_personas">ListaPersonas</string>
+    <string name="title_activity_lista_empresas">ListaEmpresas</string>
+    <string name="title_activity_lista_animales">ListaAnimales</string>
+    <string name="title_activity_perfil_persona">PerfilPersona</string>
+    <string name="title_activity_downloading_window">downloading_window</string>
+    <string name="title_activity_Newsfeed">newsfeed_window</string>
+    <string name="title_pet_profile">Amigos</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_loading_window">loading_window</string>
+    <string name="title_activity_petProfile">pet profile window</string>
+    <string name="titulo_perfil_persona">Bio</string>
+    <string name="title_activity_sign_up_wndow">SignUp_wndow</string>
+
+</resources>
