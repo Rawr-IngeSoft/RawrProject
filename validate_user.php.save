@@ -8,44 +8,37 @@ ini_set('display_errors', true);
 
 //import db connection file
 include 'db_connect.php';
-
+echo 'gg';
 // Create connection to mysql database
 $conn = dbConnect();
-
-$username = isset($_POST["username"]) ? ($_POST["username"]) : "";
+echo 'hola';
+/*$username = isset($_POST["username"]) ? ($_POST["username"]) : "";
 $password = isset($_POST["password"]) ? ($_POST["password"]) : "";
 
 if($username == " " || $password == " "){
   $return_data['status'] = 0;
 }else{
-
+/*
   $mysql_query = "SELECT username FROM UserOwner
               WHERE username=$username AND password=$password";
-
-/*
+*/
+echo 'hola';
 $mysql_query = "SELECT username FROM UserOwner
               WHERE username='user' AND password='user'";
-*/
+
 echo $mysql_query;
 
   $returnn = $conn->query($mysql_query);
-$row_cnt = $returnn->num_rows;
-echo $row_cnt;
-//echo mysql_num_rows ($returnn);
 //	echo $returnn;
-
-  if($row_cnt == 1){
-	header("status: 1");
-
+/*
+  if($returnn == $username){
      $return_data['status'] = 1;
   }else{
-	header("status: 0");
-
      $return_data['status'] = 0;
   }
 //*/
 //}
-
-//echo json_encode($return_data);
-
-
+/*
+echo json_encode($return_data);
+*/
+?>
