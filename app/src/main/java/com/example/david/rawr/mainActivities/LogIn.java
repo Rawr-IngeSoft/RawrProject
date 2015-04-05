@@ -3,11 +3,13 @@ package com.example.david.rawr.mainActivities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,10 +50,17 @@ public class LogIn extends Activity implements View.OnClickListener {
                 finish_screen();
                 break;
             case (R.id.logInButton):
-                // TODO
-                DbMethods.login(username, password);
-                /*intent = new Intent(LogIn.this, downloading_window.class );
-                startActivity(intent);*/
+                /** TODO
+                 * falta validar el usuario
+                 * pora hora log in siempre devuelve true
+                 * */
+                if(DbMethods.login(username, password)) {
+                    intent = new Intent(LogIn.this, downloading_window.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(this, "Sorry wrong username or password", Toast.LENGTH_LONG).show();
+                }
+
                 finish_screen();
                 Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
                 break;

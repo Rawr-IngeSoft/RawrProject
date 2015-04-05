@@ -1,8 +1,12 @@
 package com.example.david.rawr.db;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.david.rawr.mainActivities.downloading_window;
+
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -12,6 +16,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.NameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +34,7 @@ import java.util.List;
 
 public class DbMethods {
 
-    private static String username;
+    public static String username;
 
 
     private static String url_create_user = "http://178.62.233.249/rawr/create_user.php";
@@ -95,11 +100,12 @@ public class DbMethods {
 
     public static boolean login(String username, String password){
        /* todo */
+        DbMethods.username = null;
         new ValidateUser(username, password).execute();
        return true;
     }
 
-    private static class ValidateUser extends AsyncTask<String, String, String> {
+    public static class ValidateUser extends AsyncTask<String, String, String> {
 
         private String user;
         private String pass;
@@ -122,13 +128,13 @@ public class DbMethods {
 
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(url_validate_user);
-            Log.i("----------como vy","voy bien");
             try {
                 post.setEntity(new UrlEncodedFormEntity(params));
                 response = client.execute(post);
 
 
-                Log.i("response ", response.getStatusLine().getStatusCode() + "");
+
+
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (ClientProtocolException e) {
@@ -145,27 +151,25 @@ public class DbMethods {
          */
         protected void onPostExecute(String file_url) {
             try {
-                HttpEntity entity = this.response.getEntity();
-                InputStream inputStream = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
-                StringBuilder sb = new StringBuilder();
+                String status = EntityUtils.toString(this.response.getEntity());
+                Log.i("status ", status );
+                //Log.i("parameter",response.getParams().getParameter("status").toString());
+                /*Header[] headers = response.getAllHeaders();
+                for (Header header : headers) {
+                    Log.i("key ", header.getName());
+                    Log.i("Value",header.getValue());
+                }*/
 
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
+                if(status.equals("1")){
+                    DbMethods.username = this.user;
+                }else{
+                    DbMethods.username = "-1";
                 }
-                String result = sb.toString();
-                Log.i("-----------result", result + "");
-                JSONObject jObject = new JSONObject(result);
-                String status = jObject.getString("status");
-
-                Log.i("status", status + "");
 
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+
         }
     }
 }
