@@ -101,8 +101,14 @@ public class DbMethods {
     public static boolean login(String username, String password){
        /* todo */
         DbMethods.username = null;
-        new ValidateUser(username, password).execute();
-       return true;
+        ValidateUser validate = new ValidateUser(username, password);
+        validate.execute();
+
+        while(validate.getStatus() != AsyncTask.Status.FINISHED){}
+        if (DbMethods.username.compareTo("-1") != 0)
+            return false;
+        else
+            return true;
     }
 
     public static class ValidateUser extends AsyncTask<String, String, String> {
@@ -131,10 +137,9 @@ public class DbMethods {
             try {
                 post.setEntity(new UrlEncodedFormEntity(params));
                 response = client.execute(post);
-
-
-
-
+                Header header = response.getFirstHeader("Status");
+                Log.i("hola:", header.getName());
+                Log.i("hola:", header.getValue());
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (ClientProtocolException e) {
@@ -153,12 +158,6 @@ public class DbMethods {
             try {
                 String status = EntityUtils.toString(this.response.getEntity());
                 Log.i("status ", status );
-                //Log.i("parameter",response.getParams().getParameter("status").toString());
-                /*Header[] headers = response.getAllHeaders();
-                for (Header header : headers) {
-                    Log.i("key ", header.getName());
-                    Log.i("Value",header.getValue());
-                }*/
 
                 if(status.equals("1")){
                     DbMethods.username = this.user;

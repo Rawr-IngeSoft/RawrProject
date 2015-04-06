@@ -2,6 +2,7 @@ package com.example.david.rawr.mainActivities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 
 import com.example.david.rawr.R;
 import com.example.david.rawr.db.DbMethods;
+import com.example.david.rawr.db.ValidateUser;
+
+import java.util.concurrent.ExecutionException;
 
 
 public class LogIn extends Activity implements View.OnClickListener {
@@ -50,19 +54,22 @@ public class LogIn extends Activity implements View.OnClickListener {
                 finish_screen();
                 break;
             case (R.id.logInButton):
-                /** TODO
-                 * falta validar el usuario
-                 * pora hora log in siempre devuelve true
-                 * */
-                if(DbMethods.login(username, password)) {
-                    intent = new Intent(LogIn.this, downloading_window.class);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(this, "Sorry wrong username or password", Toast.LENGTH_LONG).show();
+                ValidateUser validate = new ValidateUser(username, password);
+                try {
+                    String status = validate.execute().get();
+                    if(status.compareTo("1") == 0) {
+                        intent = new Intent(LogIn.this, downloading_window.class);
+                        startActivity(intent);
+                        Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
+                        finish_screen();
+                    }else{
+                        Toast.makeText(this, "Sorry wrong username or password", Toast.LENGTH_LONG).show();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
-
-                finish_screen();
-                Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
                 break;
             case (R.id.forgotPassButton):
                 Toast.makeText(this, "Sorry i don't know it", Toast.LENGTH_LONG).show();
