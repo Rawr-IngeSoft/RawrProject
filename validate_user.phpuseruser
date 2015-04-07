@@ -12,12 +12,8 @@ include 'db_connect.php';
 // Create connection to mysql database
 $conn = dbConnect();
 
-$username = $_POST["username"];
-$password = $_POST["password"];
-
-//echo $username;
-//header('username : \$username');
-//header('password : \$password');
+$username = isset($_POST["Username"]) ? ($_POST["Username"]) : "";
+$password = isset($_POST["Password"]) ? ($_POST["Password"]) : "";
 
 if($username == "" || $password == ""){
   header('status : 0');
@@ -31,7 +27,7 @@ if($username == "" || $password == ""){
 $mysql_query = "SELECT username FROM UserOwner
               WHERE username='user' AND password='user'";
 */
-//echo $mysql_query;
+echo $mysql_query;
 
   $returnn = $conn->query($mysql_query);
 $row_cnt = $returnn->num_rows;
