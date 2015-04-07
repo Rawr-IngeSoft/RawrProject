@@ -10,7 +10,8 @@
     <string name="name">Name</string>
     <string name="lastname">Lastname</string>
     <string name="iniciarSesion">Sign In</string>
-    <string name="registro">Sign up</string>
+    <string name="registerOwner">Sign up</string>
+    <string name="registerPet">Create</string>
     <string name="title_activity_lista_personas">ListaPersonas</string>
     <string name="title_activity_lista_empresas">ListaEmpresas</string>
     <string name="title_activity_lista_animales">ListaAnimales</string>
@@ -23,5 +24,6 @@
     <string name="title_activity_petProfile">pet profile window</string>
     <string name="titulo_perfil_persona">Bio</string>
     <string name="title_activity_sign_up_wndow">SignUp_wndow</string>
+    <string name="title_activity_create_pet_window">createPet_window</string>
 
 </resources>

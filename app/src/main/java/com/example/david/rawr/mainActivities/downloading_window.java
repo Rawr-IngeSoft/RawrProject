@@ -20,6 +20,15 @@ public class downloading_window extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_downloading_window);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(downloading_window.this, LogIn.class );
+                startActivity(intent);
+                finishscreen();
+            }
+        }, 3000);
     }
 
             private void finishscreen() {
