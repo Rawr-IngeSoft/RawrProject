@@ -10,7 +10,7 @@
     <string name="name">Name</string>
     <string name="lastname">Lastname</string>
     <string name="iniciarSesion">Sign In</string>
-    <string name="registerOwner">Sign up</string>
+    <string name="registerUser">Sign up</string>
     <string name="registerPet">Create</string>
     <string name="title_activity_lista_personas">ListaPersonas</string>
     <string name="title_activity_lista_empresas">ListaEmpresas</string>

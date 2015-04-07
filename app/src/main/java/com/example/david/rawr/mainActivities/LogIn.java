@@ -47,23 +47,23 @@ public class LogIn extends Activity implements View.OnClickListener {
         Intent intent;
         switch(v.getId()){
             case (R.id.signUp):
-                // TODO
-                Toast.makeText(this, "Sing Up", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Sing Up", Toast.LENGTH_SHORT).show();
                 intent = new Intent(LogIn.this, SingUp.class );
                 startActivity(intent);
-                finish_screen();
+                this.finish();
                 break;
             case (R.id.logInButton):
                 ValidateUser validate = new ValidateUser(username, password);
                 try {
                     String status = validate.execute().get();
                     if(status.compareTo("1") == 0) {
-                        intent = new Intent(LogIn.this, downloading_window.class);
+                        intent = new Intent(LogIn.this, createPet_window.class);
+                        intent.putExtra("username", username);
                         startActivity(intent);
-                        Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
-                        finish_screen();
+                        Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
+                        this.finish();
                     }else{
-                        Toast.makeText(this, "Sorry wrong username or password", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Sorry wrong username or password", Toast.LENGTH_SHORT).show();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -75,10 +75,6 @@ public class LogIn extends Activity implements View.OnClickListener {
                 Toast.makeText(this, "Sorry i don't know it", Toast.LENGTH_LONG).show();
                 break;
         }
-    }
-
-    private void finish_screen(){
-        this.finish();
     }
 
     @Override

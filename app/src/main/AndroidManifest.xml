@@ -40,7 +40,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".createPet_window"
+            android:name=".mainActivities.createPet_window"
             android:label="@string/title_activity_create_pet_window" >
         </activity>
     </application>

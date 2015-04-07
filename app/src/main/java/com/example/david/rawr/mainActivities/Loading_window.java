@@ -29,7 +29,7 @@ public class Loading_window extends Activity {
                 startActivity(intent);
                 finishscreen();
             }
-        }, 3000);
+        }, 1000);
     }
 
     private void finishscreen(){

@@ -24,7 +24,7 @@ public class downloading_window extends Activity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Intent intent = new Intent(downloading_window.this, LogIn.class );
+                Intent intent = new Intent(downloading_window.this, createPet_window.class );
                 startActivity(intent);
                 finishscreen();
             }
