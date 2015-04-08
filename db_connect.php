@@ -6,7 +6,8 @@ function dbConnect() {
     include 'db_config.php';
 
     // Create connection
-    $conn = new mysqli('localhost', 'root', 'tgisispuj', 'rawrdb');
+    //$conn = new mysqli('localhost', 'root', 'atlantis', 'rawrdb');
+    $conn = new mysqli(DB_SERVER, DB_USER, DB_PASSWORD, DB_DATABASE);
     $conn->set_charset('utf8');
     if ($conn->connect_error) {
         echo "connection error";

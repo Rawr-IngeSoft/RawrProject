@@ -24,11 +24,8 @@ if(isset($_POST["lastname"])) $lastname = $_POST["lastname"];
 
 // Create connection to mysql database
 $conn = dbConnect();
-/*
-$mysql_query = "INSERT INTO UserOwner(username, password)
-                        VALUES('adfafda', 'dddd')";
 
-*/
+//MySql query insert new row in UserOwner
 $mysql_query = "INSERT INTO UserOwner(username, password, name, lastname)
                         VALUES('$username', '$password','$name','$lastname')";
 
