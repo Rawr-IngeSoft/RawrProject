@@ -32,10 +32,9 @@ $mysql_query = "INSERT INTO UserOwner(username, password, name, lastname)
 
 
 if($conn->query($mysql_query) == TRUE){
-   echo "New UserOwner created";
+   header('status : 1');
 }else{
-  echo "Error inserting new user in database";
+   header('status : 0');
 }
-//echo $result;
 
 ?>
