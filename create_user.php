@@ -32,9 +32,9 @@ $mysql_query = "INSERT INTO UserOwner(username, password, name, lastname)
 
 
 if($conn->query($mysql_query) == TRUE){
-   header('status : 1');
+   $return_data['status'] = 1;
 }else{
-   header('status : 0');
+   $return_data['status'] = 0;
 }
 
 ?>
