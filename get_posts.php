@@ -32,7 +32,7 @@ if ($result->num_rows > 0) {
     	array_push($retorno, json_encode($arreglo));
 
     }
-    $json = array('posts'=>json_encode($retorno);
+    $json = array('posts'=>json_encode($retorno));
     echo json_encode($json);
  }else{
  	echo 'pasó algo muy raro';
