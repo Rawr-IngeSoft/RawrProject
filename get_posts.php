@@ -29,7 +29,7 @@ if ($result->num_rows > 0) {
     
        // Crear un diccionario de Post
     	$arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'], 'date'=>$row['date'], 'idPet'=>$row['idPet'], 'Business'=>$row['Business_username'],'photo'=>$row['photo']);
-    	array_push($retorno, json_encode($arreglo));
+    	array_push($retorno, $arreglo);
 
     }
     $json = array('posts'=>$retorno);
@@ -37,3 +37,4 @@ if ($result->num_rows > 0) {
  }else{
  	echo 'pasó algo muy raro';
  }
+
