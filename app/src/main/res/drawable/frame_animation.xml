@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <item android:drawable="@drawable/loadingscreen0" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen1" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen2" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen3" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen4" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen5" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen6" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen7" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen8" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen9" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen10" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen11" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen12" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen13" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen14" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen15" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen16" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen17" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen18" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen19" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen20" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen21" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen22" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen23" android:duration="150" />
+    <item android:drawable="@drawable/loadingscreen24" android:duration="150" />
+
+</animation-list>

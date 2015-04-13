@@ -2,13 +2,14 @@ package com.example.david.rawr.mainActivities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.david.rawr.R;
@@ -17,10 +18,13 @@ import com.example.david.rawr.db.DbMethods;
 /**
  * Created by alfredo on 04/04/15.
  */
-public class SingUp extends Activity implements View.OnClickListener {
+public class SignUp extends Activity implements View.OnClickListener {
 
     Button singUp;
     EditText userText, passText, nameText, lastnameText;
+    AnimationDrawable loadingScreenAnimation;
+    ImageView loadingScreen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +34,11 @@ public class SingUp extends Activity implements View.OnClickListener {
         passText = (EditText) findViewById(R.id.pass_tx);
         nameText = (EditText) findViewById(R.id.name_tx);
         lastnameText = (EditText) findViewById(R.id.lastname_tx);
+
+        loadingScreen = (ImageView) findViewById(R.id.loadingAnimation);
+        loadingScreen.setBackgroundResource(R.drawable.frame_animation);
+        loadingScreenAnimation = (AnimationDrawable) loadingScreen.getBackground();
+        loadingScreenAnimation.start();
         singUp.setOnClickListener(this);
     }
 
@@ -39,10 +48,12 @@ public class SingUp extends Activity implements View.OnClickListener {
         String password = passText.getText().toString();
         String name = nameText.getText().toString();
         String lastname = lastnameText.getText().toString();
-        Toast.makeText(this, "Sing Up", Toast.LENGTH_LONG).show();
+        loadingScreenAnimation.start();
+        Toast.makeText(this, "Sign Up", Toast.LENGTH_LONG).show();
         DbMethods.createUserOwner(username, password, name, lastname);
-        Intent  intent = new Intent(SingUp.this, downloading_window.class );
+        Intent  intent = new Intent(SignUp.this, Loading_screen.class );
         startActivity(intent);
+
         finish_screen();
     }
 
