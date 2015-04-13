@@ -19,7 +19,7 @@ $sql =
  			SELECT idPet_friend 
  			FROM Friends 
  			WHERE idPet = $username) LIMIT 100";
-echo $sql;
+
 // ahora toca recorrer el query
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
