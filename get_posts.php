@@ -24,14 +24,15 @@ echo $sql;
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // output data of each row
-    echo 'entra';
+    $retorno= array();
     while($row = $result->fetch_assoc()) {
-    	    echo 'entra al 	while';
+    
        // Crear un diccionario de Post
     	$arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'], 'date'=>$row['date'], 'idPet'=>$row['idPet'], 'Business'=>$row['Business_username'],'photo'=>$row['photo']);
-    	echo json_encode($arreglo);
+    	array_push($retorno, json_encode($arreglo));
+
     }
+    echo json_encode($retorno);
  }else{
  	echo 'pasó algo muy raro';
  }
-
