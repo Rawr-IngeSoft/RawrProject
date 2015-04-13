@@ -26,7 +26,7 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
        // Crear un diccionario de Post
     	$arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'], 'date'=>$row['date'], 'idPet'=>$row['idPet'], 'Business'=>$row['Business_username'],'photo'=>$row['photo']);
-    	echo json_encode($arr);
+    	echo json_encode($arreglo);
     }
  }
 
