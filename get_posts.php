@@ -9,7 +9,7 @@ $conn = dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
 "SELECT * 
- FROM POST 
+ FROM Post 
  WHERE idPet in 
  			(
  			SELECT idPet 
