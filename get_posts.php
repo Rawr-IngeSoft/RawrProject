@@ -32,8 +32,11 @@ if ($result->num_rows > 0) {
     	array_push($retorno, json_encode($arreglo));
 
     }
-    $json = array('posts'=>json_encode($retorno));
+    $json = array('posts'=>$retorno);
     echo json_encode($json);
  }else{
  	echo 'pasó algo muy raro';
  }
+
+
+ {"posts":"["{"id":"1","text":"Post de pruba","date":"2015-04-13 15:16:56","idPet":"20","Business":null,"photo":"null"}","{"id":"2","text":"Post #2","date":"2015-04-13 15:23:10","idPet":"20","Business":null,"photo":"null"}"]"}
