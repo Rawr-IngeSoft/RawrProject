@@ -14,11 +14,11 @@ $sql =
  			(
  			SELECT idPet 
  			FROM Friends 
- 			WHERE idPet_friend = '$username' 
+ 			WHERE idPet_friend = $username
  			UNION  
  			SELECT idPet_friend 
  			FROM Friends 
- 			WHERE idPet = '$username') LIMIT 100";
+ 			WHERE idPet = $username) LIMIT 100";
 // ahora toca recorrer el query
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
