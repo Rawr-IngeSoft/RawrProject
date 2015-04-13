@@ -37,6 +37,3 @@ if ($result->num_rows > 0) {
  }else{
  	echo 'pasó algo muy raro';
  }
-
-
- {"posts":"["{"id":"1","text":"Post de pruba","date":"2015-04-13 15:16:56","idPet":"20","Business":null,"photo":"null"}","{"id":"2","text":"Post #2","date":"2015-04-13 15:23:10","idPet":"20","Business":null,"photo":"null"}"]"}
