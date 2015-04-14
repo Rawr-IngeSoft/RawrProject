@@ -41,12 +41,8 @@ echo $row_cnt;
 
   if($row_cnt == 1){
 	header('status : 1');
-
-     $return_data['status'] = 1;
   }else{
 	header('status : 0');
-
-     $return_data['status'] = 0;
   }
 }
 //echo json_encode($return_data);
