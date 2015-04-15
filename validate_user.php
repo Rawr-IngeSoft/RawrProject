@@ -10,7 +10,7 @@ $username = $_POST["username"];
 $password = $_POST["password"];
 
 if($username == "" || $password == ""){
-  header('Respuesta : 0');
+  header('Response : 0');
 }else{
 
   $mysql_query = "SELECT username FROM UserOwner
@@ -20,9 +20,9 @@ if($username == "" || $password == ""){
 $row_cnt = $returnn->num_rows;
 
   if($row_cnt == 1){
-	header('Respuesta : 1');
+	header('Response : 1');
   }else{
-	header('Respuesta : 0');
+	header('Response : 0');
   }
 }
 ?>
