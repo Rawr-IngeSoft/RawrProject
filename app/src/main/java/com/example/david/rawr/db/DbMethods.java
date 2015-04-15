@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.david.rawr.mainActivities.downloading_window;
+import com.example.david.rawr.mainActivities.Loading_screen;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
