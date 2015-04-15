@@ -3,6 +3,7 @@ package com.example.david.rawr.mainActivities;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.david.rawr.R;
+import com.example.david.rawr.db.CreatePet;
+
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by david on 07/04/15.
@@ -33,6 +37,7 @@ public class createPet_window extends Activity{
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             username = bundle.getString("username");
+            Log.i("username:", username);
         }
         createPet = (Button)findViewById(R.id.createPet);
         petName = (EditText)findViewById(R.id.petName);
@@ -65,6 +70,20 @@ public class createPet_window extends Activity{
                 }else{
                     //TODO
                     // ask for PHP service
+                    CreatePet createPet = new CreatePet(petNameText, petType, username);
+                    try {
+                        String responseValue = createPet.execute().get();
+                        if (responseValue.compareTo("1") == 0){
+                            Toast.makeText(getApplicationContext(), "Error Creating Pet", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Pet Created", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });

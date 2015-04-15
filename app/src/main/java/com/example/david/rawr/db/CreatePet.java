@@ -1,11 +1,7 @@
 package com.example.david.rawr.db;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.example.david.rawr.mainActivities.createPet_window;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -16,7 +12,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -24,33 +19,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by david on 05/04/2015.
+ * Created by David on 15/04/2015.
  */
-public class ValidateUser extends AsyncTask<String, Integer, String> {
+public class CreatePet extends AsyncTask<String, Integer, String> {
 
-    private String user;
-    private String pass;
+    private String petName;
+    private String petType;
+    private String owner;
     private HttpResponse response;
-    private static String url_validate_user = "http://178.62.233.249/rawr/validate_user.php";
+    private static String url_create_pet = "http://178.62.233.249/rawr/create_pet.php";
 
-    public ValidateUser(String user, String pass) {
-        this.user = user;
-        this.pass = pass;
+    public CreatePet(String petName, String petType, String owner) {
+        this.petName = petName;
+        this.petType = petType;
+        this.owner = owner;
     }
-
-    /**
-     * Validating user
-     */
 
     protected String doInBackground(String... args) {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("username", this.user));
-        params.add(new BasicNameValuePair("password", this.pass));
+        params.add(new BasicNameValuePair("name", this.petName));
+        params.add(new BasicNameValuePair("type", this.petType));
+        params.add(new BasicNameValuePair("owner", this.owner));
 
         HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(url_validate_user);
+        HttpPost post = new HttpPost(url_create_pet);
         String responseValue = "";
         try {
             post.setEntity(new UrlEncodedFormEntity(params));

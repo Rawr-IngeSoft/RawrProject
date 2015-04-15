@@ -2,20 +2,16 @@ package com.example.david.rawr.mainActivities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.DbMethods;
 import com.example.david.rawr.db.ValidateUser;
 
 import java.util.concurrent.ExecutionException;
@@ -47,8 +43,7 @@ public class LogIn extends Activity implements View.OnClickListener {
         Intent intent;
         switch(v.getId()){
             case (R.id.signUp):
-                Toast.makeText(this, "Sing Up", Toast.LENGTH_SHORT).show();
-                intent = new Intent(LogIn.this, SingUp.class );
+                intent = new Intent(LogIn.this, SignUp.class );
                 startActivity(intent);
                 this.finish();
                 break;
@@ -56,7 +51,7 @@ public class LogIn extends Activity implements View.OnClickListener {
                 ValidateUser validate = new ValidateUser(username, password);
                 try {
                     String status = validate.execute().get();
-                    if(status.compareTo("1") == 0) {
+                    if(status.compareTo("1") != 0) {
                         intent = new Intent(LogIn.this, createPet_window.class);
                         intent.putExtra("username", username);
                         startActivity(intent);

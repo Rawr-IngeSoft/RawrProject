@@ -10,12 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.DbMethods;
+import com.example.david.rawr.db.ValidateUser;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by alfredo on 04/04/15.
  */
-public class SingUp extends Activity implements View.OnClickListener {
+public class SignUp extends Activity implements View.OnClickListener {
 
     Button singUp;
     EditText userText, passText, nameText, lastnameText;
@@ -37,11 +39,25 @@ public class SingUp extends Activity implements View.OnClickListener {
         String password = passText.getText().toString();
         String name = nameText.getText().toString();
         String lastname = lastnameText.getText().toString();
-        Toast.makeText(this, "Sing Up", Toast.LENGTH_LONG).show();
-        DbMethods.createUserOwner(username, password, name, lastname);
-        Intent  intent = new Intent(SingUp.this, downloading_window.class );
-        startActivity(intent);
-        finish_screen();
+        if (username.compareTo("") == 0 || password.compareTo("") == 0){// || name.compareTo("") == 0 || lastname.compareTo("") == 0){
+            Toast.makeText(this, "All the fields are required", Toast.LENGTH_SHORT);
+        }else {
+            ValidateUser validate = new ValidateUser(username, password);
+            String status = null;
+            try {
+                status = validate.execute().get();
+                if (status.compareTo("1") == 0) {
+                    //TODO
+                    //Create User
+                } else {
+                    Toast.makeText(this, "Sorry this username is in use", Toast.LENGTH_SHORT).show();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void finish_screen(){
@@ -68,5 +84,12 @@ public class SingUp extends Activity implements View.OnClickListener {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SignUp.this, LogIn.class );
+        startActivity(intent);
+        this.finish();
     }
 }
