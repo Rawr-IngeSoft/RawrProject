@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import com.example.david.rawr.otherClasses.fontType;
+
 import com.example.david.rawr.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class downloading_window extends Activity {
+public class Downloading_window extends Activity {
 
     TextView icon;
     @Override
@@ -24,7 +24,7 @@ public class downloading_window extends Activity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Intent intent = new Intent(downloading_window.this, createPet_window.class );
+                Intent intent = new Intent(Downloading_window.this, CreatePet_window.class );
                 startActivity(intent);
                 finishscreen();
             }

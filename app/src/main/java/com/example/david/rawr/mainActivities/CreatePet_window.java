@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by david on 07/04/15.
  */
-public class createPet_window extends Activity{
+public class CreatePet_window extends Activity{
 
     Button createPet;
     EditText petName;

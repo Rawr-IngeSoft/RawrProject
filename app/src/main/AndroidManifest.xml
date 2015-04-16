@@ -34,13 +34,17 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".mainActivities.downloading_window"
+            android:name=".mainActivities.Downloading_window"
             android:configChanges="orientation"
             android:label="@string/title_activity_downloading_window"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".mainActivities.createPet_window"
+            android:name=".mainActivities.CreatePet_window"
+            android:label="@string/title_activity_create_pet_window" >
+        </activity>
+        <activity
+            android:name=".mainActivities.Loading_screen"
             android:label="@string/title_activity_create_pet_window" >
         </activity>
     </application>

@@ -53,8 +53,9 @@ public class LogIn extends Activity implements View.OnClickListener {
                 ValidateUser validate = new ValidateUser(username, password);
                 try {
                     String status = validate.execute().get();
-                    if(status.compareTo("1") == 0) {
-                        intent = new Intent(LogIn.this, Loading_screen.class);
+                    if(status.compareTo("1") != 0) {
+                        intent = new Intent(LogIn.this, CreatePet_window.class);
+                        intent.putExtra("username", username);
                         startActivity(intent);
                         Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
                         finish_screen();

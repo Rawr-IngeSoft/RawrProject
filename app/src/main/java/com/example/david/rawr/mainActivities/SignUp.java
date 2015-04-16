@@ -50,7 +50,6 @@ public class SignUp extends Activity implements View.OnClickListener {
         String lastname = lastnameText.getText().toString();
         loadingScreenAnimation.start();
         Toast.makeText(this, "Sign Up", Toast.LENGTH_LONG).show();
-        }else {
         DbMethods.createUserOwner(username, password, name, lastname);
         Intent  intent = new Intent(SignUp.this, Loading_screen.class );
         startActivity(intent);

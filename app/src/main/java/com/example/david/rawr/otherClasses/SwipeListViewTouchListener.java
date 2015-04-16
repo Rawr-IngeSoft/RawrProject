@@ -4,10 +4,6 @@ package com.example.david.rawr.otherClasses;
  * Tomado de repositorio: https://github.com/creandoandroid/ejemplos-tutoriales/blob/master/Ejemplo_listView_borra_deslizando/src/com/example/ejemplo_listview_borra_deslizando/SwipeListViewTouchListener.java
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
@@ -19,6 +15,10 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SwipeListViewTouchListener implements View.OnTouchListener {
     // Cached ViewConfiguration and system-wide constant values

@@ -1,8 +1,5 @@
 package com.example.david.rawr.models;
 
-import android.os.Parcelable;
-
-
 /**
  * Created by Alejandro on 10/02/2015.
  */

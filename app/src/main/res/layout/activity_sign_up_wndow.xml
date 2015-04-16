@@ -77,7 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical = "true"
-                    android:text="@string/registro"
+                    android:text="@string/registerUser"
                     android:id="@+id/singUp_bt"
                     android:background="@drawable/button_style"
                     />
