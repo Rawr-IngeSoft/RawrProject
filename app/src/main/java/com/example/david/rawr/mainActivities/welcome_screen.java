@@ -29,7 +29,7 @@ public class Welcome_screen extends Activity {
                 startActivity(intent);
                 finishscreen();
             }
-        }, 3000);
+        }, 1000);
     }
 
     private void finishscreen(){

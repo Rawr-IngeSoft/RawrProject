@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/registro"
+                    android:text="@string/registerUser"
                     android:id="@+id/signUp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="30dp" />
