@@ -9,19 +9,18 @@ $conn = dbConnect();
 $username = $_POST["username"];
 $password = $_POST["password"];
 
-if($username == "" || $password == ""){
-}else{
+$mysql_query = "SELECT username FROM User
+            WHERE username='$username' AND password='$password'";
 
-  $mysql_query = "SELECT username FROM UserOwner
-              WHERE username='$username' AND password='$password'";
+$returnn = $conn->query($mysql_query);
 
-  $returnn = $conn->query($mysql_query);
 $row_cnt = $returnn->num_rows;
 
-  if($row_cnt == 1){
-	echo "Sucessful";
-  }else{
-	
-  }
+if($row_cnt == 1){
+      echo "Successful";
+}else{
+      echo "Not Successfull";
 }
+
+$conn->close();
 ?>
