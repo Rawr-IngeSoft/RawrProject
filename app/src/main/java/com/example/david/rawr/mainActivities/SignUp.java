@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.DbMethods;
+import com.example.david.rawr.db.CreateOwner;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by alfredo on 04/04/15.
@@ -50,11 +52,25 @@ public class SignUp extends Activity implements View.OnClickListener {
         String lastname = lastnameText.getText().toString();
         loadingScreenAnimation.start();
         Toast.makeText(this, "Sign Up", Toast.LENGTH_LONG).show();
-        DbMethods.createUserOwner(username, password, name, lastname);
-        Intent  intent = new Intent(SignUp.this, Loading_screen.class );
-        startActivity(intent);
+        CreateOwner createOwner = new CreateOwner(username, password, name, lastname);
 
-        finish_screen();
+        try {
+            //TODO read response with json
+            String responseValue = createOwner.execute().get();
+            if (responseValue.compareTo("1") == 0){
+                Toast.makeText(getApplicationContext(), "Error Creating Owner", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(), "Owner Created", Toast.LENGTH_SHORT).show();
+                Intent  intent = new Intent(SignUp.this, Loading_screen.class );
+                startActivity(intent);
+                finish_screen();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void finish_screen(){
