@@ -27,6 +27,7 @@ public class SignUp extends Activity implements View.OnClickListener {
     AnimationDrawable loadingScreenAnimation;
     ImageView loadingScreen;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,15 @@ public class SignUp extends Activity implements View.OnClickListener {
         loadingScreenAnimation.start();
         singUp.setOnClickListener(this);
     }
-
+    @Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        super.onBackPressed();
+        Intent intent;
+        intent = new Intent(this, LogIn.class);
+        startActivity(intent);
+        finish_screen();
+    }
     @Override
     public void onClick(View v) {
         String username = userText.getText().toString();
@@ -62,6 +71,7 @@ public class SignUp extends Activity implements View.OnClickListener {
             }else{
                 Toast.makeText(getApplicationContext(), "Owner Created", Toast.LENGTH_SHORT).show();
                 Intent  intent = new Intent(SignUp.this, Loading_screen.class );
+
                 startActivity(intent);
                 finish_screen();
             }

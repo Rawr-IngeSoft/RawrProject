@@ -30,6 +30,7 @@
         <activity
             android:name=".mainActivities.SignUp"
             android:configChanges="orientation"
+            android:parentActivityName=".mainActivities.LogIn"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
