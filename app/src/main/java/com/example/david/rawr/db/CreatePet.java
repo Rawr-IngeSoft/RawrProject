@@ -23,13 +23,15 @@ import java.util.List;
  */
 public class CreatePet extends AsyncTask<String, Integer, String> {
 
-    private String petName;
-    private String petType;
-    private String owner;
+    private final String username;
+    private final String petName;
+    private final String petType;
+    private final String owner;
     private HttpResponse response;
     private static String url_create_pet = "http://178.62.233.249/rawr/create_pet.php";
 
-    public CreatePet(String petName, String petType, String owner) {
+    public CreatePet(String username, String petName, String petType, String owner) {
+        this.username = username;
         this.petName = petName;
         this.petType = petType;
         this.owner = owner;
@@ -39,9 +41,10 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
 
         // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("username", this.username));
         params.add(new BasicNameValuePair("name", this.petName));
         params.add(new BasicNameValuePair("type", this.petType));
-        params.add(new BasicNameValuePair("owner", this.owner));
+        params.add(new BasicNameValuePair("owner_username", this.owner));
 
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url_create_pet);

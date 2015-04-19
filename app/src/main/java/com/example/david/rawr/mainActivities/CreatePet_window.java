@@ -27,9 +27,12 @@ import java.util.concurrent.ExecutionException;
 public class CreatePet_window extends Activity{
 
     Button createPet;
-    EditText petName;
+    private EditText petName;
+    private EditText petUsername;
     ListView typeList;
     String petType = null, username = null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,7 @@ public class CreatePet_window extends Activity{
         }
         createPet = (Button)findViewById(R.id.createPet);
         petName = (EditText)findViewById(R.id.petName);
+        petUsername = (EditText)findViewById(R.id.petUsername);
         typeList = (ListView)findViewById(R.id.list);
         typeList.setClickable(true);
         ArrayList<String> types =  new ArrayList<>();
@@ -65,12 +69,12 @@ public class CreatePet_window extends Activity{
             @Override
             public void onClick(View v) {
                 String petNameText = petName.getText().toString();
-                if(username == null || petType == null || petNameText.compareTo("") == 0){
+                String petUsernameText = petUsername.getText().toString();
+                //TODO compare strings to regular expression
+                if(username == null || petType == null || petNameText.equals("") || petUsernameText.equals("")){
                     Toast.makeText(getApplicationContext(), "Invalid parameters", Toast.LENGTH_SHORT).show();
                 }else{
-                    //TODO
-                    // ask for PHP service
-                    CreatePet createPet = new CreatePet(petNameText, petType, username);
+                    CreatePet createPet = new CreatePet(petUsernameText, petNameText, petType, username);
                     try {
                         String responseValue = createPet.execute().get();
                         if (responseValue.compareTo("1") == 0){
