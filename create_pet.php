@@ -14,14 +14,14 @@ include 'db_connect.php';
 $username = NULL;
 $name = NULL;
 $type = NULL;
-$owner = NULL;
+$owner_username = NULL;
 $profilePic = NULL;
 
 
 if(isset($_POST["username"])) $username = $_POST["username"];
 if(isset($_POST["name"])) $name = $_POST["name"];
 if(isset($_POST["type"])) $type = $_POST["type"];
-if(isset($_POST["owner"])) $owner = $_POST["owner"];
+if(isset($_POST["owner_username"])) $owner_username = $_POST["owner_username"];
 
 
 
@@ -31,7 +31,7 @@ $conn = dbConnect();
 
 /* MySql query inseting new row in Pet */
 $mysql_query = "INSERT INTO Pet(username, name, type, owner_username)
-                        VALUES('$username', '$name', '$type','$owner')";
+                        VALUES('$username', '$name', '$type','$owner_username')";
 
 /* insert new user in table User*/
 $userCreated = createUser($conn, $username, NULL);
