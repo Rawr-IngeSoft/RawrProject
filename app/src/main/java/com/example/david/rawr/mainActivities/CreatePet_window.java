@@ -44,7 +44,7 @@ public class CreatePet_window extends Activity{
         typeList = (ListView)findViewById(R.id.list);
         typeList.setClickable(true);
         ArrayList<String> types =  new ArrayList<>();
-        types.add("Dog"); types.add("Cat"); types.add("Horse");
+        types.add("Dog"); types.add("Cat"); types.add("Horse"); types.add("Ant"); types.add("Panda");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.string_list_item,R.id.stringListItem, types);
         typeList.setAdapter(adapter);
         typeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
