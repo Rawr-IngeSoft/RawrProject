@@ -6,8 +6,8 @@ include 'db_connect.php';
 
 $conn = dbConnect();
 
-$username = $_POST["username"];
-$password = $_POST["password"];
+if(isset($_POST["username"])) $username = $_POST["username"];
+if(isset($_POST["password"])) $password = $_POST["password"];
 
 $mysql_query = "SELECT * FROM Owner
             WHERE username='$username' AND password='$password'"; //esto debería ser owner
