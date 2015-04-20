@@ -14,20 +14,26 @@ if(isset($_POST["password"])) $password = $_POST["password"];
 
 $request_body = @file_get_contents('php://input'); // coger el contenido del body del request
 $json_array = json_decode($request_body, true);//volver el string en un arreglo
+$username= $json_array['username'];
+$password= $json_array['password'];
 
 $mysql_query = "SELECT * 
 				FROM User
             	WHERE username='$username' AND password='$password'";
 
-echo json_encode($json_array);
+
 $returnn = $conn->query($mysql_query);
 
 $row_cnt = $returnn->num_rows;
 
 if($row_cnt == 1){
      // echo "Successful";
+	$json_array['status']='1';
+	echo json_encode($json_array);
 }else{
      // echo "Not Successfull";
+	$json_array['status']='0';
+	echo json_encode($json_array);
 }
 
 $conn->close();
