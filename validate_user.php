@@ -11,8 +11,9 @@ $password=NULL;
 if(isset($_POST["username"])) $username = $_POST["username"];
 if(isset($_POST["password"])) $password = $_POST["password"];
 
-$mysql_query = "SELECT username FROM User
+$mysql_query = "SELECT * FROM User
             WHERE username='$username' AND password='$password'";
+echo $mysql_query;
 
 $returnn = $conn->query($mysql_query);
 
