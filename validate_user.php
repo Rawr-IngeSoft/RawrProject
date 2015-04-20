@@ -5,6 +5,9 @@ ini_set('display_errors', true);
 include 'db_connect.php';
 
 $conn = dbConnect();
+$username = NULL;
+$password = NULL;
+
 
 if(isset($_POST["username"])) $username = $_POST["username"];
 if(isset($_POST["password"])) $password = $_POST["password"];
