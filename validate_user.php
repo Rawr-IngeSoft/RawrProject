@@ -13,7 +13,7 @@ if(isset($_POST["password"])) $password = $_POST["password"];
 
 
 $request_body = @file_get_contents('php://input'); // coger el contenido del body del request
-$json_array = json_decode($data, true);//volver el string en un arreglo
+$json_array = json_decode($request_body, true);//volver el string en un arreglo
 
 $mysql_query = "SELECT * 
 				FROM User
