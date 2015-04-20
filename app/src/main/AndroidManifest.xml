@@ -10,6 +10,9 @@
         android:icon="@drawable/logo_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
         <activity
             android:name=".mainActivities.Welcome_screen"
             android:configChanges="orientation"
@@ -48,6 +51,10 @@
             android:name=".mainActivities.Loading_screen"
             android:label="@string/title_activity_create_pet_window" >
         </activity>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
     </application>
-
 </manifest>
