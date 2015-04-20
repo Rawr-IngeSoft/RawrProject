@@ -6,8 +6,10 @@ include 'db_connect.php';
 
 $conn = dbConnect();
 
-$username = $_POST["username"];
-$password = $_POST["password"];
+$username=NULL;
+$password=NULL;
+if(isset($_POST["username"])) $username = $_POST["username"];
+if(isset($_POST["password"])) $password = $_POST["password"];
 
 $mysql_query = "SELECT username FROM User
             WHERE username='$username' AND password='$password'";
