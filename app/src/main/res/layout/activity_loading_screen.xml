@@ -7,5 +7,9 @@
     tools:context="com.example.david.rawr.mainActivities.Downloading_window"
     android:gravity="center_vertical|center_horizontal"
     android:background="@drawable/loadwindow">
-
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/animationImageView"
+        android:background="@drawable/frame_animation"/>
 </LinearLayout>

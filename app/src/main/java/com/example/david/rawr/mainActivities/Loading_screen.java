@@ -1,12 +1,18 @@
 package com.example.david.rawr.mainActivities;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.david.rawr.R;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Loading_screen extends Activity {
@@ -16,6 +22,18 @@ public class Loading_screen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_screen);
+        ImageView img = (ImageView)findViewById(R.id.animationImageView);
+        AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
+        frameAnimation.start();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(Loading_screen.this, CreatePet_window.class );
+                startActivity(intent);
+                finishscreen();
+            }
+        }, 4000);
     }
 
     private void finishscreen() {

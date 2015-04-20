@@ -81,7 +81,7 @@ public class LogIn extends Activity implements View.OnClickListener {
                                     if (responseValue.compareTo("Error inserting new User in database") == 0){
                                         Toast.makeText(getApplicationContext(), "Error Creating Owner", Toast.LENGTH_SHORT).show();
                                     }
-                                    Intent intent = new Intent(LogIn.this, Downloading_window.class);
+                                    Intent intent = new Intent(LogIn.this, Loading_screen.class);
                                     intent.putExtra("username", ownerId);
                                     startActivity(intent);
                                     Toast.makeText(getApplicationContext(), "Logged in", Toast.LENGTH_LONG).show();
@@ -132,7 +132,7 @@ public class LogIn extends Activity implements View.OnClickListener {
                 try {
                     String status = validate.execute().get();
                     if(status.compareTo("1") != 0) {
-                        intent = new Intent(LogIn.this, CreatePet_window.class);
+                        intent = new Intent(LogIn.this, Loading_screen.class);
                         intent.putExtra("username", username);
                         startActivity(intent);
                         Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
