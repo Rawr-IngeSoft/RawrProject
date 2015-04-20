@@ -11,10 +11,14 @@ $password=NULL;
 if(isset($_POST["username"])) $username = $_POST["username"];
 if(isset($_POST["password"])) $password = $_POST["password"];
 
-$mysql_query = "SELECT * FROM User
-            WHERE username='$username' AND password='$password'";
 
+$request_body = @file_get_contents('php://input');
 
+$mysql_query = "SELECT * 
+				FROM User
+            	WHERE username='$username' AND password='$password'";
+
+echo $request_body;
 $returnn = $conn->query($mysql_query);
 
 $row_cnt = $returnn->num_rows;
