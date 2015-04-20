@@ -29,8 +29,8 @@ $lastname = $lastname != NULL ? "'$lastname'" : "NULL";
 $conn = dbConnect();
 
 /* MySql query inseting new row in Owner */
-$mysql_query = "INSERT INTO Owner(username, name, lastname)
-                        VALUES('$username', $name, $lastname)";
+$mysql_query = "INSERT INTO Owner(username, name, lastname, passwor)
+                        VALUES('$username', $name, $lastname), '$password'";
 
 /* insert new user in table User*/
 $userCreated = createUser($conn, $username, $password);
