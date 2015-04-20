@@ -51,6 +51,7 @@ public class CreateOwner extends AsyncTask<String, Integer, String> {
 
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url_create_owner);
+
         String responseValue = "";
         try {
             post.setEntity(new UrlEncodedFormEntity(params));
