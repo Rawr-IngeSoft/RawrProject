@@ -3,6 +3,7 @@ package com.example.david.rawr.mainActivities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -15,7 +16,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.david.rawr.R;
+import com.example.david.rawr.db.CreateOwner;
 import com.example.david.rawr.db.ValidateUser;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
@@ -25,9 +38,13 @@ public class LogIn extends Activity implements View.OnClickListener {
     Button logIn;
     EditText userText, passText;
     TextView signUp, forgotButton;
+    CallbackManager callbackManager;
+    LoginButton faceLoginButton;
+    String ownerName, ownerLastName, ownerId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.login_window);
         logIn = (Button) findViewById(R.id.logInButton);
         userText = (EditText) findViewById(R.id.userText);
@@ -38,6 +55,62 @@ public class LogIn extends Activity implements View.OnClickListener {
         signUp.setOnClickListener(this);
         forgotButton.setOnClickListener(this);
         setupUI(this.findViewById(R.id.loginView));
+
+        // Facebook login button implementation
+        faceLoginButton = (LoginButton)findViewById(R.id.faceLoginButton);
+        faceLoginButton.setReadPermissions("email");
+        callbackManager = CallbackManager.Factory.create();
+        faceLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                try {
+                                    ownerId = object.getString("id");
+                                    ownerName = object.getString("first_name");
+                                    ownerLastName = object.getString("last_name");
+                                    Log.i("idbefore:",ownerId);
+                                    CreateOwner createOwner = new CreateOwner(ownerId, "facebook", ownerName, ownerLastName);
+                                    //TODO read response with json
+                                    String responseValue = createOwner.execute().get();
+                                    if (responseValue.compareTo("Error inserting new User in database") == 0){
+                                        Toast.makeText(getApplicationContext(), "Error Creating Owner", Toast.LENGTH_SHORT).show();
+                                    }
+                                    Intent intent = new Intent(LogIn.this, Loading_screen.class);
+                                    intent.putExtra("username", ownerId);
+                                    startActivity(intent);
+                                    Toast.makeText(getApplicationContext(), "Logged in", Toast.LENGTH_LONG).show();
+                                    LogIn.this.finish();
+                                } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                        e.printStackTrace();
+                                }catch(JSONException je) {
+                                    je.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,first_name, last_name");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+
+            }
+        });
 
     }
 
@@ -59,7 +132,7 @@ public class LogIn extends Activity implements View.OnClickListener {
                 try {
                     String status = validate.execute().get();
                     if(status.compareTo("1") != 0) {
-                        intent = new Intent(LogIn.this, CreatePet_window.class);
+                        intent = new Intent(LogIn.this, Loading_screen.class);
                         intent.putExtra("username", username);
                         startActivity(intent);
                         Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
@@ -137,5 +210,11 @@ public class LogIn extends Activity implements View.OnClickListener {
                 setupUI(innerView);
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }

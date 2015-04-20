@@ -12,6 +12,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -50,15 +51,12 @@ public class CreateOwner extends AsyncTask<String, Integer, String> {
 
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url_create_owner);
+
         String responseValue = "";
         try {
             post.setEntity(new UrlEncodedFormEntity(params));
             HttpResponse response = client.execute(post);
-            Log.i("response ",response.getStatusLine().getStatusCode()+"");
-
-            Header header = response.getFirstHeader("Content-Length");
-            Log.i(header.getName(), header.getValue());
-            responseValue = header.getValue();
+            responseValue = EntityUtils.toString(response.getEntity());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {
