@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,15 +66,17 @@ public class SignUp extends Activity implements View.OnClickListener {
 
         try {
             //TODO read response with json
-            String responseValue = createOwner.execute().get();
-            if (responseValue.compareTo("1") == 0){
-                Toast.makeText(getApplicationContext(), "Error Creating Owner", Toast.LENGTH_SHORT).show();
-            }else{
+            String status = createOwner.execute().get();
+            Log.i("status--->", status);
+            if (status.equals("1")){
                 Toast.makeText(getApplicationContext(), "Owner Created", Toast.LENGTH_SHORT).show();
                 Intent  intent = new Intent(SignUp.this, Loading_screen.class );
 
                 startActivity(intent);
                 finish_screen();
+
+            }else{
+                Toast.makeText(getApplicationContext(), "Error Creating Owner", Toast.LENGTH_SHORT).show();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

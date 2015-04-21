@@ -143,10 +143,12 @@ public class LogIn extends Activity implements View.OnClickListener {
                     if(status.equals("1")) {
                         JSONObject jsonResponse = validate.getJsonResponse();
 
+                        //save owner info in shared preferences
                         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("username", username);
                         editor.putString("name", jsonResponse.getJSONObject("user").getString("name") );
+                        editor.putString("lastname", jsonResponse.getJSONObject("user").getString("lastname") );
                         editor.commit();
 
 
