@@ -33,6 +33,7 @@ $conn = dbConnect();
 /* MySql query inseting new row in Owner */
 $mysql_query = "INSERT INTO Owner(username, name, lastname)
                         VALUES('$username', $name, $lastname)";
+echo $mysql_query;
 
 /* insert new user in table User*/
 $userCreated = createUser($conn, $username, $password);
