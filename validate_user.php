@@ -6,20 +6,41 @@ include 'db_connect.php';
 
 $conn = dbConnect();
 
-$username = $_POST["username"];
-$password = $_POST["password"];
+$username=NULL;
+$password=NULL;
+if(isset($_POST["username"])) $username = $_POST["username"];
+if(isset($_POST["password"])) $password = $_POST["password"];
 
-$mysql_query = "SELECT username FROM User
-            WHERE username='$username' AND password='$password'";
+
+$request_body = file_get_contents('php://input'); // coger el contenido del body del request
+$json_array = json_decode($request_body, true);//volver el string en un arreglo
+$username= $json_array['username'];
+$password= $json_array['password'];
+
+$mysql_query = "SELECT * 
+				FROM User u, Owner o
+            	WHERE  u.username=o.username AND u.username='$username' AND u.password='$password' ";
+
 
 $returnn = $conn->query($mysql_query);
 
 $row_cnt = $returnn->num_rows;
+$json_return= array();
 
 if($row_cnt == 1){
-      echo "Successful";
+	$row = $returnn->fetch_assoc();
+	$json_return['status']='1';
+	$user = array(
+			'name' => $row['name'] ,
+			'lastname'=>$row['lastname'],
+			'picture'=>$row['profilePicture'],
+			'address'=>$row['address']
+			);
+	$json_return['user']=$user;
+	echo json_encode($json_return);
 }else{
-      echo "Not Successfull";
+	$json_return['status']='0';
+	echo json_encode($json_return);
 }
 
 $conn->close();
