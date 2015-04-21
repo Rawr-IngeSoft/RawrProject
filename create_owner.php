@@ -14,12 +14,13 @@ $username = NULL;
 $password = NULL;
 $name = NULL;
 $lastname = NULL;
+$request_body = @file_get_contents('php://input'); // coger el contenido del body del request
+$json_array = json_decode($request_body, true);//volver el string en un arreglo
 
-
-if(isset($_POST["username"])) $username = $_POST["username"];
-if(isset($_POST["password"])) $password = $_POST["password"];
-if(isset($_POST["name"])) $name = $_POST["name"];
-if(isset($_POST["lastname"])) $lastname = $_POST["lastname"];
+$username = $json_array['username'];
+$password = $json_array['password'];
+$name = $json_array['name'];
+$lastname = $json_array['lastname'];
 
 
 $name = $name != NULL ? "'$name'" : "NULL";
@@ -38,14 +39,12 @@ $userCreated = createUser($conn, $username, $password);
 
 if($userCreated){
   if($conn->query($mysql_query) == TRUE){
-    header('status : 1');
-    echo "New Owner created";
+    
+    $json_return= array('status' => ,'1');
+    echo json_encode(json_return);
   }else{
-    /* TODO
-     * roll back in user
-     */
-     header('status : 0');
-     echo "Error inserting new Owner in database";
+    $json_return= array('status' => ,'0');
+    echo json_encode(json_return);
   }
 }else{
   header('status : 0');
