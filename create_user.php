@@ -11,7 +11,7 @@ function createUser($conn, $username, $password){
   $password = $password != NULL ? "'$password'" : "NULL";
   /* MySql query insert new row in UserOwner */
   $mysql_query = "INSERT INTO User(username, password)
-                        VALUES('$username', $password)";
+                        VALUES('$username', '$password')";
 
   return $conn->query($mysql_query);
 }
