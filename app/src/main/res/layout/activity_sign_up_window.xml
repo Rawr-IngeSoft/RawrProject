@@ -17,10 +17,11 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/loadingAnimation"
+                android:id="@+id/activity_sign_up_imageView_loadingAnimation"
                 android:adjustViewBounds="false"
                 android:scaleType="fitXY"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/dataBaseLoadingAnimation" />
             <ScrollView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
@@ -33,7 +34,7 @@
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/user_tx"
+                    android:id="@+id/activity_sign_up_editText_username"
                     android:hint="@string/user"
                     android:gravity="center_horizontal"
                     android:background="@drawable/edit_text_style"
@@ -44,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:ems="10"
-                    android:id="@+id/pass_tx"
+                    android:id="@+id/activity_sign_up_editText_password"
                     android:layout_gravity="center_horizontal"
                     android:hint="@string/pass"
                     android:gravity="center_horizontal"
@@ -55,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:id="@+id/name_tx"
+                    android:id="@+id/activity_sign_up_editText_name"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:hint="@string/name"
@@ -66,7 +67,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:id="@+id/lastname_tx"
+                    android:id="@+id/activity_sign_up_editText_lastname"
                     android:layout_gravity="center_horizontal"
                     android:hint="@string/lastname"
                     android:gravity="center_horizontal"
@@ -78,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical = "true"
                     android:text="@string/registerUser"
-                    android:id="@+id/singUp_bt"
+                    android:id="@+id/activity_sign_up_button_sign_up"
                     android:background="@drawable/button_style"
                     />
 
@@ -93,14 +94,14 @@
                     <ImageView
                         android:layout_width="@dimen/tamano_iconos_login"
                         android:layout_height="@dimen/tamano_iconos_login"
-                        android:id="@+id/imageButton2"
+                        android:id="@+id/activity_sign_up_imageButton_facebookIcon"
                         android:layout_margin="5dp"
                         android:src="@drawable/face_icon" />
 
                     <ImageView
                         android:layout_width="@dimen/tamano_iconos_login"
                         android:layout_height="@dimen/tamano_iconos_login"
-                        android:id="@+id/imageButton"
+                        android:id="@+id/activity_sign_up_imageButton_googleIcon"
                         android:layout_margin="5dp"
                         android:src="@drawable/google_icon" />
 
@@ -108,5 +109,11 @@
 
             </LinearLayout>
             </ScrollView>
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/activity_sign_up_listView_test" />
         </RelativeLayout>
+
 </LinearLayout>

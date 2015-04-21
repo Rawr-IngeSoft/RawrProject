@@ -11,11 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.david.rawr.R;
 import com.example.david.rawr.db.CreateOwner;
+import com.example.david.rawr.models.Post;
+import com.example.david.rawr.models.PostAdapter;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -27,24 +31,49 @@ public class SignUp extends Activity implements View.OnClickListener {
     EditText userText, passText, nameText, lastnameText;
     AnimationDrawable loadingScreenAnimation;
     ImageView loadingScreen;
-
+    ListView listView;
+    PostAdapter postAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up_wndow);
-        singUp = (Button) findViewById(R.id.singUp_bt);
-        userText = (EditText) findViewById(R.id.user_tx);
-        passText = (EditText) findViewById(R.id.pass_tx);
-        nameText = (EditText) findViewById(R.id.name_tx);
-        lastnameText = (EditText) findViewById(R.id.lastname_tx);
 
-        loadingScreen = (ImageView) findViewById(R.id.loadingAnimation);
+        setContentView(R.layout.activity_sign_up_window);
+        singUp = (Button) findViewById(R.id.activity_sign_up_button_sign_up);
+        userText = (EditText) findViewById(R.id.activity_sign_up_editText_username);
+        passText = (EditText) findViewById(R.id.activity_sign_up_editText_password);
+        nameText = (EditText) findViewById(R.id.activity_sign_up_editText_name);
+        lastnameText = (EditText) findViewById(R.id.activity_sign_up_editText_lastname);
+        listView = (ListView) findViewById(R.id.activity_sign_up_listView_test);
+
+        setUpListView();
+
+        loadingScreen = (ImageView) findViewById(R.id.activity_loading_screen_imageView_animationImageView);
         loadingScreen.setBackgroundResource(R.drawable.frame_animation);
         loadingScreenAnimation = (AnimationDrawable) loadingScreen.getBackground();
         loadingScreenAnimation.start();
         singUp.setOnClickListener(this);
     }
+
+    private void setUpListView() {
+        ArrayList<Post> posts = setUpArray(3);
+        listView.setAdapter( new PostAdapter(this, R.layout.activity_sign_up_window, posts) {
+            @Override
+            public void onEnter(Post post, View view) {
+                Button button = (Button)view.findViewById(R.id.test_item_button_button);
+                button.setText(post.getNombreBoton());
+            }
+        });
+    }
+
+    private ArrayList<Post> setUpArray(int n) {
+        ArrayList<Post> posts = new ArrayList<>();
+        for ( int i=0; i<n; i++ ){
+            posts.add(new Post(i+""));
+        }
+        return posts;
+    }
+
     @Override
     public void onBackPressed() {
         // TODO Auto-generated method stub
