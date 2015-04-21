@@ -18,21 +18,29 @@ $username= $json_array['username'];
 $password= $json_array['password'];
 
 $mysql_query = "SELECT * 
-				FROM User
-            	WHERE username='$username' AND password='$password'";
+				FROM User u, Owner o
+            	WHERE u.username='$username' AND u.password='$password'" AND u.username=o.username;
 
 
 $returnn = $conn->query($mysql_query);
 
 $row_cnt = $returnn->num_rows;
-
+$json_return= array();
 if($row_cnt == 1){
      // echo "Successful";
-	$json_array['status']='1';
+	$row = $result->fetch_assoc();
+	$json_return['status']='1';
+	$user = array(
+			'name' => $row['name'] ,
+			'lastname'=>$row['lastname'],
+			'picture'=>$row['profilePicture'],
+			'address'=>$row['address']
+			);
+	$json_array['user']=$user;
 	echo json_encode($json_array);
 }else{
      // echo "Not Successfull";
-	$json_array['status']='0';
+	$json_return['status']='0';
 	echo json_encode($json_array);
 }
 
