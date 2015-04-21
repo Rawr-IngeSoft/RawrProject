@@ -16,8 +16,12 @@ $username = NULL;
 $password = NULL;
 $name = NULL;
 $lastname = NULL;
-$request_body = @file_get_contents('php://input'); // coger el contenido del body del request
+echo "hola";
+$request_body = @file_get_contents('php://input');
+echo "hola"; // coger el contenido del body del request
 $json_array = json_decode($request_body, true);//volver el string en un arreglo
+
+echo "hola";
 echo $request_body;
 $username = $json_array['username'];
 $password = $json_array['password'];
