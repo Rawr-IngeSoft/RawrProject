@@ -29,18 +29,18 @@ $json_return= array();
 
 if($row_cnt == 1){
 	$row = $returnn->fetch_assoc();
-	$json_array['status']='1';
+	$json_return['status']='1';
 	$user = array(
 			'name' => $row['name'] ,
 			'lastname'=>$row['lastname'],
 			'picture'=>$row['profilePicture'],
 			'address'=>$row['address']
 			);
-	$json_array['user']=$user;
-	echo json_encode($json_array);
+	$json_return['user']=$user;
+	echo json_encode($json_return);
 }else{
-	$json_array['status']='0';
-	echo json_encode($json_array);
+	$json_return['status']='0';
+	echo json_encode($json_return);
 }
 
 $conn->close();
