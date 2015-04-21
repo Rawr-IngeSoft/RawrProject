@@ -3,7 +3,7 @@
  * Create a new Owner row
  * atributes read from HTTP Post Request
  */
-echo "hola";
+
 
 /* import user creation */
 include 'create_user.php';
@@ -14,21 +14,18 @@ $username = NULL;
 $password = NULL;
 $name = NULL;
 $lastname = NULL;
-echo "hola";
-$request_body = @file_get_contents('php://input');
-echo "hola"; // coger el contenido del body del request
-$json_array = json_decode($request_body, true);//volver el string en un arreglo
 
-echo "hola";
-echo $request_body;
+$request_body = file_get_contents('php://input');
+
+$json_array = json_decode($request_body, true);
+
+//volver el string en un arreglo
+
+
 $username = $json_array['username'];
 $password = $json_array['password'];
 $name = $json_array['name'];
 $lastname = $json_array['lastname'];
-
-
-$name = $name != NULL ? "'$name'" : "NULL";
-$lastname = $lastname != NULL ? "'$lastname'" : "NULL";
 
 /* Create connection to mysql database */
 $conn = dbConnect();
