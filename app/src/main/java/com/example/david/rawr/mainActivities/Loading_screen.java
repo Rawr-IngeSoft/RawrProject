@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.david.rawr.R;
+import com.example.david.rawr.db.ValidateUser;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,14 +28,24 @@ public class Loading_screen extends Activity {
         AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
         frameAnimation.start();
         Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(Loading_screen.this, CreatePet_window.class );
-                startActivity(intent);
-                finishscreen();
-            }
-        }, 4000);
+
+        Intent intent = getIntent();
+        if(intent.getStringExtra("username")!=null) {
+            String username = intent.getStringExtra("username");
+            String password = intent.getStringExtra("password");
+            ValidateUser validate = new ValidateUser(username, password, this);
+            validate.execute();
+
+        }else{
+
+            //espera para que aparezxa
+            Intent intent1 = new Intent(Loading_screen.this, CreatePet_window.class);
+            intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent1);
+
+        }
+
+
     }
 
     private void finishscreen() {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.david.rawr.mainActivities.CreatePet_window;
 import com.example.david.rawr.mainActivities.Loading_screen;
 import com.example.david.rawr.mainActivities.LogIn;
 import com.facebook.internal.Validate;
@@ -73,7 +74,7 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url_validate_user);
 
-        post.setHeader("Accept", "application/json");
+       // post.setHeader("Accept", "application/json");
         post.setHeader("Content-type", "application/json");
         //post.setHeader(HTTP.CONTENT_TYPE, "application/json; charset=utf-8");
 
@@ -104,7 +105,7 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
             e.printStackTrace();
         }
 
-
+        Log.v("STAT", status);
         return status;
     }
 
@@ -114,21 +115,14 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
      */
     protected void onPostExecute(String responseValue) {
         if(responseValue.equals("1")) {
-
-
-            Intent intent = new Intent(login, CreatePet.class);
+            Intent intent = new Intent(login, CreatePet_window.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             login.startActivity(intent);
-
-
-
 
         }else{
-            Activity a = new Activity();
-
             Intent intent = new Intent(login, LogIn.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             login.startActivity(intent);
+
             /*
             Intent intent = new Intent(login, LogIn.class);
             login.startActivity(intent);

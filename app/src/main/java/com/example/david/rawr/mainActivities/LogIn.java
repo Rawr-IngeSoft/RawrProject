@@ -136,8 +136,13 @@ public class LogIn extends Activity implements View.OnClickListener {
                 finish_screen();
                 break;
             case (R.id.logInButton):
-                ValidateUser validate = new ValidateUser(username, password,this);
-                validate.execute();
+
+                intent = new Intent(LogIn.this, Loading_screen.class);
+                intent.putExtra("username", username);
+                intent.putExtra("password", password);
+                startActivity(intent);
+                //ValidateUser validate = new ValidateUser(username, password,this);
+                //validate.execute();
                              /* try {
 
                     validate.execute();
