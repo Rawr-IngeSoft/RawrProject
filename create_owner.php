@@ -3,14 +3,12 @@
  * Create a new Owner row
  * atributes read from HTTP Post Request
  */
+echo "hola";
 
 /* import user creation */
 include 'create_user.php';
 /* import db connection file */
 include 'db_connect.php';
-
-ini_set('display_errors', true);
-error_reporting(E_ALL);
 
 $username = NULL;
 $password = NULL;
@@ -56,5 +54,3 @@ if($userCreated){
  $json_return= array('status' => ,'0');
     echo json_encode(json_return);
 }
-
-?>
