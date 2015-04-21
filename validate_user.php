@@ -28,7 +28,7 @@ $row_cnt = $returnn->num_rows;
 $json_return= array();
 
 if($row_cnt == 1){
-	$row = $result->fetch_assoc();
+	$row = $returnn->fetch_assoc();
 	$json_return['status']='1';
 	$user = array(
 			'name' => $row['name'] ,
