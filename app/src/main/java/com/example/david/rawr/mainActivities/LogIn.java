@@ -136,9 +136,12 @@ public class LogIn extends Activity implements View.OnClickListener {
                 finish_screen();
                 break;
             case (R.id.logInButton):
-                ValidateUser validate = new ValidateUser(username, password);
-                try {
-                    String status = validate.execute().get();
+                ValidateUser validate = new ValidateUser(username, password,this);
+                validate.execute();
+                             /* try {
+
+                    validate.execute();
+                    String status="";
                     Log.i("status--->", status);
                     if(status.equals("1")) {
                         JSONObject jsonResponse = validate.getJsonResponse();
@@ -153,7 +156,6 @@ public class LogIn extends Activity implements View.OnClickListener {
 
 
                         intent = new Intent(LogIn.this, Loading_screen.class);
-                        intent.putExtra("username", username);
                         startActivity(intent);
                         Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
                         finish_screen();
@@ -166,7 +168,7 @@ public class LogIn extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
+                }*/
                 break;
             case (R.id.forgotPassButton):
                 Toast.makeText(this, "Sorry i don't know it", Toast.LENGTH_LONG).show();

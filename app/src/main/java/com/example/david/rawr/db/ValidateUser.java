@@ -1,7 +1,13 @@
 package com.example.david.rawr.db;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.david.rawr.mainActivities.Loading_screen;
+import com.example.david.rawr.mainActivities.LogIn;
+import com.facebook.internal.Validate;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -22,6 +28,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import android.app.Activity;
+import android.widget.Toast;
+
+import static android.support.v4.app.ActivityCompat.startActivity;
 
 /**
  * Created by david on 05/04/2015.
@@ -33,10 +43,14 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
     private HttpResponse response;
     private static String url_validate_user = "http://178.62.233.249/rawr/validate_user.php";
     private JSONObject jsonResponse;
+    private Activity login;
+    private Activity loadingScreen;
 
-    public ValidateUser(String user, String pass) {
+
+    public ValidateUser(String user, String pass, Activity activity) {
         this.user = user;
         this.pass = pass;
+        this.login=activity;
     }
 
     /**
@@ -44,6 +58,10 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
      */
 
     protected String doInBackground(String... args) {
+/*
+       intent = new Intent(login, Loading_screen.class);
+        login.startActivity(intent);
+*/
         String status = null;
         JSONObject jsonObjSend = new JSONObject();
         try {
@@ -85,6 +103,8 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
         return status;
     }
 
@@ -93,7 +113,28 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
      * *
      */
     protected void onPostExecute(String responseValue) {
+        if(responseValue.equals("1")) {
 
+
+            Intent intent = new Intent(login, CreatePet.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            login.startActivity(intent);
+
+
+
+
+        }else{
+            Activity a = new Activity();
+
+            Intent intent = new Intent(login, LogIn.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            login.startActivity(intent);
+            /*
+            Intent intent = new Intent(login, LogIn.class);
+            login.startActivity(intent);
+
+        */
+        }
     }
 
 
