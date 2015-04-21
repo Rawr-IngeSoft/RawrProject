@@ -9,6 +9,8 @@ include 'create_user.php';
 /* import db connection file */
 include 'db_connect.php';
 
+ini_set('display_errors', true);
+error_reporting(E_ALL);
 
 $username = NULL;
 $password = NULL;
@@ -47,8 +49,8 @@ if($userCreated){
     echo json_encode(json_return);
   }
 }else{
-  header('status : 0');
-  echo "Error inserting new User in database";
+ $json_return= array('status' => ,'0');
+    echo json_encode(json_return);
 }
 
 ?>
