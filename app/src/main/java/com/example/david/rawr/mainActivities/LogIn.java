@@ -1,7 +1,9 @@
 package com.example.david.rawr.mainActivities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -41,6 +43,8 @@ public class LogIn extends Activity implements View.OnClickListener {
     CallbackManager callbackManager;
     LoginButton faceLoginButton;
     String ownerName, ownerLastName, ownerId;
+    private SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +59,10 @@ public class LogIn extends Activity implements View.OnClickListener {
         signUp.setOnClickListener(this);
         forgotButton.setOnClickListener(this);
         setupUI(this.findViewById(R.id.loginView));
+
+        sharedPref = this.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
 
         // Facebook login button implementation
         faceLoginButton = (LoginButton)findViewById(R.id.faceLoginButton);
@@ -131,7 +139,19 @@ public class LogIn extends Activity implements View.OnClickListener {
                 ValidateUser validate = new ValidateUser(username, password);
                 try {
                     String status = validate.execute().get();
-                    if(status.compareTo("1") != 0) {
+                    Log.i("status--->", status);
+                    if(status.equals("1")) {
+                        JSONObject jsonResponse = validate.getJsonResponse();
+
+                        //save owner info in shared preferences
+                        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("username", username);
+                        editor.putString("name", jsonResponse.getJSONObject("user").getString("name") );
+                        editor.putString("lastname", jsonResponse.getJSONObject("user").getString("lastname") );
+                        editor.commit();
+
+
                         intent = new Intent(LogIn.this, Loading_screen.class);
                         intent.putExtra("username", username);
                         startActivity(intent);
@@ -144,6 +164,8 @@ public class LogIn extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
                 break;
             case (R.id.forgotPassButton):
@@ -151,6 +173,8 @@ public class LogIn extends Activity implements View.OnClickListener {
                 break;
         }
     }
+
+
 
     private void finish_screen(){
         this.finish();
