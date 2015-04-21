@@ -26,5 +26,6 @@
     <string name="title_activity_sign_up_wndow">SignUp_wndow</string>
     <string name="title_activity_create_pet_window">createPet_window</string>
     <string name="app_id">435269556620383</string>
+    <string name="preference_file_key">com.example.david.rawr.PREFERENCE_FILE_KEY</string>
 
 </resources>
