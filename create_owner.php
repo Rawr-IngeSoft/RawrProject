@@ -42,12 +42,12 @@ if($userCreated){
   if($conn->query($mysql_query) == TRUE){
     
     $json_return= array('status' => '1');
-    echo json_encode(json_return);
+    echo json_encode($json_return);
   }else{
     $json_return= array('status' => '0');
-    echo json_encode(json_return);
+    echo json_encode($json_return);
   }
 }else{
  $json_return= array('status' => '0');
-    echo json_encode(json_return);
+    echo json_encode($json_return);
 }
