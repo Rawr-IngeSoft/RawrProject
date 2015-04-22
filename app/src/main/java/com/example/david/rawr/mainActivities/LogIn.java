@@ -37,7 +37,7 @@ import java.util.concurrent.ExecutionException;
 
 public class LogIn extends Activity implements View.OnClickListener {
 
-    Button logIn, prueba;
+    Button logIn;
     EditText userText, passText;
     TextView signUp, forgotButton;
     CallbackManager callbackManager;
@@ -51,7 +51,6 @@ public class LogIn extends Activity implements View.OnClickListener {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.login_window);
         logIn = (Button) findViewById(R.id.logInButton);
-        prueba= (Button) findViewById(R.id.prueba);
         userText = (EditText) findViewById(R.id.userText);
         passText = (EditText) findViewById(R.id.passText);
         signUp = (TextView) findViewById(R.id.signUp);
@@ -171,11 +170,6 @@ public class LogIn extends Activity implements View.OnClickListener {
                 break;
             case (R.id.forgotPassButton):
                 Toast.makeText(this, "Sorry i don't know it", Toast.LENGTH_LONG).show();
-                break;
-            case (R.id.prueba):
-                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent, 1020);
                 break;
         }
     }

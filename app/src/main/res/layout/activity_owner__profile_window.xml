@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.david.rawr.Owner_Profile_window"
+    android:background="#DAFF1B"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/picture"
+            android:scaleType="fitXY"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="33dp"
+                android:id="@+id/username"
+                android:text="Username"
+                android:gravity="center_vertical"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="33dp"
+                android:id="@+id/name"
+                android:text="Name"
+                android:gravity="center_vertical"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="33dp"
+                android:id="@+id/lastName"
+                android:text="LastName"
+                android:gravity="center_vertical"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/petList"
+        android:layout_marginTop="20dp">
+    </ListView>
+</LinearLayout>

@@ -65,6 +65,10 @@
             android:name=".mainActivities.sign_up_add_photo_window"
             android:label="@string/title_activity_sign_up_add_photo_window" >
         </activity>
+        <activity
+            android:name=".Owner_Profile_window"
+            android:label="@string/title_activity_owner__profile_window" >
+        </activity>
     </application>
 
 </manifest>

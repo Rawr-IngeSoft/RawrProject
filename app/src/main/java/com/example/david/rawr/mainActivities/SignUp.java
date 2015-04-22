@@ -1,7 +1,9 @@
 package com.example.david.rawr.mainActivities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,7 +29,7 @@ public class SignUp extends Activity implements View.OnClickListener {
     EditText userText, passText, nameText, lastnameText;
     AnimationDrawable loadingScreenAnimation;
     ImageView loadingScreen;
-
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +40,20 @@ public class SignUp extends Activity implements View.OnClickListener {
         passText = (EditText) findViewById(R.id.pass_tx);
         nameText = (EditText) findViewById(R.id.name_tx);
         lastnameText = (EditText) findViewById(R.id.lastname_tx);
-
+        sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         loadingScreen = (ImageView) findViewById(R.id.loadingAnimation);
         loadingScreen.setBackgroundResource(R.drawable.frame_animation);
         loadingScreenAnimation = (AnimationDrawable) loadingScreen.getBackground();
         loadingScreenAnimation.start();
         singUp.setOnClickListener(this);
+    }
+
+    private void setSharedPreferences(String username, String name, String lastName){
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("username", username);
+        editor.putString("name", name);
+        editor.putString("lastName", lastName);
+        editor.commit();
     }
     @Override
     public void onBackPressed() {
@@ -71,7 +81,7 @@ public class SignUp extends Activity implements View.OnClickListener {
             if (status.equals("1")){
                 Toast.makeText(getApplicationContext(), "Owner Created", Toast.LENGTH_SHORT).show();
                 Intent  intent = new Intent(SignUp.this, sign_up_add_photo_window.class );
-                intent.putExtra("username", username);
+                setSharedPreferences(username, name, lastname);
                 startActivity(intent);
                 finish_screen();
 

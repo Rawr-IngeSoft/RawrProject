@@ -1,7 +1,9 @@
 package com.example.david.rawr.mainActivities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -15,8 +17,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.david.rawr.Owner_Profile_window;
 import com.example.david.rawr.R;
+import com.example.david.rawr.otherClasses.RoundImage;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 
 
@@ -25,21 +30,18 @@ public class sign_up_add_photo_window extends Activity implements View.OnClickLi
     Button selectButton, nextButton;
     ImageView photoImageView;
     Bitmap bitmap = null;
-    String username;
+    SharedPreferences sharedpreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_add_photo_window);
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null){
-            username = bundle.getString("username");
-            Log.i("username:", username);
-        }
         selectButton = (Button)findViewById(R.id.selectImage);
         nextButton = (Button)findViewById(R.id.next);
         photoImageView = (ImageView)findViewById(R.id.signUp_imageView);
         selectButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
+        sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -76,10 +78,10 @@ public class sign_up_add_photo_window extends Activity implements View.OnClickLi
                 if(bitmap != null){
                     //TODO
                     // consume service to add photo to owner
-                    intent = new Intent(sign_up_add_photo_window.this, Loading_screen.class);
-                    intent.putExtra("username", username);
+                    intent = new Intent(sign_up_add_photo_window.this, Owner_Profile_window.class);
                     startActivity(intent);
                     Toast.makeText(this, "Sign up", Toast.LENGTH_LONG).show();
+                    this.finish();
                 }
             break;
         }
@@ -90,6 +92,9 @@ public class sign_up_add_photo_window extends Activity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
             Uri targetUri = data.getData();
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("pictureUri", targetUri.toString());
+            editor.commit();
             try {
                 bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
                 photoImageView.setImageBitmap(bitmap);
