@@ -4,7 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.david.rawr.Owner_Profile_window"
+    tools:context="com.example.david.rawr.mainActivities.Owner_Profile_window"
     android:background="#DAFF1B"
     android:orientation="vertical">
     <LinearLayout
@@ -42,10 +42,22 @@
 
         </LinearLayout>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/petList"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:layout_weight=".1">
     </ListView>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/logOutButton"
+        android:text="Log Out"
+        android:layout_weight=".9"/>
+    </LinearLayout>
 </LinearLayout>

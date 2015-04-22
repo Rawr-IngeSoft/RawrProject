@@ -7,9 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.david.rawr.Owner_Profile_window;
 import com.example.david.rawr.R;
-import com.example.david.rawr.otherClasses.RoundImage;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 
 
