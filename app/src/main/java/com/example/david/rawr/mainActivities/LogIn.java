@@ -142,17 +142,13 @@ public class LogIn extends Activity implements View.OnClickListener {
                         JSONObject jsonResponse = validate.getJsonResponse();
 
                         //save owner info in shared preferences
-                        sharedpreferences = this.getPreferences(Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.putString("username", username);
                         editor.putString("name", jsonResponse.getJSONObject("user").getString("name") );
-                        editor.putString("lastname", jsonResponse.getJSONObject("user").getString("lastname") );
+                        editor.putString("lastName", jsonResponse.getJSONObject("user").getString("lastname") );
                         editor.commit();
-
                         intent = new Intent(LogIn.this, Loading_screen.class);
-                        intent.putExtra("username", username);
                         startActivity(intent);
-                        Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
                         finish_screen();
                     }else{
                         Toast.makeText(this, "Sorry wrong username or password", Toast.LENGTH_LONG).show();
