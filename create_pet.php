@@ -17,12 +17,26 @@ $type = NULL;
 $owner_username = NULL;
 $profilePic = NULL;
 
+/* get Json */
+$request_body = file_get_contents('php://input');
 
+$json_array = json_decode($request_body, true);
+
+/* convert string to array */
+
+$username = $json_array['username'];
+$type = $json_array['type'];
+$name = $json_array['name'];
+$owner_username = $json_array['owner_username'];
+
+
+
+/*
 if(isset($_POST["username"])) $username = $_POST["username"];
 if(isset($_POST["name"])) $name = $_POST["name"];
 if(isset($_POST["type"])) $type = $_POST["type"];
 if(isset($_POST["owner_username"])) $owner_username = $_POST["owner_username"];
-
+*/
 
 
 
@@ -38,13 +52,15 @@ $userCreated = createUser($conn, $username, NULL);
 
 if($userCreated){
   if($conn->query($mysql_query) == TRUE){
-    echo "New Pet created";
+    $json_return= array('status' => '1');
+    echo json_encode($json_return);
   }else{
-    echo "Error inserting new Pet in database";
+    $json_return= array('status' => '0');
+    echo json_encode($json_return);
   }
 }else{
-  header('status : 0');
-  echo "Error inserting new User in database";
+  $json_return= array('status' => '0');
+    echo json_encode($json_return);
 }
 
 ?>
