@@ -1,7 +1,9 @@
 package com.example.david.rawr.mainActivities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
@@ -11,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.david.rawr.Owner_Profile_window;
 import com.example.david.rawr.R;
@@ -21,13 +24,16 @@ import java.util.TimerTask;
 
 public class Loading_screen extends Activity {
 
-
+    SharedPreferences sharedpreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_screen);
         ImageView img = (ImageView)findViewById(R.id.animationImageView);
         AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
+        sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        String welcomeMsg = "Welcome " + sharedpreferences.getString("name","") + " " + sharedpreferences.getString("lastName","");
+        Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
         frameAnimation.start();
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {

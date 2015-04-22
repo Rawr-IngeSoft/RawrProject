@@ -43,7 +43,7 @@ public class LogIn extends Activity implements View.OnClickListener {
     CallbackManager callbackManager;
     LoginButton faceLoginButton;
     String ownerName, ownerLastName, ownerId;
-    private SharedPreferences sharedPref;
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +59,12 @@ public class LogIn extends Activity implements View.OnClickListener {
         signUp.setOnClickListener(this);
         forgotButton.setOnClickListener(this);
         setupUI(this.findViewById(R.id.loginView));
-
-        sharedPref = this.getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-
+        sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        if (sharedpreferences.contains("username")) {
+            Intent intent = new Intent(LogIn.this, Loading_screen.class);
+            startActivity(intent);
+            this.finish();
+        }
         // Facebook login button implementation
         faceLoginButton = (LoginButton)findViewById(R.id.faceLoginButton);
         faceLoginButton.setReadPermissions("email");
@@ -89,9 +90,6 @@ public class LogIn extends Activity implements View.OnClickListener {
                                         Toast.makeText(getApplicationContext(), "Error Creating Owner", Toast.LENGTH_SHORT).show();
                                     }
                                     Intent intent = new Intent(LogIn.this, Loading_screen.class);
-                                    intent.putExtra("username", ownerId);
-                                    String welcomeMsg = "Welcome " + ownerName + " " + ownerLastName;
-                                    Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
                                     startActivity(intent);
                                     LogIn.this.finish();
                                 } catch (InterruptedException e) {
@@ -144,13 +142,12 @@ public class LogIn extends Activity implements View.OnClickListener {
                         JSONObject jsonResponse = validate.getJsonResponse();
 
                         //save owner info in shared preferences
-                        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
+                        sharedpreferences = this.getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
                         editor.putString("username", username);
                         editor.putString("name", jsonResponse.getJSONObject("user").getString("name") );
                         editor.putString("lastname", jsonResponse.getJSONObject("user").getString("lastname") );
                         editor.commit();
-
 
                         intent = new Intent(LogIn.this, Loading_screen.class);
                         intent.putExtra("username", username);
