@@ -70,8 +70,8 @@ public class SignUp extends Activity implements View.OnClickListener {
             Log.i("status--->", status);
             if (status.equals("1")){
                 Toast.makeText(getApplicationContext(), "Owner Created", Toast.LENGTH_SHORT).show();
-                Intent  intent = new Intent(SignUp.this, Loading_screen.class );
-
+                Intent  intent = new Intent(SignUp.this, sign_up_add_photo_window.class );
+                intent.putExtra("username", username);
                 startActivity(intent);
                 finish_screen();
 

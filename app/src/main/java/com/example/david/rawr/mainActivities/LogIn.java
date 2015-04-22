@@ -37,7 +37,7 @@ import java.util.concurrent.ExecutionException;
 
 public class LogIn extends Activity implements View.OnClickListener {
 
-    Button logIn;
+    Button logIn, prueba;
     EditText userText, passText;
     TextView signUp, forgotButton;
     CallbackManager callbackManager;
@@ -51,6 +51,7 @@ public class LogIn extends Activity implements View.OnClickListener {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.login_window);
         logIn = (Button) findViewById(R.id.logInButton);
+        prueba= (Button) findViewById(R.id.prueba);
         userText = (EditText) findViewById(R.id.userText);
         passText = (EditText) findViewById(R.id.passText);
         signUp = (TextView) findViewById(R.id.signUp);
@@ -82,7 +83,6 @@ public class LogIn extends Activity implements View.OnClickListener {
                                     ownerId = object.getString("id");
                                     ownerName = object.getString("first_name");
                                     ownerLastName = object.getString("last_name");
-                                    Log.i("idbefore:",ownerId);
                                     CreateOwner createOwner = new CreateOwner(ownerId, "facebook", ownerName, ownerLastName);
                                     //TODO read response with json
                                     String responseValue = createOwner.execute().get();
@@ -91,8 +91,9 @@ public class LogIn extends Activity implements View.OnClickListener {
                                     }
                                     Intent intent = new Intent(LogIn.this, Loading_screen.class);
                                     intent.putExtra("username", ownerId);
+                                    String welcomeMsg = "Welcome " + ownerName + " " + ownerLastName;
+                                    Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
                                     startActivity(intent);
-                                    Toast.makeText(getApplicationContext(), "Logged in", Toast.LENGTH_LONG).show();
                                     LogIn.this.finish();
                                 } catch (InterruptedException e) {
                                         e.printStackTrace();
@@ -170,6 +171,11 @@ public class LogIn extends Activity implements View.OnClickListener {
                 break;
             case (R.id.forgotPassButton):
                 Toast.makeText(this, "Sorry i don't know it", Toast.LENGTH_LONG).show();
+                break;
+            case (R.id.prueba):
+                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, 1020);
                 break;
         }
     }

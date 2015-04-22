@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -18,10 +19,16 @@ import java.util.TimerTask;
 public class Loading_screen extends Activity {
 
     TextView icon;
+    String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_screen);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            username = bundle.getString("username");
+            Log.i("username:", username);
+        }
         ImageView img = (ImageView)findViewById(R.id.animationImageView);
         AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
         frameAnimation.start();
@@ -30,6 +37,7 @@ public class Loading_screen extends Activity {
             @Override
             public void run() {
                 Intent intent = new Intent(Loading_screen.this, CreatePet_window.class );
+                intent.putExtra("username", username);
                 startActivity(intent);
                 finishscreen();
             }

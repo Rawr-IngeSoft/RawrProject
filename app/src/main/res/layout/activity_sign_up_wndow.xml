@@ -9,7 +9,6 @@
     tools:context="rawr.com.rawr.login_window"
     android:orientation="vertical"
     android:background="#DAFF1B">
-
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
@@ -81,31 +80,13 @@
                     android:id="@+id/singUp_bt"
                     android:background="@drawable/button_style"
                     />
-
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="100">
-
-                    <ImageView
-                        android:layout_width="@dimen/tamano_iconos_login"
-                        android:layout_height="@dimen/tamano_iconos_login"
-                        android:id="@+id/imageButton2"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/face_icon" />
-
-                    <ImageView
-                        android:layout_width="@dimen/tamano_iconos_login"
-                        android:layout_height="@dimen/tamano_iconos_login"
-                        android:id="@+id/imageButton"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/google_icon" />
-
-                </LinearLayout>
-
+                    android:text="@string/SignUp_Policy"
+                    android:layout_marginTop="10dp"
+                    android:textAlignment="center"
+                    android:gravity="center_vertical|center_horizontal" />
             </LinearLayout>
             </ScrollView>
         </RelativeLayout>
