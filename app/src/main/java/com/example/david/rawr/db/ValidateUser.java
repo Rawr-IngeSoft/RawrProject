@@ -117,6 +117,7 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
         if(responseValue.equals("1")) {
             Intent intent = new Intent(login, CreatePet_window.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("username", this.user);
             login.startActivity(intent);
 
         }else{

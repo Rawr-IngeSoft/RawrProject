@@ -141,39 +141,7 @@ public class LogIn extends Activity implements View.OnClickListener {
                 intent.putExtra("username", username);
                 intent.putExtra("password", password);
                 startActivity(intent);
-                //ValidateUser validate = new ValidateUser(username, password,this);
-                //validate.execute();
-                             /* try {
 
-                    validate.execute();
-                    String status="";
-                    Log.i("status--->", status);
-                    if(status.equals("1")) {
-                        JSONObject jsonResponse = validate.getJsonResponse();
-
-                        //save owner info in shared preferences
-                        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putString("username", username);
-                        editor.putString("name", jsonResponse.getJSONObject("user").getString("name") );
-                        editor.putString("lastname", jsonResponse.getJSONObject("user").getString("lastname") );
-                        editor.commit();
-
-
-                        intent = new Intent(LogIn.this, Loading_screen.class);
-                        startActivity(intent);
-                        Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
-                        finish_screen();
-                    }else{
-                        Toast.makeText(this, "Sorry wrong username or password", Toast.LENGTH_LONG).show();
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
                 break;
             case (R.id.forgotPassButton):
                 Toast.makeText(this, "Sorry i don't know it", Toast.LENGTH_LONG).show();

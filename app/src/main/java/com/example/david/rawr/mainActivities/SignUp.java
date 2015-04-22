@@ -65,7 +65,7 @@ public class SignUp extends Activity implements View.OnClickListener {
         CreateOwner createOwner = new CreateOwner(username, password, name, lastname);
 
         try {
-            //TODO read response with json
+            //TODO change to show loading window while the query is being processed
             String status = createOwner.execute().get();
             Log.i("status--->", status);
             if (status.equals("1")){

@@ -48,7 +48,7 @@ public class CreatePet_window extends Activity{
         typeList = (ListView)findViewById(R.id.list);
         typeList.setClickable(true);
         ArrayList<String> types =  new ArrayList<>();
-        types.add("Dog"); types.add("Cat"); types.add("Horse"); types.add("Ant"); types.add("Panda");
+        types.add("Dog"); types.add("Cat"); types.add("Horse");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.string_list_item,R.id.stringListItem, types);
         typeList.setAdapter(adapter);
         typeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -76,11 +76,13 @@ public class CreatePet_window extends Activity{
                 }else{
                     CreatePet createPet = new CreatePet(petUsernameText, petNameText, petType, username);
                     try {
+                        //TODO change to show loading window while the query is being processed
                         String responseValue = createPet.execute().get();
-                        if (responseValue.compareTo("1") == 0){
-                            Toast.makeText(getApplicationContext(), "Error Creating Pet", Toast.LENGTH_SHORT).show();
-                        }else{
+                        if (responseValue.equals("1")){
                             Toast.makeText(getApplicationContext(), "Pet Created", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Error Creating Pet", Toast.LENGTH_SHORT).show();
+
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
