@@ -89,6 +89,11 @@ public class LogIn extends Activity implements View.OnClickListener {
                                     if (responseValue.compareTo("Error inserting new User in database") == 0){
                                         Toast.makeText(getApplicationContext(), "Error Creating Owner", Toast.LENGTH_SHORT).show();
                                     }
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putString("username", ownerId);
+                                    editor.putString("name", ownerName);
+                                    editor.putString("lastName",ownerLastName);
+                                    editor.commit();
                                     Intent intent = new Intent(LogIn.this, Loading_screen.class);
                                     startActivity(intent);
                                     LogIn.this.finish();

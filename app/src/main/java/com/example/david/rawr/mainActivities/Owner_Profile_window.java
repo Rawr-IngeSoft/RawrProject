@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.david.rawr.R;
+import com.facebook.login.LoginManager;
 
 import java.io.FileNotFoundException;
 
@@ -96,6 +97,7 @@ public class Owner_Profile_window extends Activity implements View.OnClickListen
                 editor.remove("lastName");
                 editor.remove("pictureUri");
                 editor.commit();
+                LoginManager.getInstance().logOut();
                 Intent intent = new Intent(this, LogIn.class );
                 startActivity(intent);
                 this.finish();
