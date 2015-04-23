@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +35,9 @@ import com.facebook.login.widget.LoginButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
 import java.util.concurrent.ExecutionException;
 
 
@@ -45,10 +51,27 @@ public class LogIn extends Activity implements View.OnClickListener {
     String ownerName, ownerLastName, ownerId;
     SharedPreferences sharedpreferences;
 
+    private void getHashKey() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    getPackageName(), PackageManager.GET_SIGNATURES);
+            for (android.content.pm.Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.e("MY_KEY_HASH:",
+                        Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+        } catch (NoSuchAlgorithmException e) {
+        } }
+    //---------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
+    getHashKey();
+        // ---------------
+
         setContentView(R.layout.login_window);
         logIn = (Button) findViewById(R.id.logInButton);
         userText = (EditText) findViewById(R.id.userText);

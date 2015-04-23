@@ -28,7 +28,7 @@ public class Owner_Profile_window extends Activity implements View.OnClickListen
 
     ImageView photo;
     TextView usernameText, nameText, lastNameText;
-    Button logOutButton;
+    Button logOutButton, createPetButton;
     SharedPreferences sharedpreferences;
 
     @Override
@@ -40,7 +40,9 @@ public class Owner_Profile_window extends Activity implements View.OnClickListen
         nameText = (TextView)findViewById(R.id.name);
         lastNameText = (TextView)findViewById(R.id.lastName);
         logOutButton = (Button)findViewById(R.id.logOutButton);
+        createPetButton = (Button)findViewById(R.id.activity_owner_profile_createPetButton);
         logOutButton.setOnClickListener(this);
+        createPetButton.setOnClickListener(this);
         sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         if (sharedpreferences.contains("username")) {
             usernameText.setText(sharedpreferences.getString("username", ""));
@@ -88,7 +90,7 @@ public class Owner_Profile_window extends Activity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-
+        Intent intent;
         switch (v.getId()){
             case(R.id.logOutButton):
                 SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -98,7 +100,12 @@ public class Owner_Profile_window extends Activity implements View.OnClickListen
                 editor.remove("pictureUri");
                 editor.commit();
                 LoginManager.getInstance().logOut();
-                Intent intent = new Intent(this, LogIn.class );
+                intent = new Intent(this, LogIn.class );
+                startActivity(intent);
+                this.finish();
+            break;
+            case (R.id.activity_owner_profile_createPetButton):
+                intent = new Intent(this, CreatePet_window.class );
                 startActivity(intent);
                 this.finish();
             break;

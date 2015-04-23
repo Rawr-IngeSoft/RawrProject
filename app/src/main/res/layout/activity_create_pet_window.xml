@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/petUsername"
+        android:background="@drawable/edit_text_style"
         android:hint="Pet Username"
         android:gravity="center_horizontal"
         android:textSize="20dp"
@@ -22,6 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/petName"
+        android:background="@drawable/edit_text_style"
         android:layout_gravity="center_horizontal"
         android:hint="Pet Name"
         android:gravity="center_horizontal"
@@ -41,6 +43,7 @@
         android:layout_height="wrap_content"
         android:text="@string/registerPet"
         android:id="@+id/createPet"
+        android:background="@drawable/button_style"
         android:layout_marginTop="20dp" />
 
 </LinearLayout>

@@ -24,7 +24,7 @@ public class Loading_screen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_screen);
-        ImageView img = (ImageView)findViewById(R.id.animationImageView);
+        ImageView img = (ImageView)findViewById(R.id.loading_screen_imageView_animation);
         AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
         sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         String welcomeMsg = "Welcome " + sharedpreferences.getString("name","") + " " + sharedpreferences.getString("lastName","");

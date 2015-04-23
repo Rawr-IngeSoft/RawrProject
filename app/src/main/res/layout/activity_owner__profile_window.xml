@@ -58,6 +58,12 @@
         android:layout_height="fill_parent"
         android:id="@+id/logOutButton"
         android:text="Log Out"
-        android:layout_weight=".9"/>
+        android:layout_weight=".45"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/activity_owner_profile_createPetButton"
+            android:text="CreatePet"
+            android:layout_weight=".45"/>
     </LinearLayout>
 </LinearLayout>
