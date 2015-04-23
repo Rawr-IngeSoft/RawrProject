@@ -40,7 +40,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 import java.util.concurrent.ExecutionException;
 
-
+// REQ-008
 public class LogIn extends Activity implements View.OnClickListener {
 
     Button logIn;

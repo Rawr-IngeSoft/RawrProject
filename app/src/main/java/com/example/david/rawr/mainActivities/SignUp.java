@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by alfredo on 04/04/15.
  */
+//REQ-001
 public class SignUp extends Activity implements View.OnClickListener {
 
     Button singUp;
@@ -64,6 +65,7 @@ public class SignUp extends Activity implements View.OnClickListener {
         startActivity(intent);
         finish_screen();
     }
+    // REQ-001
     @Override
     public void onClick(View v) {
         String username = userText.getText().toString();

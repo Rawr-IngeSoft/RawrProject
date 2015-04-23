@@ -26,6 +26,7 @@ import java.util.List;
 /**
  * Created by david on 05/04/2015.
  */
+// REQ-008
 public class ValidateUser extends AsyncTask<String, Integer, String> {
 
     private String user;

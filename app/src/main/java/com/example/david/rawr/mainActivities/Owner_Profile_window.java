@@ -23,7 +23,7 @@ import com.facebook.login.LoginManager;
 
 import java.io.FileNotFoundException;
 
-
+// REQ-029
 public class Owner_Profile_window extends Activity implements View.OnClickListener{
 
     ImageView photo;

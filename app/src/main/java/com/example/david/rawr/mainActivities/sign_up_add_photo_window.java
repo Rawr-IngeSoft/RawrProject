@@ -19,7 +19,7 @@ import com.example.david.rawr.R;
 
 import java.io.FileNotFoundException;
 
-
+//REQ-048
 public class sign_up_add_photo_window extends Activity implements View.OnClickListener {
 
     Button selectButton, nextButton;
@@ -61,6 +61,7 @@ public class sign_up_add_photo_window extends Activity implements View.OnClickLi
         return super.onOptionsItemSelected(item);
     }
 
+    //REQ-048
     @Override
     public void onClick(View v) {
 
