@@ -4,7 +4,7 @@
     // Get file name posted from Android App
     $filename = $_REQUEST['filename'];
     $extension= $_REQUEST['extension'];
-    
+    $username= $_REQUEST['username'];
     $filename = tempnam('/static', '');
     // Decode Image
     $binary=base64_decode($base);
