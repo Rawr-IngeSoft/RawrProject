@@ -5,10 +5,10 @@
     $base=file_get_contents('php://input');
     echo "got base";
     // Get file name posted from Android App
-    $filename = $_POST['Filename'];
+    $filename = "mi_archivo";
 
-    $extension= $_POST['Extension'];
-    $username= $_POST['Username'];
+    $extension= "png";
+    $username= "disney";
 
     $filename = tempnam('/static', '');
     
