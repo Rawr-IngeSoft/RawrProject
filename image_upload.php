@@ -10,7 +10,7 @@
     $username= "disney";
     $filename = tempnam('/static', '');
     // Decode Image
-    $binary=base64_decode($base);
+    $binary=base64_decode($base, TRUE);
     echo $binary;
     // Images will be saved under 'www/imgupload/uplodedimages' folder
     $file = fopen('static'.$filename. '.'. $extension, 'wb');
