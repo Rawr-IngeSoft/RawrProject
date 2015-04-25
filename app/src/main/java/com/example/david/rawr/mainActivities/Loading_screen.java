@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -19,8 +18,6 @@ import com.example.david.rawr.db.CreateOwner;
 import com.example.david.rawr.db.ValidateUser;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class Loading_screen extends Activity implements ValidateResponse, CreateResponse{
@@ -38,7 +35,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         String serviceType = getIntent().getStringExtra("serviceType");
         if(serviceType.compareTo("logIn") == 0) {
             if (sharedpreferences.contains("username")) {
-                Intent intent = new Intent(this, Owner_Profile_window.class);
+                Intent intent = new Intent(this, Owner_Profile_screen.class);
                 startActivity(intent);
                 this.finish();
             }
@@ -62,8 +59,9 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         }else if (serviceType.compareTo("logged") == 0) {
             String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
             Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, Owner_Profile_window.class);
+            Intent intent = new Intent(this, Owner_Profile_screen.class);
             startActivity(intent);
+            this.finish();
         }
     }
 
@@ -105,9 +103,9 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             editor.commit();
             String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
             Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
-            intent = new Intent(this, Owner_Profile_window.class);
+            intent = new Intent(this, Owner_Profile_screen.class);
         }else{
-            intent = new Intent(this, LogIn.class);
+            intent = new Intent(this, LogIn_screen.class);
             Toast.makeText(this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
         }
         startActivity(intent);
@@ -117,7 +115,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
     @Override
     public void createFinish(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, Owner_Profile_window.class);
+        Intent intent = new Intent(this, Owner_Profile_screen.class);
         startActivity(intent);
         this.finish();
     }

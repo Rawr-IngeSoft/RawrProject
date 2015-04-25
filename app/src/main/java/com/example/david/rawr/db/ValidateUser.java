@@ -55,11 +55,9 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
         post.setHeader("Content-type", "application/json");
         //post.setHeader(HTTP.CONTENT_TYPE, "application/json; charset=utf-8");
 
-
         jsonResponse = null;
-        StringEntity se = null;
         try {
-            se = new StringEntity(jsonObjSend.toString());
+            StringEntity se = new StringEntity(jsonObjSend.toString());
             post.setEntity(se);
 
             HttpResponse response;

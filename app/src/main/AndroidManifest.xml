@@ -26,27 +26,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".mainActivities.LogIn"
+            android:name=".mainActivities.LogIn_screen"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
         <activity
-            android:name=".mainActivities.SignUp"
+            android:name=".mainActivities.SignUp_screen"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:parentActivityName=".mainActivities.LogIn"
+            android:parentActivityName=".mainActivities.LogIn_screen"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".mainActivities.Downloading_window"
+            android:name=".mainActivities.Downloading_screen"
             android:configChanges="orientation"
             android:label="@string/title_activity_downloading_window"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".mainActivities.CreatePet_window"
+            android:name=".mainActivities.CreatePet_screen"
             android:label="@string/title_activity_create_pet_window" >
         </activity>
         <activity
@@ -59,15 +59,15 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".mainActivities.newsfeed_window"
+            android:name=".mainActivities.Newsfeed_screen"
             android:label="@string/title_activity_newsfeed_window" >
         </activity>
         <activity
-            android:name=".mainActivities.sign_up_add_photo_window"
+            android:name=".mainActivities.sign_up_add_photo_screen"
             android:label="@string/title_activity_sign_up_add_photo_window" >
         </activity>
         <activity
-            android:name=".mainActivities.Owner_Profile_window"
+            android:name=".mainActivities.Owner_Profile_screen"
             android:label="@string/title_activity_owner__profile_window" >
         </activity>
     </application>

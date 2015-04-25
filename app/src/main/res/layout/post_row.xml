@@ -10,7 +10,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/postUsername"
+            android:id="@+id/post_petId"
             android:text="username"
             android:layout_weight=".5"
             android:layout_gravity="center_vertical"
@@ -18,9 +18,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/postDate"
+            android:id="@+id/post_date"
             android:text="date"
             android:layout_weight=".5"
             android:layout_gravity="center_vertical" />
     </LinearLayout>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/post_text"/>
 </LinearLayout>
