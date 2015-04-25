@@ -1,7 +1,9 @@
 <?php
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
     echo "stating method";
     $base=file_get_contents('php://input');
-     echo "got base";
+    echo "got base";
     // Get file name posted from Android App
     $filename = $_REQUEST['filename'];
 
