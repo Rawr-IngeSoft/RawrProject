@@ -12,7 +12,7 @@
     // Decode Image
     $binary=base64_decode($base);
     // Images will be saved under 'www/imgupload/uplodedimages' folder
-    $file = fopen('static'.$filename. '.'. $extension, 'w');
+    $file = fopen('static'.$filename. '.'. $extension, 'wb');
     // Create File
    
     fwrite($file, $binary);
