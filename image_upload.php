@@ -25,7 +25,7 @@
     fclose($file);
 
     $conn = dbConnect();
-    $filename= $filename . $extension;
+    $filename= $filename . '.' . $extension;
     $mysql_query = "INSERT INTO Photo(path, username)
                         VALUES('$filename', '$username')";
    
