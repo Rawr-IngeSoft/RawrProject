@@ -3,6 +3,8 @@ package com.example.david.rawr.db;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.david.rawr.Interfaces.ValidateResponse;
+
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by david on 05/04/2015.
@@ -34,10 +37,11 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
     private HttpResponse response;
     private static String url_validate_user = "http://178.62.233.249/rawr/validate_user.php";
     private JSONObject jsonResponse;
-
-    public ValidateUser(String user, String pass) {
+    public ValidateResponse validateResponse = null;
+    public ValidateUser(String user, String pass, ValidateResponse validateResponse) {
         this.user = user;
         this.pass = pass;
+        this.validateResponse = validateResponse;
     }
 
     /**
@@ -73,10 +77,6 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
 
             jsonResponse= jsonParser.getjObject();
             status = jsonResponse.getString("status");
-            Log.i("Response ", jsonResponse.getString("status"));
-
-            Log.i("Json resoponse","<JSONObject>\n"+jsonResponse.toString()+"\n</JSONObject>");
-
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -93,7 +93,16 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
      * After completing background task
      * *
      */
-    protected void onPostExecute(String responseValue) {
+    protected void onPostExecute(String status) {
+        ArrayList<String> data = new ArrayList<>();
+        data.add(status);
+        try {
+            data.add(jsonResponse.getJSONObject("user").getString("name"));
+            data.add(jsonResponse.getJSONObject("user").getString("lastname"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        validateResponse.processFinish(data);
 
     }
 

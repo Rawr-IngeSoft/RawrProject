@@ -59,7 +59,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".newsfeed_window"
+            android:name=".mainActivities.newsfeed_window"
             android:label="@string/title_activity_newsfeed_window" >
         </activity>
         <activity

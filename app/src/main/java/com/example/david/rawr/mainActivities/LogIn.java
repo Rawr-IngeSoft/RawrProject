@@ -162,32 +162,11 @@ public class LogIn extends Activity implements View.OnClickListener {
                 finish_screen();
                 break;
             case (R.id.logInButton):
-                ValidateUser validate = new ValidateUser(username, password);
-                try {
-                    String status = validate.execute().get();
-                    Log.i("status--->", status);
-                    if(status.equals("1")) {
-                        JSONObject jsonResponse = validate.getJsonResponse();
-
-                        //save owner info in shared preferences
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.putString("username", username);
-                        editor.putString("name", jsonResponse.getJSONObject("user").getString("name") );
-                        editor.putString("lastName", jsonResponse.getJSONObject("user").getString("lastname") );
-                        editor.commit();
-                        intent = new Intent(LogIn.this, Loading_screen.class);
-                        startActivity(intent);
-                        finish_screen();
-                    }else{
-                        Toast.makeText(this, "Sorry wrong username or password", Toast.LENGTH_LONG).show();
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                intent = new Intent(LogIn.this, Loading_screen.class );
+                intent.putExtra("username", username);
+                intent.putExtra("password", password);
+                startActivity(intent);
+                finish_screen();
                 break;
             case (R.id.forgotPassButton):
                 Toast.makeText(this, "Sorry i don't know it", Toast.LENGTH_LONG).show();
