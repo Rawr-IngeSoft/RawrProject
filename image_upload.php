@@ -27,7 +27,7 @@
     $conn = dbConnect();
     $mysql_query = "INSERT INTO Photo(path, username)
                         VALUES('$filename', '$username')";
-    echo $mysql_query;
+   
     if($conn->query($mysql_query) == TRUE){
         $json_return= array('status' => '1');
         echo json_encode($json_return);
