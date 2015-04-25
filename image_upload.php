@@ -25,7 +25,7 @@
     fclose($file);
 
     $conn = dbConnect();
-    $mysql_query = "INSERT INTO Photo(path, route)
+    $mysql_query = "INSERT INTO Photo(path, username)
                         VALUES('$filename', '$username')";
     echo $mysql_query;
     if($conn->query($mysql_query) == TRUE){
