@@ -1,6 +1,6 @@
 <?php
-    // Get image string posted from Android App
-    $base=$_REQUEST['image'];
+    
+    $base=file_get_contents('php://input');
     // Get file name posted from Android App
     $filename = $_REQUEST['filename'];
     $extension= $_REQUEST['extension'];
