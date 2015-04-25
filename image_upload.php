@@ -10,9 +10,9 @@
     $binary=base64_decode($base);
     header('Content-Type: bitmap; charset=utf-8');
     // Images will be saved under 'www/imgupload/uplodedimages' folder
-    $file = fopen('static/'.$filename . '.' .$extension, 'wb');
+    $file = fopen('static/'.$filename . '.' .$extension, 'w');
     // Create File
     fwrite($file, $binary);
-    fclose($file);
+    fclose($file)
     
 ?>
