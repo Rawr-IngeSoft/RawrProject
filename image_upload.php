@@ -3,7 +3,7 @@
     ini_set('display_errors', 1);
     echo "stating method";
     $base=file_get_contents('php://input');
-   
+    $base = str_replace(' ', '+', $base);
     // Get file name posted from Android App
     $filename = "mi_archivo";
 
