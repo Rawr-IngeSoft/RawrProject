@@ -49,13 +49,6 @@ public class SignUp extends Activity implements View.OnClickListener {
         singUp.setOnClickListener(this);
     }
 
-    private void setSharedPreferences(String username, String name, String lastName){
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString("username", username);
-        editor.putString("name", name);
-        editor.putString("lastName", lastName);
-        editor.commit();
-    }
     @Override
     public void onBackPressed() {
         // TODO Auto-generated method stub
@@ -63,7 +56,7 @@ public class SignUp extends Activity implements View.OnClickListener {
         Intent intent;
         intent = new Intent(this, LogIn.class);
         startActivity(intent);
-        finish_screen();
+        this.finish();
     }
     // REQ-001
     @Override
@@ -71,56 +64,16 @@ public class SignUp extends Activity implements View.OnClickListener {
         String username = userText.getText().toString();
         String password = passText.getText().toString();
         String name = nameText.getText().toString();
-        String lastname = lastnameText.getText().toString();
+        String lastName = lastnameText.getText().toString();
         loadingScreenAnimation.start();
-        Toast.makeText(this, "Sign Up", Toast.LENGTH_LONG).show();
-        CreateOwner createOwner = new CreateOwner(username, password, name, lastname);
-
-        try {
-            //TODO read response with json
-            String status = createOwner.execute().get();
-            Log.i("status--->", status);
-            if (status.equals("1")){
-                Toast.makeText(getApplicationContext(), "Owner Created", Toast.LENGTH_SHORT).show();
-                Intent  intent = new Intent(SignUp.this, sign_up_add_photo_window.class );
-                setSharedPreferences(username, name, lastname);
-                startActivity(intent);
-                finish_screen();
-
-            }else{
-                Toast.makeText(getApplicationContext(), "Error Creating Owner", Toast.LENGTH_SHORT).show();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        Intent intent = new Intent(this, Loading_screen.class);
+        intent.putExtra("username", username);
+        intent.putExtra("password", password);
+        intent.putExtra("name", name);
+        intent.putExtra("lastName", lastName);
+        intent.putExtra("serviceType", "signUp");
+        startActivity(intent);
 
     }
 
-    private void finish_screen(){
-        this.finish();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

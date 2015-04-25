@@ -20,9 +20,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.david.rawr.Interfaces.CreateResponse;
 import com.example.david.rawr.R;
 import com.example.david.rawr.db.CreateOwner;
-import com.example.david.rawr.db.ValidateUser;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -38,6 +38,7 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 // REQ-008
@@ -85,6 +86,7 @@ public class LogIn extends Activity implements View.OnClickListener {
         sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         if (sharedpreferences.contains("username")) {
             Intent intent = new Intent(LogIn.this, Loading_screen.class);
+            intent.putExtra("serviceType", "logged");
             startActivity(intent);
             this.finish();
         }
@@ -106,24 +108,17 @@ public class LogIn extends Activity implements View.OnClickListener {
                                     ownerId = object.getString("id");
                                     ownerName = object.getString("first_name");
                                     ownerLastName = object.getString("last_name");
-                                    CreateOwner createOwner = new CreateOwner(ownerId, "facebook", ownerName, ownerLastName);
-                                    //TODO read response with json
-                                    String responseValue = createOwner.execute().get();
-                                    if (responseValue.compareTo("Error inserting new User in database") == 0){
-                                        Toast.makeText(getApplicationContext(), "Error Creating Owner", Toast.LENGTH_SHORT).show();
-                                    }
+                                    Intent intent = new Intent(LogIn.this, Loading_screen.class);
+                                    intent.putExtra("username", ownerId);
+                                    intent.putExtra("password", "facebook");
+                                    intent.putExtra("serviceType", "facebook");
                                     SharedPreferences.Editor editor = sharedpreferences.edit();
                                     editor.putString("username", ownerId);
                                     editor.putString("name", ownerName);
                                     editor.putString("lastName",ownerLastName);
                                     editor.commit();
-                                    Intent intent = new Intent(LogIn.this, Loading_screen.class);
                                     startActivity(intent);
                                     LogIn.this.finish();
-                                } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                } catch (ExecutionException e) {
-                                        e.printStackTrace();
                                 }catch(JSONException je) {
                                     je.printStackTrace();
                                 }
@@ -165,6 +160,7 @@ public class LogIn extends Activity implements View.OnClickListener {
                 intent = new Intent(LogIn.this, Loading_screen.class );
                 intent.putExtra("username", username);
                 intent.putExtra("password", password);
+                intent.putExtra("serviceType", "logIn");
                 startActivity(intent);
                 finish_screen();
                 break;
@@ -241,4 +237,5 @@ public class LogIn extends Activity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
 }

@@ -3,6 +3,8 @@ package com.example.david.rawr.db;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.david.rawr.Interfaces.CreateResponse;
+
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -25,52 +27,28 @@ import java.util.List;
 // REQ-001
 public class CreateOwner extends AsyncTask<String, Integer, String> {
 
-    public static String username;
-    public static String password;
-    public static String name;
-    public static String last;
-
+    private static String username;
+    private static String password;
+    private static String name;
+    private static String last;
+    private CreateResponse createResponse;
 
     private static String url_create_owner = "http://178.62.233.249/rawr/create_owner.php";
     private JSONObject jsonResponse;
 
-    public CreateOwner(String username, String password, String name, String last) {
+    public CreateOwner(String username, String password, String name, String last, CreateResponse createResponse) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.last = last;
+        this.createResponse = createResponse;
     }
 
     /**
      * Creating Owner
      * */
     protected String doInBackground(String... args) {
-/*
-        // Building Parameters
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("username", this.username));
-        params.add(new BasicNameValuePair("password", this.password));
-        params.add(new BasicNameValuePair("name", this.name));
-        params.add(new BasicNameValuePair("lastname", this.last));
 
-        HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(url_create_owner);
-
-        String responseValue = "";
-        try {
-            post.setEntity(new UrlEncodedFormEntity(params));
-            HttpResponse response = client.execute(post);
-            responseValue = EntityUtils.toString(response.getEntity());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return responseValue;
-
-        */
         String status = null;
         JSONObject jsonObjSend = new JSONObject();
         try {
@@ -87,7 +65,6 @@ public class CreateOwner extends AsyncTask<String, Integer, String> {
         post.setHeader("Accept", "application/json");
         post.setHeader("Content-type", "application/json");
         //post.setHeader(HTTP.CONTENT_TYPE, "application/json; charset=utf-8");
-
 
         jsonResponse = null;
         StringEntity se = null;
@@ -114,10 +91,11 @@ public class CreateOwner extends AsyncTask<String, Integer, String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return status;
+        String msg = "Welcome " + name + " " + last;
+        return msg;
     }
 
-    public JSONObject getJsonResponse() {
-        return jsonResponse;
+    protected void onPostExecute(String msg) {
+        createResponse.createFinish(msg);
     }
 }

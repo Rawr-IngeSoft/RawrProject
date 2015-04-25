@@ -67,28 +67,6 @@ public class Owner_Profile_window extends Activity implements View.OnClickListen
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_owner__profile_window, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()){
@@ -99,7 +77,9 @@ public class Owner_Profile_window extends Activity implements View.OnClickListen
                 editor.remove("lastName");
                 editor.remove("pictureUri");
                 editor.commit();
-                LoginManager.getInstance().logOut();
+                if(LoginManager.getInstance() != null) {
+                    LoginManager.getInstance().logOut();
+                }
                 intent = new Intent(this, LogIn.class );
                 startActivity(intent);
                 this.finish();
@@ -110,5 +90,10 @@ public class Owner_Profile_window extends Activity implements View.OnClickListen
                 this.finish();
             break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
     }
 }
