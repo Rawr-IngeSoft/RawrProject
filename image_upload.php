@@ -3,7 +3,7 @@
     ini_set('display_errors', 1);
     $base=file_get_contents('php://input');
     //$base = str_replace(' ', '+', $base);
-    echo $base;
+    
     // Get file name posted from Android App
     $filename = "mi_archivo";
     $extension= "png";
@@ -11,6 +11,7 @@
     $filename = tempnam('/static', '');
     // Decode Image
     $binary=base64_decode($base);
+    echo $binary;
     // Images will be saved under 'www/imgupload/uplodedimages' folder
     $file = fopen('static'.$filename. '.'. $extension, 'wb');
     // Create File
