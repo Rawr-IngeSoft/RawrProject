@@ -5,7 +5,7 @@
     $filename = $_REQUEST['filename'];
     $extension= $_REQUEST['extension'];
     $username= $_REQUEST['username'];
-    $filename = tempnam('/static', '');
+    $filename = "asdad";//tempnam('/static', '');
     // Decode Image
     $binary=base64_decode($base);
     header('Content-Type: bitmap; charset=utf-8');
