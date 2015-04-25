@@ -124,8 +124,12 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
                 intent = new Intent(this, sign_up_add_photo_screen.class);
             }
         }else {
-            Toast.makeText(this, "This username is already in use", Toast.LENGTH_SHORT).show();
-            intent = new Intent(this, SignUp_screen.class);
+            if(serviceType.compareTo("facebook") == 0){
+                intent = new Intent(this, Owner_Profile_screen.class);
+            }else {
+                Toast.makeText(this, "This username is already in use", Toast.LENGTH_SHORT).show();
+                intent = new Intent(this, SignUp_screen.class);
+            }
         }
         startActivity(intent);
         this.finish();

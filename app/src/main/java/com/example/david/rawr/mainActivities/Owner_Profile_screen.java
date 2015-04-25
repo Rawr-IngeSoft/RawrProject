@@ -4,21 +4,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.david.rawr.R;
+import com.example.david.rawr.db.GetFacebookPhoto;
 import com.example.david.rawr.otherClasses.RoundImage;
 import com.facebook.login.LoginManager;
 
-import java.io.FileNotFoundException;
+import java.util.concurrent.ExecutionException;
+
 
 // REQ-029
 public class Owner_Profile_screen extends Activity implements View.OnClickListener{
@@ -51,17 +49,17 @@ public class Owner_Profile_screen extends Activity implements View.OnClickListen
             lastNameText.setText(sharedpreferences.getString("lastName", ""));
         }
         if(sharedpreferences.contains("pictureUri")){
-            Uri pictureUri = Uri.parse(sharedpreferences.getString("pictureUri",""));
+            String pictureUri = sharedpreferences.getString("pictureUri", "");
+            GetFacebookPhoto getFacebookPhoto = new GetFacebookPhoto(pictureUri);
             try {
-                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
-                photo.setImageBitmap(RoundImage.getRoundedShape(bitmap));
-            } catch (FileNotFoundException e) {
-                Toast.makeText(this, "Error loading the picture", Toast.LENGTH_SHORT);
+                photo.setImageBitmap(RoundImage.getRoundedShape(getFacebookPhoto.execute().get()));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
         }
     }
-
 
     @Override
     public void onClick(View v) {
@@ -93,4 +91,5 @@ public class Owner_Profile_screen extends Activity implements View.OnClickListen
     public void onBackPressed() {
         this.finish();
     }
+
 }

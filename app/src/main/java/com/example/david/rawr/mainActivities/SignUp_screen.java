@@ -67,7 +67,6 @@ public class SignUp_screen extends Activity implements View.OnClickListener {
         intent.putExtra("serviceType", "signUp");
         startActivity(intent);
         this.finish();
-
     }
 
 }

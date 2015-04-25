@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.david.rawr.R;
+import com.example.david.rawr.db.GetFacebookPhoto;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -44,7 +45,7 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
     TextView signUp, forgotButton;
     CallbackManager callbackManager;
     LoginButton faceLoginButton;
-    String ownerName, ownerLastName, ownerId;
+    String ownerName, ownerLastName, ownerId, ownerPicture;
     SharedPreferences sharedpreferences;
 
     private void getHashKey() {
@@ -103,6 +104,7 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
                                     ownerId = object.getString("id");
                                     ownerName = object.getString("first_name");
                                     ownerLastName = object.getString("last_name");
+                                    ownerPicture = object.getJSONObject("picture").getJSONObject("data").getString("url");
                                     Intent intent = new Intent(LogIn_screen.this, Loading_screen.class);
                                     intent.putExtra("username", ownerId);
                                     intent.putExtra("password", "facebook");
@@ -111,6 +113,7 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
                                     editor.putString("username", ownerId);
                                     editor.putString("name", ownerName);
                                     editor.putString("lastName",ownerLastName);
+                                    editor.putString("pictureUri", ownerPicture);
                                     editor.commit();
                                     startActivity(intent);
                                     LogIn_screen.this.finish();
@@ -120,7 +123,7 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
                             }
                         });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,first_name, last_name");
+                parameters.putString("fields", "id,first_name, last_name, picture.type(large)");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
