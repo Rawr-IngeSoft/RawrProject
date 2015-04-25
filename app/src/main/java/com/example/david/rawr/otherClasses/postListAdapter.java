@@ -49,8 +49,8 @@ class postListAdapter extends BaseAdapter {
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.post_row, null);
-        TextView username = (TextView) vi.findViewById(R.id.postUsername);
-        TextView date = (TextView) vi.findViewById(R.id.postDate);
+        TextView username = (TextView) vi.findViewById(R.id.post_petId);
+        TextView date = (TextView) vi.findViewById(R.id.post_date);
         username.setText(data[position]);
         return vi;
     }

@@ -1,4 +1,4 @@
-package com.example.david.rawr.mainActivities;
+package com.example.david.rawr.MainActivities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
