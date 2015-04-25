@@ -5,8 +5,10 @@
     $base = str_replace(' ', '+', $base);
     echo $base;
     $extension= "png";
+
+
     $filename = tempnam('/static', '');
-    
+    $base = str_replace('data:image/'.$extension.';base64,', '', $base);
     $binary=base64_decode($base, TRUE);
     echo $binary;
     
