@@ -6,9 +6,9 @@
     $request_body = file_get_contents('php://input');
     $json_array = json_decode($request_body, true);
 
-    $base=$request_body['photo'];
-    $extension= $request_body['extension'];
-    $username=  $request_body['username'];
+    $base=$json_array['photo'];
+    $extension= $json_array['extension'];
+    $username=  $json_array['username'];
 
 
     $filename = tempnam('/static', '');
