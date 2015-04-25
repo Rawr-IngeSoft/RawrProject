@@ -22,6 +22,6 @@
     echo "opened file";
     fwrite($file, $binary);
      echo "written file";
-    fclose($file)
+    fclose($file);
      echo "closed file";
 ?>
