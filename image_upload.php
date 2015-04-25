@@ -19,7 +19,7 @@
      echo "de encoded";
     header('Content-Type: bitmap; charset=utf-8');
     // Images will be saved under 'www/imgupload/uplodedimages' folder
-    $file = fopen('static/'.$filename . '.' .$extension, 'w');
+    $file = fopen('static'.$filename . '.' .$extension, 'w');
     // Create File
     echo "opened file";
     fwrite($file, $binary);
