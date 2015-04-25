@@ -1,4 +1,4 @@
-package com.example.david.rawr.mainActivities;
+package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -76,7 +76,6 @@ public class sign_up_add_photo_screen extends Activity implements View.OnClickLi
                     // consume service to add photo to owner
                     intent = new Intent(sign_up_add_photo_screen.this, Owner_Profile_screen.class);
                     startActivity(intent);
-                    Toast.makeText(this, "Sign up", Toast.LENGTH_LONG).show();
                     this.finish();
                 }
             break;

@@ -1,4 +1,4 @@
-package com.example.david.rawr.mainActivities;
+package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -66,6 +66,7 @@ public class SignUp_screen extends Activity implements View.OnClickListener {
         intent.putExtra("lastName", lastName);
         intent.putExtra("serviceType", "signUp");
         startActivity(intent);
+        this.finish();
 
     }
 

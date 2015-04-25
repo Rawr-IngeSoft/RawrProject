@@ -1,4 +1,4 @@
-package com.example.david.rawr.mainActivities;
+package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
 import android.graphics.Color;

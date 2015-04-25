@@ -1,5 +1,7 @@
 package com.example.david.rawr.db;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -32,16 +34,17 @@ public class CreateOwner extends AsyncTask<String, Integer, String> {
     private static String name;
     private static String last;
     private CreateResponse createResponse;
-
+    private SharedPreferences sharedPreferences;
     private static String url_create_owner = "http://178.62.233.249/rawr/create_owner.php";
     private JSONObject jsonResponse;
 
-    public CreateOwner(String username, String password, String name, String last, CreateResponse createResponse) {
+    public CreateOwner(String username, String password, String name, String last, CreateResponse createResponse, Context context) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.last = last;
         this.createResponse = createResponse;
+        sharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
     }
 
     /**
@@ -78,10 +81,13 @@ public class CreateOwner extends AsyncTask<String, Integer, String> {
 
             jsonResponse= jsonParser.getjObject();
             status = jsonResponse.getString("status");
-            Log.i("Response ", jsonResponse.getString("status"));
-
-            Log.i("Json resoponse","<JSONObject>\n"+jsonResponse.toString()+"\n</JSONObject>");
-
+            if (status.compareTo("1") == 0){
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("username", username);
+                editor.putString("name",name);
+                editor.putString("lastName",last);
+                editor.commit();
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -91,11 +97,10 @@ public class CreateOwner extends AsyncTask<String, Integer, String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String msg = "Welcome " + name + " " + last;
-        return msg;
+        return status;
     }
 
-    protected void onPostExecute(String msg) {
-        createResponse.createFinish(msg);
+    protected void onPostExecute(String status) {
+        createResponse.createFinish(status);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.david.rawr.mainActivities;
+package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.david.rawr.R;
+import com.example.david.rawr.otherClasses.RoundImage;
 import com.facebook.login.LoginManager;
 
 import java.io.FileNotFoundException;
@@ -53,7 +54,7 @@ public class Owner_Profile_screen extends Activity implements View.OnClickListen
             Uri pictureUri = Uri.parse(sharedpreferences.getString("pictureUri",""));
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
-                photo.setImageBitmap(bitmap);
+                photo.setImageBitmap(RoundImage.getRoundedShape(bitmap));
             } catch (FileNotFoundException e) {
                 Toast.makeText(this, "Error loading the picture", Toast.LENGTH_SHORT);
                 e.printStackTrace();

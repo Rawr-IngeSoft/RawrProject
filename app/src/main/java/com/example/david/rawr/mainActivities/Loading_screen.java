@@ -1,4 +1,4 @@
-package com.example.david.rawr.mainActivities;
+package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class Loading_screen extends Activity implements ValidateResponse, CreateResponse{
 
-    String username;
+    String username, serviceType;
     SharedPreferences sharedpreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         ImageView img = (ImageView)findViewById(R.id.loading_screen_imageView_animation);
         AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
         frameAnimation.start();
-        String serviceType = getIntent().getStringExtra("serviceType");
+        serviceType = getIntent().getStringExtra("serviceType");
         if(serviceType.compareTo("logIn") == 0) {
             if (sharedpreferences.contains("username")) {
                 Intent intent = new Intent(this, Owner_Profile_screen.class);
@@ -46,7 +46,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             validateUser.execute();
         }else if (serviceType.compareTo("facebook") == 0){
             // Create facebook user
-            CreateOwner createOwner = new CreateOwner(username,"facebook",sharedpreferences.getString("name",""), sharedpreferences.getString("lastName",""),this);
+            CreateOwner createOwner = new CreateOwner(username,"facebook",sharedpreferences.getString("name",""), sharedpreferences.getString("lastName",""),this, this);
             createOwner.execute();
         }else if (serviceType.compareTo("signUp") == 0){
             // Create Owner
@@ -54,7 +54,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             String password = getIntent().getStringExtra("password");
             String name = getIntent().getStringExtra("name");
             String lastName = getIntent().getStringExtra("lastName");
-            CreateOwner createOwner = new CreateOwner(username,password,name, lastName,this);
+            CreateOwner createOwner = new CreateOwner(username,password,name, lastName,this,this);
             createOwner.execute();
         }else if (serviceType.compareTo("logged") == 0) {
             String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
@@ -113,9 +113,20 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
     }
 
     @Override
-    public void createFinish(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, Owner_Profile_screen.class);
+    public void createFinish(String status) {
+        Intent intent;
+        if (status.compareTo("1") == 0) {
+            String msg = "Welcome " + sharedpreferences.getString("name","") + " " + sharedpreferences.getString("lastName","");
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+            if (serviceType.compareTo("facebook") == 0) {
+                intent = new Intent(this, Owner_Profile_screen.class);
+            }else{
+                intent = new Intent(this, sign_up_add_photo_screen.class);
+            }
+        }else {
+            Toast.makeText(this, "This username is already in use", Toast.LENGTH_SHORT).show();
+            intent = new Intent(this, SignUp_screen.class);
+        }
         startActivity(intent);
         this.finish();
     }
