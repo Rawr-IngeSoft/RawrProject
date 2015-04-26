@@ -4,23 +4,29 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.CreateResponse;
+import com.example.david.rawr.Interfaces.GetPhotoResponse;
+import com.example.david.rawr.Interfaces.UploadPhotoResponse;
 import com.example.david.rawr.Interfaces.ValidateResponse;
 import com.example.david.rawr.R;
 import com.example.david.rawr.db.CreateOwner;
+import com.example.david.rawr.db.GetPhoto;
+import com.example.david.rawr.db.UploadPhoto;
 import com.example.david.rawr.db.ValidateUser;
 
 import java.util.ArrayList;
 
 
-public class Loading_screen extends Activity implements ValidateResponse, CreateResponse{
+public class Loading_screen extends Activity implements ValidateResponse, CreateResponse,UploadPhotoResponse,GetPhotoResponse {
 
     String username, serviceType;
     SharedPreferences sharedpreferences;
@@ -46,6 +52,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             validateUser.execute();
         }else if (serviceType.compareTo("facebook") == 0){
             // Create facebook user
+            username = sharedpreferences.getString("username","");
             CreateOwner createOwner = new CreateOwner(username,"facebook",sharedpreferences.getString("name",""), sharedpreferences.getString("lastName",""),this, this);
             createOwner.execute();
         }else if (serviceType.compareTo("signUp") == 0){
@@ -115,22 +122,44 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
     @Override
     public void createFinish(String status) {
         Intent intent;
-        if (status.compareTo("1") == 0) {
-            String msg = "Welcome " + sharedpreferences.getString("name","") + " " + sharedpreferences.getString("lastName","");
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-            if (serviceType.compareTo("facebook") == 0) {
-                intent = new Intent(this, Owner_Profile_screen.class);
+        if (serviceType.compareTo("facebook") == 0) {
+            if (status.compareTo("1") == 0) {
+                GetPhoto getFacebookPhoto = new GetPhoto(sharedpreferences.getString("pictureUri", ""), this);
+                getFacebookPhoto.execute();
             }else{
-                intent = new Intent(this, sign_up_add_photo_screen.class);
-            }
-        }else {
-            if(serviceType.compareTo("facebook") == 0){
                 intent = new Intent(this, Owner_Profile_screen.class);
-            }else {
+                startActivity(intent);
+                this.finish();
+            }
+        }else{
+            if (status.compareTo("1") == 0) {
+                String msg = "Welcome " + sharedpreferences.getString("name","") + " " + sharedpreferences.getString("lastName","");
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                intent = new Intent(this, sign_up_add_photo_screen.class);
+            }else{
                 Toast.makeText(this, "This username is already in use", Toast.LENGTH_SHORT).show();
                 intent = new Intent(this, SignUp_screen.class);
             }
+            startActivity(intent);
+            this.finish();
         }
+    }
+
+    @Override
+    public void uploadFinish(ArrayList<String> response) {
+        String status = response.get(0);
+        if (status.compareTo("1") == 0) {
+            Log.e("Upload picture:", "Successful");
+        }else {
+            Log.e("Upload picture:", "Error");
+        }
+    }
+
+    @Override
+    public void getPhotoFinish(Bitmap bitmap) {
+        UploadPhoto uploadPhoto = new UploadPhoto(bitmap, username, this);
+        uploadPhoto.execute();
+        Intent intent = new Intent(this, Owner_Profile_screen.class);
         startActivity(intent);
         this.finish();
     }

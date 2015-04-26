@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,12 +16,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.david.rawr.Interfaces.UploadPhotoResponse;
 import com.example.david.rawr.R;
+import com.example.david.rawr.db.UploadPhoto;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 //REQ-048
-public class sign_up_add_photo_screen extends Activity implements View.OnClickListener {
+public class sign_up_add_photo_screen extends Activity implements View.OnClickListener, UploadPhotoResponse {
 
     Button selectButton, nextButton;
     ImageView photoImageView;
@@ -30,7 +34,6 @@ public class sign_up_add_photo_screen extends Activity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_add_photo_screen);
-        Bundle bundle = getIntent().getExtras();
         selectButton = (Button)findViewById(R.id.selectImage);
         nextButton = (Button)findViewById(R.id.next);
         photoImageView = (ImageView)findViewById(R.id.signUp_imageView);
@@ -72,11 +75,8 @@ public class sign_up_add_photo_screen extends Activity implements View.OnClickLi
             break;
             case(R.id.next):
                 if(bitmap != null){
-                    //TODO
-                    // consume service to add photo to owner
-                    intent = new Intent(sign_up_add_photo_screen.this, Owner_Profile_screen.class);
-                    startActivity(intent);
-                    this.finish();
+                    UploadPhoto uploadPhoto = new UploadPhoto(bitmap, sharedpreferences.getString("username",""), this );
+                    uploadPhoto.execute();
                 }
             break;
         }
@@ -98,5 +98,16 @@ public class sign_up_add_photo_screen extends Activity implements View.OnClickLi
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void uploadFinish(ArrayList<String> response) {
+        String pictureUri = "http://178.62.233.249/rawr/static" + response.get(1);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("pictureUri", pictureUri);
+        editor.commit();
+        Intent intent = new Intent(sign_up_add_photo_screen.this, Owner_Profile_screen.class);
+        startActivity(intent);
+        this.finish();
     }
 }

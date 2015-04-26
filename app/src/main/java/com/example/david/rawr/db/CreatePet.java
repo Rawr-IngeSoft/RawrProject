@@ -54,7 +54,6 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
             post.setEntity(new UrlEncodedFormEntity(params));
             response = client.execute(post);
             Header header = response.getFirstHeader("Content-Length");
-            Log.i(header.getName(), header.getValue());
             responseValue = header.getValue();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

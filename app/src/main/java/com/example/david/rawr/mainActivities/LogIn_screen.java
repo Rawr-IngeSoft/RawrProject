@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.GetFacebookPhoto;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -55,7 +54,7 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
             for (android.content.pm.Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
-                Log.e("MY_KEY_HASH:",
+                        Log.e("MY_KEY_HASH:",
                         Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (PackageManager.NameNotFoundException e) {
@@ -106,8 +105,6 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
                                     ownerLastName = object.getString("last_name");
                                     ownerPicture = object.getJSONObject("picture").getJSONObject("data").getString("url");
                                     Intent intent = new Intent(LogIn_screen.this, Loading_screen.class);
-                                    intent.putExtra("username", ownerId);
-                                    intent.putExtra("password", "facebook");
                                     intent.putExtra("serviceType", "facebook");
                                     SharedPreferences.Editor editor = sharedpreferences.edit();
                                     editor.putString("username", ownerId);

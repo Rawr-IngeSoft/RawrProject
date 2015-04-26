@@ -42,7 +42,6 @@ public class CreatePet_screen extends Activity{
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             username = bundle.getString("username");
-            Log.i("username:", username);
         }
         createPet = (Button)findViewById(R.id.createPet);
         petName = (EditText)findViewById(R.id.petName);
