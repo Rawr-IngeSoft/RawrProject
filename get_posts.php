@@ -14,11 +14,11 @@ $sql =
  			(
  			SELECT username_friend 
  			FROM Friends 
- 			WHERE username = $username
+ 			WHERE username = '$username'
  			UNION  
  			SELECT username
  			FROM Friends 
- 			WHERE username_friend = $username) LIMIT 100";
+ 			WHERE username_friend = '$username') LIMIT 100";
 
 // ahora toca recorrer el query
 $result = $conn->query($sql);
