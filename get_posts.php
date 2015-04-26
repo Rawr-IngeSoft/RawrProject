@@ -12,11 +12,11 @@ $sql =
  FROM Post 
  WHERE username in 
  			(
- 			SELECT username 
+ 			SELECT username_friend 
  			FROM Friends 
  			WHERE username = $username
  			UNION  
- 			SELECT username_friend 
+ 			SELECT username
  			FROM Friends 
  			WHERE username_friend = $username) LIMIT 100";
 
