@@ -12,13 +12,13 @@ $sql =
  FROM Post 
  WHERE idPet in 
  			(
- 			SELECT idPet 
+ 			SELECT username 
  			FROM Friends 
- 			WHERE idPet_friend = $username
+ 			WHERE username = $username
  			UNION  
- 			SELECT idPet_friend 
+ 			SELECT username_friend 
  			FROM Friends 
- 			WHERE idPet = $username) LIMIT 100";
+ 			WHERE username_friend = $username) LIMIT 100";
 
 // ahora toca recorrer el query
 $result = $conn->query($sql);

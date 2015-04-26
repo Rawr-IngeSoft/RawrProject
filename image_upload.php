@@ -30,7 +30,7 @@
                         VALUES('$filename', '$username')";
    
     if($conn->query($mysql_query) == TRUE){
-        $json_return= array('status' => '1');
+        $json_return= array('status' => '1', 'path'=>$filename);
         echo json_encode($json_return);
     }else{
         $json_return= array('status' => '0');
