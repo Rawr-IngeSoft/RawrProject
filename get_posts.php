@@ -10,7 +10,7 @@ $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
 "SELECT * 
  FROM Post 
- WHERE idPet in 
+ WHERE username in 
  			(
  			SELECT username 
  			FROM Friends 
