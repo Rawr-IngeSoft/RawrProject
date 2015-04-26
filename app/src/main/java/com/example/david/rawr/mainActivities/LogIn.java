@@ -1,4 +1,4 @@
-package com.example.david.rawr.mainActivities;
+package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,9 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.david.rawr.Interfaces.CreateResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.CreateOwner;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -37,9 +35,6 @@ import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.Signature;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 // REQ-008
 public class LogIn extends Activity implements View.OnClickListener {
