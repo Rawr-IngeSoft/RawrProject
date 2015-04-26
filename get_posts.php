@@ -8,9 +8,9 @@ header("Content-Type: application/json; charset=UTF-8");
 $conn = dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
-"SELECT * 
- FROM Post 
- WHERE username in 
+"SELECT p.idPost, p.username, p.text, p.date,  ph.path, p.status, p.price 
+ FROM Post p, Photo ph
+ WHERE  p.idPhoto = ph.idPhoto AND username in 
  			(
  			SELECT username_friend 
  			FROM Friends 
@@ -28,7 +28,7 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
     
        // Crear un diccionario de Post
-    	$arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'], 'date'=>$row['date'], 'idPet'=>$row['idPet'], 'Business'=>$row['Business_username'],'photo'=>$row['photo']);
+    	$arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'], 'date'=>$row['date'], 'idPet'=>$row['idPet'], 'Business'=>$row['Business_username'],'photo'=>$row['path']);
     	array_push($retorno, $arreglo);
 
     }
