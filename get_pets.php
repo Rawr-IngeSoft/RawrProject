@@ -8,7 +8,7 @@ $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
     "SELECT p.username, p.owner_username, p.name, p.type, ph.path
      FROM Pet p, Photo ph
-     WHERE p.username = ph.username AND p.username = '$username' ";
+     WHERE p.username = ph.username AND p.owner_username = '$username' ";
 
 // ahora toca recorrer el query
 $result = $conn->query($sql);
