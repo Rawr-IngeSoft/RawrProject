@@ -12,6 +12,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -42,25 +43,14 @@ public class GetPosts extends AsyncTask<String, Integer, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        JSONObject jsonObjSend = new JSONObject();
-        try {
-            jsonObjSend.put("username", this.idPet);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(url_get_posts);
+        HttpGet get = new HttpGet(url_get_posts+"?username=dug");
 
-        post.setHeader("Accept", "application/json");
-        post.setHeader("Content-type", "application/json");
 
         try {
-            StringEntity se = new StringEntity(jsonObjSend.toString());
-            post.setEntity(se);
-
-            HttpResponse response = client.execute(post);
+            HttpResponse response = client.execute(get);
             JsonParser jsonParser = new JsonParser(response.getEntity().getContent());
-
             JSONObject jsonResponse= jsonParser.getjObject();
             JSONArray jsonArray = jsonResponse.getJSONArray("posts");
             for (int i = 0; i < jsonArray.length(); i++){

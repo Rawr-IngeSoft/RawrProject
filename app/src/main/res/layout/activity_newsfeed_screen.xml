@@ -1,15 +1,54 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
     tools:context="com.example.david.rawr.MainActivities.Newsfeed_screen"
-    android:background="#DAFF1B">
+    android:background="#DAFF1B"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/newsfeed_profile_picture" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/newsfeed_friends_button"
+        android:focusableInTouchMode="true"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/newsfeed_profile_picture" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/newsfeed_notification_button"
+        android:layout_alignBottom="@+id/newsfeed_profile_picture"
+        android:layout_toEndOf="@+id/newsfeed_profile_picture" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/newsfeed_localization_button"
+        android:layout_below="@+id/newsfeed_profile_picture"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/newsfeed_message_button"
+        android:layout_below="@+id/newsfeed_profile_picture"
+        android:layout_toEndOf="@+id/newsfeed_localization_button" />
+    </RelativeLayout>
 
     <ListView
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/postList">
-    </ListView>
-</RelativeLayout>
+        android:id="@+id/newsfeed_list"
+        android:layout_alignParentStart="true" />
+
+</LinearLayout>

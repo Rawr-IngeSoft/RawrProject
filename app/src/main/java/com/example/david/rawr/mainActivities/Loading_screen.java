@@ -41,7 +41,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         serviceType = getIntent().getStringExtra("serviceType");
         if(serviceType.compareTo("logIn") == 0) {
             if (sharedpreferences.contains("username")) {
-                Intent intent = new Intent(this, Owner_Profile_screen.class);
+                Intent intent = new Intent(this, Newsfeed_screen.class);
                 startActivity(intent);
                 this.finish();
             }
@@ -66,7 +66,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         }else if (serviceType.compareTo("logged") == 0) {
             String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
             Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, Owner_Profile_screen.class);
+            Intent intent = new Intent(this, Newsfeed_screen.class);
             startActivity(intent);
             this.finish();
         }
@@ -110,7 +110,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             editor.commit();
             String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
             Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
-            intent = new Intent(this, Owner_Profile_screen.class);
+            intent = new Intent(this, Newsfeed_screen.class);
         }else{
             intent = new Intent(this, LogIn_screen.class);
             Toast.makeText(this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
@@ -127,7 +127,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
                 GetPhoto getFacebookPhoto = new GetPhoto(sharedpreferences.getString("pictureUri", ""), this);
                 getFacebookPhoto.execute();
             }else{
-                intent = new Intent(this, Owner_Profile_screen.class);
+                intent = new Intent(this, Newsfeed_screen.class);
                 startActivity(intent);
                 this.finish();
             }
@@ -159,7 +159,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
     public void getPhotoFinish(Bitmap bitmap) {
         UploadPhoto uploadPhoto = new UploadPhoto(bitmap, username, this);
         uploadPhoto.execute();
-        Intent intent = new Intent(this, Owner_Profile_screen.class);
+        Intent intent = new Intent(this, Newsfeed_screen.class);
         startActivity(intent);
         this.finish();
     }

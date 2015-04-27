@@ -7,9 +7,17 @@ public class Post {
     private String petUsername, text, date;
 
     public Post(String petUsername, String text, String date) {
-        this.petUsername = petUsername;
+        if(petUsername != null) {
+            this.petUsername = petUsername;
+        }else{
+            this.petUsername = "uknown";
+        }
         this.text = text;
-        this.date = date;
+        if (date != null) {
+            this.date = date;
+        }else{
+            this.date = "uknown";
+        }
     }
 
     public String getPetUsername() {
