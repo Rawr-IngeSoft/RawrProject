@@ -16,6 +16,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/newsfeed_friends_button"
+        android:layout_marginTop="10dp"
         android:focusableInTouchMode="true"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/newsfeed_profile_picture" />
@@ -24,12 +25,13 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/newsfeed_notification_button"
-        android:layout_alignBottom="@+id/newsfeed_profile_picture"
+        android:layout_marginTop="65dp"
         android:layout_toEndOf="@+id/newsfeed_profile_picture" />
 
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
         android:id="@+id/newsfeed_localization_button"
         android:layout_below="@+id/newsfeed_profile_picture"
         android:layout_alignParentStart="true" />
@@ -38,8 +40,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/newsfeed_message_button"
-        android:layout_below="@+id/newsfeed_profile_picture"
-        android:layout_toEndOf="@+id/newsfeed_localization_button" />
+        android:layout_marginLeft="65dp"
+        android:layout_below="@+id/newsfeed_profile_picture" />
     </RelativeLayout>
 
     <ListView
