@@ -11,9 +11,6 @@
     $username=  $json_array['username'];
 
 
-    /*$filename = tempnam('../static', '');
-    */
-
     $path = '../photos/'.$username;
     $filename = uniqid();
     if(!file_exists($path)){
@@ -25,10 +22,9 @@
     $binary=base64_decode($base, TRUE);
 
 
-    //$file = fopen('static'.$filename. '.'. $extension, 'wb');
     // Create File
-    $file = fopen($path.$filename.'.'.$extension, 'wb');
-    echo $path.$filename. '.'. $extension . ' created';
+    $file = fopen($path.'/'.$filename.'.'.$extension, 'wb');
+    echo $path.'/'.$filename. '.'. $extension . ' created';
 
 
     fwrite($file, $binary);
