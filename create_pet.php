@@ -31,15 +31,6 @@ $owner_username = $json_array['owner_username'];
 
 
 
-/*
-if(isset($_POST["username"])) $username = $_POST["username"];
-if(isset($_POST["name"])) $name = $_POST["name"];
-if(isset($_POST["type"])) $type = $_POST["type"];
-if(isset($_POST["owner_username"])) $owner_username = $_POST["owner_username"];
-*/
-
-
-
 /* Create connection to mysql database */
 $conn = dbConnect();
 
