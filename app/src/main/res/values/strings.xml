@@ -31,4 +31,5 @@
     <string name="title_activity_newsfeed_window">newsfeed_window</string>
     <string name="title_activity_sign_up_add_photo_window">sign_up_add_photo_window</string>
     <string name="title_activity_owner__profile_window">Owner_Profile_window</string>
+    <string name="title_activity_configuration_screen">Configuration_screen</string>
 </resources>

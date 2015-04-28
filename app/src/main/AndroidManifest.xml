@@ -5,6 +5,7 @@
     <!-- Internet Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo_icon"
@@ -30,7 +31,7 @@
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name=".MainActivities.SignUp_screen"
@@ -69,6 +70,10 @@
         <activity
             android:name=".MainActivities.Owner_Profile_screen"
             android:label="@string/title_activity_owner__profile_window" >
+        </activity>
+        <activity
+            android:name=".MainActivities.Configuration_screen"
+            android:label="@string/title_activity_configuration_screen" >
         </activity>
     </application>
 

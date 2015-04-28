@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,20 +32,22 @@ import java.util.concurrent.ExecutionException;
 
 
 // REQ-029
-public class Owner_Profile_screen extends FragmentActivity implements View.OnClickListener,UploadPhotoResponse, GetPhotoResponse{
+public class Owner_Profile_screen extends FragmentActivity implements View.OnClickListener,UploadPhotoResponse, GetPhotoResponse, View.OnLongClickListener{
 
     ImageView photo;
     TextView birthdayText, nameText, addressText, lastNameText;
     Button logOut;
     SharedPreferences sharedpreferences;
     ViewPager petProfile;
-
+    LinearLayout ownerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner__profile_screen);
         logOut = (Button)findViewById(R.id.owner_profile_log_out);
         logOut.setOnClickListener(this);
+        ownerLayout = (LinearLayout)findViewById(R.id.owner_profile_owner_layout);
+        ownerLayout.setOnLongClickListener(this);
         photo = (ImageView)findViewById(R.id.picture);
         birthdayText = (TextView)findViewById(R.id.owner_profile_birthday);
         nameText = (TextView)findViewById(R.id.owner_profile_name);
@@ -121,5 +125,16 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
                 break;
         }
 
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        switch(v.getId()){
+            case R.id.owner_profile_owner_layout:
+                Intent intent = new Intent(this, Configuration_screen.class);
+                startActivity(intent);
+            break;
+        }
+        return false;
     }
 }

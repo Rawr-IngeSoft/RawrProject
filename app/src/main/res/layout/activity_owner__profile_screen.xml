@@ -18,7 +18,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:id="@+id/owner_profile_owner_layout">
         <ImageView
             android:layout_width="110dp"
             android:layout_height="110dp"
