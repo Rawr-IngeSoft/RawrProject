@@ -1,30 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.david.rawr.MainActivities.Owner_Profile_screen"
-    android:background="#BBE778"
-    android:orientation="vertical">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:layout_gravity="center" android:orientation="vertical" tools:context="com.example.david.rawr.otherClasses.ChoosePetFragment">
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Log out"
-            android:id="@+id/owner_profile_log_out"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_gravity="center">
         <ImageView
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:id="@+id/picture"
-            android:scaleType="fitXY"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/choosePetImageView"
             android:layout_marginLeft="20dp"
+            android:scaleType="fitXY"
             android:layout_gravity="center"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -35,18 +22,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/owner_profile_name"
-                android:text="Username"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                android:typeface="monospace"
-                android:textAlignment="center"
-                android:layout_marginBottom="10dp"
-                android:gravity="center_vertical"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/owner_profile_lastName"
+                android:id="@+id/choosePetName"
                 android:text="Username"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -68,16 +44,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/owner_profile_address"
-                    android:text="Walt Disney"
+                    android:id="@+id/choosePetType"
+                    android:text="Name"
                     android:textSize="15dp"
                     android:typeface="monospace"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:gravity="center_vertical"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
                 <ImageView
                     android:layout_width="10dp"
                     android:layout_height="10dp"
@@ -87,21 +65,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/owner_profile_birthday"
+                    android:id="@+id/choosePetBirthday"
                     android:text="LastName"
                     android:typeface="monospace"
                     android:textSize="15dp"
                     android:textAlignment="center"
-                android:gravity="center_vertical"/>
-            </LinearLayout>
+                    android:gravity="center_vertical"/>
+                </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-    <android.support.v4.view.ViewPager
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/owner_profile_viewPager"
-        android:layout_weight="1"
-        android:background="#EDF3C7">
-    </android.support.v4.view.ViewPager>
-
-</LinearLayout>
+</FrameLayout>

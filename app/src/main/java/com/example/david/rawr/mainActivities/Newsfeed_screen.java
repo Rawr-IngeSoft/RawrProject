@@ -2,12 +2,14 @@ package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 
-public class Newsfeed_screen extends Activity implements GetPostsResponse {
+public class Newsfeed_screen extends Activity implements GetPostsResponse, View.OnClickListener {
 
     ImageView localization, messages, friends, notifications, profilePicture;
     ListView postList;
@@ -43,6 +45,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse {
         notifications.setImageBitmap(bitmap);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_profile);
         friends.setImageBitmap(bitmap);
+        friends.setOnClickListener(this);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_messages);
         messages.setImageBitmap(bitmap);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_location);
@@ -68,5 +71,16 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse {
     @Override
     public void getPostsFinish(ArrayList<Post> output) {
         postList.setAdapter(new PostListAdapter(this,output));
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent;
+        switch(v.getId()){
+            case R.id.newsfeed_friends_button:
+                intent = new Intent(this, Owner_Profile_screen.class);
+                startActivity(intent);
+                break;
+        }
     }
 }
