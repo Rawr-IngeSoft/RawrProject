@@ -11,7 +11,6 @@ include 'db_connect.php';
 
 $username = NULL;
 $text = NULL;
-$date = NULL;
 $idPhoto = NULL;
 $type = 'Post';
 
@@ -23,18 +22,18 @@ $json_array = json_decode($request_body, true);
 /* convert string to array */
 
 $username = $json_array['username'];
-$date = $date['date'];
 $text = $json_array['text'];
 $idPhoto = $json_array['idPhoto'];
 
-echo username . ' ' . date . ' ' . text . ' ' . idPhoto;
+$idPhoto = $idPhoto == '' ? 'Null' : "'$idPhoto'";
+
 
 /* Create connection to mysql database */
 $conn = dbConnect();
 
 /* MySql query inseting new row in Post */
-$mysql_query = "INSERT INTO Post(username, text, date, type, idPhoto)
-                        VALUES('$username', '$text', '$date','$type', '$idPhoto')";
+$mysql_query = "INSERT INTO Post(username, text, type, idPhoto)
+                        VALUES('$username', '$text','$type', $idPhoto)";
 
 
 if($conn->query($mysql_query) == TRUE){
