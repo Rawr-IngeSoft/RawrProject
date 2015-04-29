@@ -56,4 +56,6 @@ public class ConfigurationListAdapter extends BaseAdapter{
         }
         return convertView;
     }
+
+
 }

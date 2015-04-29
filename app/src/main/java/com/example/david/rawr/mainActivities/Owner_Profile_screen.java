@@ -36,7 +36,6 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
 
     ImageView photo;
     TextView birthdayText, nameText, addressText, lastNameText;
-    Button logOut;
     SharedPreferences sharedpreferences;
     ViewPager petProfile;
     LinearLayout ownerLayout;
@@ -44,8 +43,6 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner__profile_screen);
-        logOut = (Button)findViewById(R.id.owner_profile_log_out);
-        logOut.setOnClickListener(this);
         ownerLayout = (LinearLayout)findViewById(R.id.owner_profile_owner_layout);
         ownerLayout.setOnLongClickListener(this);
         photo = (ImageView)findViewById(R.id.picture);
@@ -109,20 +106,7 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-            case R.id.owner_profile_log_out:
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.remove("username");
-                editor.remove("name");
-                editor.remove("lastName");
-                editor.remove("pictureUri");
-                editor.commit();
-                if(LoginManager.getInstance() != null) {
-                    LoginManager.getInstance().logOut();
-                }
-                Intent intent = new Intent(this, LogIn_screen.class );
-                startActivity(intent);
-                this.finish();
-                break;
+
         }
 
     }

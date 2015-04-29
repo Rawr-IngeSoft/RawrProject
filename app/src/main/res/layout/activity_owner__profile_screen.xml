@@ -6,16 +6,6 @@
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Log out"
-            android:id="@+id/owner_profile_log_out"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="horizontal"
         android:layout_weight="1"
