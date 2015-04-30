@@ -15,7 +15,7 @@
     $filename = uniqid();
     if(!file_exists($path)){
       mkdir($path, 0777, true);
-      echo $path . '  created';
+      //echo $path . '  created';
     }
     $base = str_replace(' ', '+', $base);
     $base = str_replace('data:image/'.$extension.';base64,', '', $base);
@@ -24,7 +24,7 @@
 
     // Create File
     $file = fopen($path.'/'.$filename.'.'.$extension, 'wb');
-    echo $path.'/'.$filename. '.'. $extension . ' created';
+    //echo $path.'/'.$filename. '.'. $extension . ' created';
 
 
     fwrite($file, $binary);
