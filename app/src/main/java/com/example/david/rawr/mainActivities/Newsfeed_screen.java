@@ -80,6 +80,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             case R.id.newsfeed_friends_button:
                 intent = new Intent(this, Owner_Profile_screen.class);
                 startActivity(intent);
+                this.finish();
                 break;
         }
     }

@@ -85,6 +85,8 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
 
     @Override
     public void onBackPressed() {
+        Intent intent = new Intent(this, Newsfeed_screen.class);
+        startActivity(intent);
         this.finish();
     }
 
@@ -116,6 +118,7 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
         switch(v.getId()){
             case R.id.owner_profile_owner_layout:
                 Intent intent = new Intent(this, Configuration_screen.class);
+                this.finish();
                 startActivity(intent);
             break;
         }

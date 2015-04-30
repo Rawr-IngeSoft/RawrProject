@@ -52,4 +52,9 @@ public class Configuration_screen extends Activity  {
         });
     }
 
+    public void onBackPressed() {
+        Intent intent = new Intent(this, Owner_Profile_screen.class);
+        startActivity(intent);
+        this.finish();
+    }
 }

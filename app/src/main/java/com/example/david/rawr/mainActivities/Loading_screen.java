@@ -148,19 +148,22 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
     @Override
     public void uploadFinish(ArrayList<String> response) {
         String status = response.get(0);
+        String pictureUri = "http://178.62.233.249/photos/" + sharedpreferences.getString("username","") + response.get(1);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("pictureUri", pictureUri);
         if (status.compareTo("1") == 0) {
             Log.e("Upload picture:", "Successful");
         }else {
             Log.e("Upload picture:", "Error");
         }
+        Intent intent = new Intent(this, Newsfeed_screen.class);
+        startActivity(intent);
+        this.finish();
     }
 
     @Override
     public void getPhotoFinish(Bitmap bitmap) {
         UploadPhoto uploadPhoto = new UploadPhoto(bitmap, username, this);
         uploadPhoto.execute();
-        Intent intent = new Intent(this, Newsfeed_screen.class);
-        startActivity(intent);
-        this.finish();
     }
 }

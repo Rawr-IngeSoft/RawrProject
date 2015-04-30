@@ -52,11 +52,13 @@ public class GetPosts extends AsyncTask<String, Integer, String> {
             HttpResponse response = client.execute(get);
             JsonParser jsonParser = new JsonParser(response.getEntity().getContent());
             JSONObject jsonResponse= jsonParser.getjObject();
-            JSONArray jsonArray = jsonResponse.getJSONArray("posts");
-            for (int i = 0; i < jsonArray.length(); i++){
-                JSONObject jo = jsonArray.getJSONObject(i);
-                Post postToAdd = new Post(jo.getString("idPet"),jo.getString("text"), jo.getString("date"));
-                postArrayList.add(postToAdd);
+            if(jsonResponse != null){
+                JSONArray jsonArray = jsonResponse.getJSONArray("posts");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jo = jsonArray.getJSONObject(i);
+                    Post postToAdd = new Post(jo.getString("idPet"), jo.getString("text"), jo.getString("date"));
+                    postArrayList.add(postToAdd);
+                }
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

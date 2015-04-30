@@ -102,7 +102,7 @@ public class sign_up_add_photo_screen extends Activity implements View.OnClickLi
 
     @Override
     public void uploadFinish(ArrayList<String> response) {
-        String pictureUri = "http://178.62.233.249/rawr/static" + response.get(1);
+        String pictureUri = "http://178.62.233.249/photos/" + sharedpreferences.getString("username","") + response.get(1);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("pictureUri", pictureUri);
         editor.commit();
