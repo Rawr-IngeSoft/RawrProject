@@ -4,6 +4,7 @@
 
     <!-- Internet Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,8 +14,9 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
+
         <activity
-            android:name=".mainActivities.Welcome_screen"
+            android:name=".MainActivities.Welcome_screen"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
@@ -25,36 +27,54 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".mainActivities.LogIn"
+            android:name=".MainActivities.LogIn_screen"
             android:configChanges="orientation"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".MainActivities.SignUp_screen"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivities.LogIn_screen"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".mainActivities.SignUp"
-            android:configChanges="orientation"
-            android:parentActivityName=".mainActivities.LogIn"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".mainActivities.Downloading_window"
+            android:name=".MainActivities.Downloading_screen"
             android:configChanges="orientation"
             android:label="@string/title_activity_downloading_window"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".mainActivities.CreatePet_window"
+            android:name=".MainActivities.CreatePet_screen"
             android:label="@string/title_activity_create_pet_window" >
         </activity>
         <activity
-            android:name=".mainActivities.Loading_screen"
+            android:name=".MainActivities.Loading_screen"
             android:label="@string/title_activity_create_pet_window" >
         </activity>
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".MainActivities.Newsfeed_screen"
+            android:label="@string/title_activity_newsfeed_window" >
+        </activity>
+        <activity
+            android:name=".MainActivities.sign_up_add_photo_screen"
+            android:label="@string/title_activity_sign_up_add_photo_window" >
+        </activity>
+        <activity
+            android:name=".MainActivities.Owner_Profile_screen"
+            android:label="@string/title_activity_owner__profile_window" >
+        </activity>
+        <activity
+            android:name=".MainActivities.Configuration_screen"
+            android:label="@string/title_activity_configuration_screen" >
+        </activity>
     </application>
+
 </manifest>

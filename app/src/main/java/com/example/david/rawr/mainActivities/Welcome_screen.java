@@ -1,4 +1,4 @@
-package com.example.david.rawr.mainActivities;
+package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,7 +25,7 @@ public class Welcome_screen extends Activity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Intent intent = new Intent(Welcome_screen.this, LogIn.class );
+                Intent intent = new Intent(Welcome_screen.this, LogIn_screen.class );
                 startActivity(intent);
                 finishscreen();
             }

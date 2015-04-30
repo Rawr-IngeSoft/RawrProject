@@ -21,6 +21,7 @@ import java.util.List;
 /**
  * Created by David on 15/04/2015.
  */
+// REQ-014
 public class CreatePet extends AsyncTask<String, Integer, String> {
 
     private final String username;
@@ -53,7 +54,6 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
             post.setEntity(new UrlEncodedFormEntity(params));
             response = client.execute(post);
             Header header = response.getFirstHeader("Content-Length");
-            Log.i(header.getName(), header.getValue());
             responseValue = header.getValue();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

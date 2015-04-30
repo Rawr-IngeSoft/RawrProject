@@ -1,4 +1,5 @@
 package com.example.david.rawr.otherClasses;
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -10,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 
 public class RoundImage extends Drawable {
     private final Bitmap mBitmap;
@@ -115,6 +117,29 @@ public class RoundImage extends Drawable {
                 ((float) targetHeight - 1) / 2,
                 (Math.min(((float) targetWidth),
                         ((float) targetHeight)) / 2),
+                Path.Direction.CCW);
+        canvas.clipPath(path);
+        Bitmap sourceBitmap = scaleBitmapImage;
+        canvas.drawBitmap(sourceBitmap,
+                new Rect(0, 0, sourceBitmap.getWidth(),
+                        sourceBitmap.getHeight()),
+                new Rect(0, 0, targetWidth, targetHeight), null);
+        return targetBitmap;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static Bitmap getOvalShape(Bitmap scaleBitmapImage) {
+        int targetWidth = 100;
+        int targetHeight = 80;
+        Bitmap targetBitmap = Bitmap.createBitmap(targetWidth,
+                targetHeight,Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(targetBitmap);
+        Path path = new Path();
+        path.addOval(((float) targetWidth - 1) / 2,
+                ((float) targetHeight - 1) / 2,
+                ((float) targetWidth - 1) / 2,
+                ((float) targetWidth - 1) / 2,
                 Path.Direction.CCW);
 
         canvas.clipPath(path);
