@@ -45,7 +45,7 @@ public class GetPosts extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String... params) {
 
         HttpClient client = new DefaultHttpClient();
-        HttpGet get = new HttpGet(url_get_posts+"?username=dug");
+        HttpGet get = new HttpGet(url_get_posts+"?username=spirit");
 
 
         try {

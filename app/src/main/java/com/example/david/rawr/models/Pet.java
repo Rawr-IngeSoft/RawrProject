@@ -7,6 +7,11 @@ public class Pet {
 
     private String idPet, petName, petType, petBirthday, petPictureUri;
 
+    public Pet(String petName, String petPictureUri) {
+        this.petName = petName;
+        this.petPictureUri = petPictureUri;
+    }
+
     public Pet(String idPet, String petName, String petType, String petBirthday, String petPictureUri) {
         this.idPet = idPet;
         this.petName = petName;

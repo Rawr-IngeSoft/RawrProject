@@ -29,6 +29,7 @@ public class GetPhoto extends AsyncTask<String, Integer, Bitmap> {
         InputStream in;
         Bitmap bitmap = null;
         try {
+
             in = new URL(pictureUri).openStream();
             bitmap = BitmapFactory.decodeStream(in);
         } catch (IOException e) {
