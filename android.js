@@ -100,7 +100,7 @@ io.on('connection', function (socket) {
 
     var return_list = [];
 
-    for (var user of activeSockets ) {
+    for (let user of activeSockets ) {
          return_list.push(user);
     }
 
