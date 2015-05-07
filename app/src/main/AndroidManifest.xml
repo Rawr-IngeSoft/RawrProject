@@ -61,11 +61,10 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".MainActivities.Newsfeed_screen"
-            android:label="@string/title_activity_newsfeed_window"
-            >
+            android:label="@string/title_activity_newsfeed_window" >
         </activity>
         <activity
-            android:name=".MainActivities.sign_up_add_photo_screen"
+            android:name=".MainActivities.CreatePet_add_photo_screen"
             android:label="@string/title_activity_sign_up_add_photo_window" >
         </activity>
         <activity
@@ -75,6 +74,10 @@
         <activity
             android:name=".MainActivities.Configuration_screen"
             android:label="@string/title_activity_configuration_screen" >
+        </activity>
+        <activity
+            android:name=".MainActivities.Chat_window"
+            android:label="@string/title_activity_chat_window" >
         </activity>
     </application>
 

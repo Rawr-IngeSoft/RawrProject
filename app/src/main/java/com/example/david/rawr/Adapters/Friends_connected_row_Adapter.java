@@ -50,4 +50,12 @@ public class Friends_connected_row_Adapter extends BaseAdapter {
         }
         return convertView;
     }
+
+    public ArrayList<String> getPetNames() {
+        return petNames;
+    }
+
+    public void setPetNames(ArrayList<String> petNames) {
+        this.petNames = petNames;
+    }
 }

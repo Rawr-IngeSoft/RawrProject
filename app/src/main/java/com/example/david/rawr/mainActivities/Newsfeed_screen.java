@@ -31,6 +31,7 @@ import com.example.david.rawr.otherClasses.RoundImage;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,7 +51,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     Friends_connected_row_Adapter friends_connected_row_adapter;
     DrawerLayout dLayout;
     ListView dList;
-    ArrayList<String> petNames;
+    ArrayList<String> friendsList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +84,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
+        }else{
+            profilePicture.setImageResource(R.drawable.default_profile_picture_female);
         }
         if(sharedPreferences.contains("username")) {
             username = sharedPreferences.getString("username", "");
@@ -92,7 +95,19 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             startSession_listener = new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    Log.e("prueba:", (String)args[0]);
+                    try {
+                        JSONObject response = new JSONObject((String)args[0]);
+                        JSONArray jsonArray = (JSONArray)response.get("users");
+                        friendsList = new ArrayList<>();
+                        if (jsonArray != null) {
+                            for (int i=0;i<jsonArray.length();i++) {
+                                friendsList.add(jsonArray.get(i).toString());
+                            }
+                        }
+                        friends_connected_row_adapter.setPetNames(friendsList);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             };
             mySocket.on("response_start_session", startSession_listener);
@@ -109,15 +124,11 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         getPosts.execute();
 
         // Connected friends code
-        petNames = new ArrayList<>();
-        petNames.add("Fabian");
-        petNames.add("Felipe");
-        petNames.add("Stiven");
         dLayout = (DrawerLayout) findViewById(R.id.newsfeed_friends_sliding_list);
         dList = (ListView) findViewById(R.id.newsfeed_friends_list);
-        friends_connected_row_adapter = new Friends_connected_row_Adapter(this, petNames);
-        dList.setAdapter(friends_connected_row_adapter);
         dList.setSelector(android.R.color.holo_blue_dark);
+        friends_connected_row_adapter = new Friends_connected_row_Adapter(Newsfeed_screen.this, friendsList);
+        dList.setAdapter(friends_connected_row_adapter);
         TextView friendsHeader = new TextView(this);
         friendsHeader.setText("Friends");
         friendsHeader.setTextColor(Color.parseColor("#000000"));
@@ -132,7 +143,9 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
 
                 dLayout.closeDrawers();
-                Log.e("prueba:", dList.getItemAtPosition(position).toString());
+                Intent intent = new Intent(Newsfeed_screen.this, Chat_window.class);
+                intent.putExtra("idPet", dList.getItemAtPosition(position).toString());
+                startActivity(intent);
             }
 
         });

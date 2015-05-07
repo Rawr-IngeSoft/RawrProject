@@ -32,7 +32,7 @@ import java.util.concurrent.ExecutionException;
 
 
 // REQ-029
-public class Owner_Profile_screen extends FragmentActivity implements View.OnClickListener,UploadPhotoResponse, GetPhotoResponse, View.OnLongClickListener{
+public class Owner_Profile_screen extends FragmentActivity implements GetPhotoResponse, View.OnLongClickListener{
 
     ImageView photo;
     TextView birthdayText, nameText, addressText, lastNameText;
@@ -57,7 +57,7 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
         petList.add(new Pet("asdas","Fabian","Dog","--/--/--",sharedpreferences.getString("pictureUri", "")));
         petList.add(new Pet("asdas","Stiven","Dog","--/--/--",sharedpreferences.getString("pictureUri", "")));
         petList.add(new Pet("asdas","Felipe","Dog","--/--/--",sharedpreferences.getString("pictureUri", "")));
-        PetChooseViewPagerAdapter petChooseViewPagerAdapter = new PetChooseViewPagerAdapter(fm, petList );
+        PetChooseViewPagerAdapter petChooseViewPagerAdapter = new PetChooseViewPagerAdapter(fm, petList,this);
         petProfile.setAdapter(petChooseViewPagerAdapter);
         // TODO get birthday dat
         //if (sharedpreferences.contains("username")) {
@@ -69,9 +69,9 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
         if(sharedpreferences.contains("lastName")){
             lastNameText.setText(sharedpreferences.getString("lastName", ""));
         }
-        if(sharedpreferences.contains("pictureUri")){
-            GetPhoto getPhoto = new GetPhoto(sharedpreferences.getString("pictureUri", ""), this);
-            try {
+        if(sharedpreferences.contains("ownerPictureUri")){
+            GetPhoto getPhoto = new GetPhoto(sharedpreferences.getString("ownerPictureUri", ""), this);
+            /*try {
                 Bitmap bitmap = getPhoto.execute().get();
                 if(bitmap != null)
                     photo.setImageBitmap(bitmap);
@@ -79,7 +79,7 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 
@@ -91,26 +91,18 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
     }
 
     @Override
-    public void uploadFinish(ArrayList<String> response) {
-        String status = response.get(0);
-        if (status.compareTo("1") == 0) {
-            Toast.makeText(this, "upload picture successful", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(this, "upload picture error", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
     public void getPhotoFinish(Bitmap bitmap) {
 
     }
 
-    @Override
-    public void onClick(View v) {
+    public void buttonClick(View v) {
         switch(v.getId()){
-
+            case (R.id.createPet_fragment_create_button):
+                    Intent intent = new Intent(this, CreatePet_screen.class);
+                    startActivity(intent);
+                    this.finish();
+                break;
         }
-
     }
 
     @Override
