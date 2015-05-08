@@ -95,16 +95,6 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
 
     }
 
-    public void buttonClick(View v) {
-        switch(v.getId()){
-            case (R.id.createPet_fragment_create_button):
-                    Intent intent = new Intent(this, CreatePet_screen.class);
-                    startActivity(intent);
-                    this.finish();
-                break;
-        }
-    }
-
     @Override
     public boolean onLongClick(View v) {
         switch(v.getId()){

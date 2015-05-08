@@ -13,7 +13,7 @@ public class friends_row_fragment extends Fragment {
     TextView text;
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle args) {
-        View view = inflater.inflate(R.layout.fragment_friends_row_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_friends_row, container, false);
         text= (TextView) view.findViewById(R.id.detail);
         text.setText("hola");
         return view;
