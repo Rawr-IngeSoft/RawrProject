@@ -1,6 +1,7 @@
 package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,11 +11,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -53,6 +58,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     ListView dList;
     boolean buttonsVisible = true;
     ArrayList<String> friendsList = new ArrayList<>();
+    RelativeLayout buttons_container;
     float  notificationsX, notificationsY,parentX, parentY, profileX, profileY, messagesX, messagesY, localizationX, localizationY;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +71,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         notifications = (ImageView)findViewById(R.id.newsfeed_notification_button);
         postList = (ListView)findViewById(R.id.newsfeed_list);
         profilePicture = (ImageView)findViewById(R.id.newsfeed_profile_picture);
+        buttons_container = (RelativeLayout)findViewById(R.id.newsfeed_buttons_container);
         profilePicture.setOnClickListener(this);
-        profilePicture.bringToFront();
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_notifications);
         notifications.setImageBitmap(bitmap);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_profile);
@@ -153,7 +159,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
         });
 
-        // Animation of buttons variables
+        // Animation of buttons variables and events
         notificationsX = notifications.getX();
         notificationsY = notifications.getY();
         profileX = profile.getX();
@@ -164,7 +170,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         localizationY = localization.getY();
         parentX = profilePicture.getX();
         parentY = profilePicture.getY();
-
+        profilePicture.bringToFront(); // Bring profile picture to front
+        buttons_container.bringToFront(); //  bring container to front
     }
 
 
@@ -210,6 +217,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
+                        localization.clearAnimation();
                         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) localization.getLayoutParams();
                         if (buttonsVisible == false) {
                             params.topMargin += (-parentY + localizationY-90);
@@ -234,6 +242,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
+                        messages.clearAnimation();
                         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) messages.getLayoutParams();
                         if (buttonsVisible == false) {
                             params.topMargin += (-parentY + messagesY-80);
@@ -258,6 +267,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
+                        profile.clearAnimation();
                         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) profile.getLayoutParams();
                         if (buttonsVisible == false) {
                             params.topMargin += (-parentY + profileY+20);
@@ -282,6 +292,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
+                        notifications.clearAnimation();
                         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) notifications.getLayoutParams();
                         if (buttonsVisible == false) {
                             params.topMargin += (-parentY + notificationsY - 30);
@@ -322,4 +333,5 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
+
 }

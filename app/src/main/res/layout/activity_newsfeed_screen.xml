@@ -1,21 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.david.rawr.MainActivities.Newsfeed_screen"
-    android:background="#BBE778"
-    android:orientation="vertical">
+    android:background="#BBE778">
     <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/newsfeed_friends_sliding_list">
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/frame_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="fill_parent"
+                android:id="@+id/newsfeed_buttons_container">
                 <ImageView
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
@@ -56,14 +55,15 @@
             </RelativeLayout>
 
             <ListView
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="120dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/newsfeed_list"
-                android:layout_alignParentStart="true" />
-            </LinearLayout>
+                android:layout_alignParentStart="true"
+                />
+            </RelativeLayout>
         <ListView
             android:id="@+id/newsfeed_friends_list"
             android:layout_width="240dp"
@@ -76,4 +76,4 @@
         </android.support.v4.widget.DrawerLayout>
 
 
-</LinearLayout>
+</RelativeLayout>
