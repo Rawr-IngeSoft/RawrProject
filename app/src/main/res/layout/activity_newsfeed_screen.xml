@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.david.rawr.MainActivities.Newsfeed_screen"
-    android:background="#EDF3C7"
+    android:background="#BBE778"
     android:orientation="vertical">
     <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"
@@ -17,8 +17,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:id="@+id/newsfeed_profile_picture" />
 
                 <ImageView

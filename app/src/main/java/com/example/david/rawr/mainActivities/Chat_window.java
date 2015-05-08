@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.david.rawr.R;
+import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 
 import org.json.JSONException;
@@ -25,6 +27,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
     Button send_button;
     com.github.nkzawa.socketio.client.Socket mySocket;
     JSONObject data;
+    Emitter.Listener chat_message_listener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +61,14 @@ public class Chat_window extends Activity implements View.OnClickListener{
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                mySocket.emit("start_session", data);
+                chat_message_listener = new Emitter.Listener() {
+                    @Override
+                    public void call(Object... args) {
+                        Log.e("valor:", (String)args[0]);
+                    }
+                };
+                mySocket.on("chat_message", chat_message_listener);
+                mySocket.emit("chat_message", data);
                 break;
         }
     }
@@ -67,6 +77,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
     protected void onDestroy() {
         super.onDestroy();
         mySocket.disconnect();
+        mySocket.off("chat_message", chat_message_listener);
     }
 
 }

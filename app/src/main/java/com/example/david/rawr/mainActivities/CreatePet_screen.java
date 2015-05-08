@@ -61,13 +61,16 @@ public class CreatePet_screen extends Activity implements CreatePetResponse{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView listItem;
+                Log.e(String.valueOf(position), String.valueOf(typeList.getChildCount()));
                 for (int i = 0; i < typeList.getChildCount(); i++){
                     listItem = (TextView)typeList.getChildAt(i).findViewById(R.id.stringListItem);
-                    listItem.setTextColor(Color.rgb(42, 42, 42));
+                    if(i == position-1){
+                        listItem.setTextColor(Color.GREEN);
+                        petType = (String)typeList.getItemAtPosition(i);
+                    }else {
+                        listItem.setTextColor(Color.rgb(42, 42, 42));
+                    }
                 }
-                listItem = (TextView)typeList.getChildAt(position).findViewById(R.id.stringListItem);
-                listItem.setTextColor(Color.GREEN);
-                petType = (String)typeList.getItemAtPosition(position);
             }
         });
 
