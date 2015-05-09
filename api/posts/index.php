@@ -2,12 +2,12 @@
 function obtenerIdPhoto($username, $path) {
    	$conn = dbConnect();
    	$sql =
-    	"SELECT id
+    	"SELECT idPhoto
      	 FROM Photo
      	 WHERE username='$username' AND path ='$path'";
 	$result = $conn->query($sql);
     $row = $result->fetch_assoc();
-    return $row['id'];
+    return $row['idPhoto'];
 }
 
 error_reporting(E_ALL);
