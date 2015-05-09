@@ -55,7 +55,7 @@
                     android:layout_height="10dp"
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center_vertical"
-                    android:background="#00FF00"/>
+                    android:background="@drawable/animal"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,12 +74,12 @@
                     android:layout_height="10dp"
                     android:layout_marginRight="5dp"
                     android:layout_gravity="center_vertical"
-                    android:background="#00FF00"/>
+                    android:background="@drawable/birthday_cake"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/owner_profile_birthday"
-                    android:text="LastName"
+                    android:text="bithday"
                     android:typeface="monospace"
                     android:textSize="15dp"
                     android:textAlignment="center"

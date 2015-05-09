@@ -19,7 +19,6 @@
             android:textColor="#FFFFFF"
             android:textSize="16dp"
             android:gravity="center_vertical"
-            android:text="asfasf"
             android:layout_marginLeft="10dp"
             android:id="@+id/configuration_row_textView"/>
     </LinearLayout>

@@ -188,8 +188,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                         if (friendsList != null) {
                             friends_connected_row_adapter.setPetNames(friendsList);
                             friends_connected_row_adapter.notifyDataSetChanged();
+                            dList.setAdapter(friends_connected_row_adapter);
                         }
-                        Log.e("status", "refreshing");
                     }
                 });
             }
