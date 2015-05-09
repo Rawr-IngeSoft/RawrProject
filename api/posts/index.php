@@ -26,7 +26,17 @@ if($_SERVER['REQUEST_METHOD']=="GET"){
 	$path= $json_array['path'];
 	$type= $json_array['type'];
 	$id= obtenerIdPhoto($username, $path);
-	echo "el id de la foto es ". $id;
+	$mysql_query= "INSERT INTO Post (username, text, idPhoto, type) 
+							VALUES ('$username', '$text', '$id', '$type')";
+
+	if($conn->query($mysql_query) == TRUE){
+    		$json_return= array('status' => '1');
+    		echo json_encode($json_return);
+ 	}else{
+    	$json_return= array('status' => '0');
+    	echo json_encode($json_return);
+  	}
+	echo "Se crea el post con id " . $conn->insert_id;
 
 }elseif ($_SERVER['REQUEST_METHOD']=="PUT") {
 	echo "hicieron un request PUT";
