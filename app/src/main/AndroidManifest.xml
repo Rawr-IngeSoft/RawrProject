@@ -62,9 +62,13 @@
         <activity
             android:name=".MainActivities.Newsfeed_screen"
             android:label="@string/title_activity_newsfeed_window" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivities.sign_up_add_photo_screen"
+            android:name=".MainActivities.CreatePet_add_photo_screen"
             android:label="@string/title_activity_sign_up_add_photo_window" >
         </activity>
         <activity
@@ -75,6 +79,14 @@
             android:name=".MainActivities.Configuration_screen"
             android:label="@string/title_activity_configuration_screen" >
         </activity>
+        <activity
+            android:name=".MainActivities.Chat_window"
+            android:label="@string/title_activity_chat_window" >
+        </activity>
+        <service
+            android:name = ".Services.Connected_friends_listener"
+            android:exported = "false"
+            />
     </application>
 
 </manifest>

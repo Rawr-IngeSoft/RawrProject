@@ -1,6 +1,5 @@
 package com.example.david.rawr.MainActivities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,30 +8,22 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.PetChooseViewPagerAdapter;
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
-import com.example.david.rawr.Interfaces.UploadPhotoResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.GetPhoto;
+import com.example.david.rawr.Tasks.GetPhoto;
 import com.example.david.rawr.models.Pet;
-import com.example.david.rawr.otherClasses.RoundImage;
-import com.facebook.login.LoginManager;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 
 // REQ-029
-public class Owner_Profile_screen extends FragmentActivity implements View.OnClickListener,UploadPhotoResponse, GetPhotoResponse, View.OnLongClickListener{
+public class Owner_Profile_screen extends FragmentActivity implements GetPhotoResponse, View.OnLongClickListener{
 
     ImageView photo;
     TextView birthdayText, nameText, addressText, lastNameText;
@@ -57,7 +48,7 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
         petList.add(new Pet("asdas","Fabian","Dog","--/--/--",sharedpreferences.getString("pictureUri", "")));
         petList.add(new Pet("asdas","Stiven","Dog","--/--/--",sharedpreferences.getString("pictureUri", "")));
         petList.add(new Pet("asdas","Felipe","Dog","--/--/--",sharedpreferences.getString("pictureUri", "")));
-        PetChooseViewPagerAdapter petChooseViewPagerAdapter = new PetChooseViewPagerAdapter(fm, petList );
+        PetChooseViewPagerAdapter petChooseViewPagerAdapter = new PetChooseViewPagerAdapter(fm, petList,this);
         petProfile.setAdapter(petChooseViewPagerAdapter);
         // TODO get birthday dat
         //if (sharedpreferences.contains("username")) {
@@ -69,9 +60,9 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
         if(sharedpreferences.contains("lastName")){
             lastNameText.setText(sharedpreferences.getString("lastName", ""));
         }
-        if(sharedpreferences.contains("pictureUri")){
-            GetPhoto getPhoto = new GetPhoto(sharedpreferences.getString("pictureUri", ""), this);
-            try {
+        if(sharedpreferences.contains("ownerPictureUri")){
+            GetPhoto getPhoto = new GetPhoto(sharedpreferences.getString("ownerPictureUri", ""), this);
+            /*try {
                 Bitmap bitmap = getPhoto.execute().get();
                 if(bitmap != null)
                     photo.setImageBitmap(bitmap);
@@ -79,7 +70,7 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 
@@ -91,25 +82,7 @@ public class Owner_Profile_screen extends FragmentActivity implements View.OnCli
     }
 
     @Override
-    public void uploadFinish(ArrayList<String> response) {
-        String status = response.get(0);
-        if (status.compareTo("1") == 0) {
-            Toast.makeText(this, "upload picture successful", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(this, "upload picture error", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
     public void getPhotoFinish(Bitmap bitmap) {
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch(v.getId()){
-
-        }
 
     }
 

@@ -4,29 +4,23 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.CreateResponse;
-import com.example.david.rawr.Interfaces.GetPhotoResponse;
-import com.example.david.rawr.Interfaces.UploadPhotoResponse;
 import com.example.david.rawr.Interfaces.ValidateResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.CreateOwner;
-import com.example.david.rawr.db.GetPhoto;
-import com.example.david.rawr.db.UploadPhoto;
-import com.example.david.rawr.db.ValidateUser;
+import com.example.david.rawr.Tasks.CreateOwner;
+import com.example.david.rawr.Tasks.ValidateUser;
 
 import java.util.ArrayList;
 
 
-public class Loading_screen extends Activity implements ValidateResponse, CreateResponse,UploadPhotoResponse,GetPhotoResponse {
+public class Loading_screen extends Activity implements ValidateResponse, CreateResponse {
 
     String username, serviceType;
     SharedPreferences sharedpreferences;
@@ -123,19 +117,14 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
     public void createFinish(String status) {
         Intent intent;
         if (serviceType.compareTo("facebook") == 0) {
-            if (status.compareTo("1") == 0) {
-                GetPhoto getFacebookPhoto = new GetPhoto(sharedpreferences.getString("pictureUri", ""), this);
-                getFacebookPhoto.execute();
-            }else{
-                intent = new Intent(this, Newsfeed_screen.class);
-                startActivity(intent);
-                this.finish();
-            }
+            intent = new Intent(this, Newsfeed_screen.class);
+            startActivity(intent);
+            this.finish();
         }else{
             if (status.compareTo("1") == 0) {
                 String msg = "Welcome " + sharedpreferences.getString("name","") + " " + sharedpreferences.getString("lastName","");
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-                intent = new Intent(this, sign_up_add_photo_screen.class);
+                intent = new Intent(this, Newsfeed_screen.class);
             }else{
                 Toast.makeText(this, "This username is already in use", Toast.LENGTH_SHORT).show();
                 intent = new Intent(this, SignUp_screen.class);
@@ -145,25 +134,4 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         }
     }
 
-    @Override
-    public void uploadFinish(ArrayList<String> response) {
-        String status = response.get(0);
-        String pictureUri = "http://178.62.233.249/photos/" + sharedpreferences.getString("username","") + response.get(1);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString("pictureUri", pictureUri);
-        if (status.compareTo("1") == 0) {
-            Log.e("Upload picture:", "Successful");
-        }else {
-            Log.e("Upload picture:", "Error");
-        }
-        Intent intent = new Intent(this, Newsfeed_screen.class);
-        startActivity(intent);
-        this.finish();
-    }
-
-    @Override
-    public void getPhotoFinish(Bitmap bitmap) {
-        UploadPhoto uploadPhoto = new UploadPhoto(bitmap, username, this);
-        uploadPhoto.execute();
-    }
 }

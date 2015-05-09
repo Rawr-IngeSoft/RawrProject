@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.example.david.rawr.MainActivities.Chat_window">
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/chat_window_messages_list">
+
+    </ListView>
+    <EditText android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/chat_window_message"/>
+
+    <Button
+        android:layout_gravity="center_horizontal"
+        android:layout_width="60dp"
+        android:text="Send"
+        android:layout_height="40dp"
+        android:id="@+id/chat_window_send_button"/>
+
+</LinearLayout>

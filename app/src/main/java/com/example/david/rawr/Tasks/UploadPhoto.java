@@ -1,9 +1,8 @@
-package com.example.david.rawr.db;
+package com.example.david.rawr.Tasks;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Base64;
-import android.util.Log;
 
 import com.example.david.rawr.Interfaces.UploadPhotoResponse;
 

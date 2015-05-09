@@ -1,6 +1,9 @@
 package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,33 +18,34 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.david.rawr.Interfaces.CreatePetResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.CreatePet;
+import com.example.david.rawr.Tasks.CreatePet;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by david on 07/04/15.
  */
 
 //REQ-014
-public class CreatePet_screen extends Activity{
+public class CreatePet_screen extends Activity implements CreatePetResponse{
 
     Button createPet;
     private EditText petName;
     private EditText petUsername;
     ListView typeList;
     String petType = null, username = null;
-
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_pet_screen);
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null){
-            username = bundle.getString("username");
+        sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        if(sharedPreferences.contains("username")) {
+            username = sharedPreferences.getString("username", "");
         }
         createPet = (Button)findViewById(R.id.createPet);
         petName = (EditText)findViewById(R.id.petName);
@@ -56,13 +60,16 @@ public class CreatePet_screen extends Activity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView listItem;
+                Log.e(String.valueOf(position), String.valueOf(typeList.getChildCount()));
                 for (int i = 0; i < typeList.getChildCount(); i++){
                     listItem = (TextView)typeList.getChildAt(i).findViewById(R.id.stringListItem);
-                    listItem.setTextColor(Color.rgb(42, 42, 42));
+                    if(i == position-1){
+                        listItem.setTextColor(Color.GREEN);
+                        petType = (String)typeList.getItemAtPosition(i);
+                    }else {
+                        listItem.setTextColor(Color.rgb(42, 42, 42));
+                    }
                 }
-                listItem = (TextView)typeList.getChildAt(position).findViewById(R.id.stringListItem);
-                listItem.setTextColor(Color.GREEN);
-                petType = (String)typeList.getItemAtPosition(position);
             }
         });
 
@@ -75,20 +82,8 @@ public class CreatePet_screen extends Activity{
                 if(username == null || petType == null || petNameText.equals("") || petUsernameText.equals("")){
                     Toast.makeText(getApplicationContext(), "Invalid parameters", Toast.LENGTH_SHORT).show();
                 }else{
-                    CreatePet createPet = new CreatePet(petUsernameText, petNameText, petType, username);
-                    try {
-                        String responseValue = createPet.execute().get();
-                        if (responseValue.compareTo("1") == 0){
-                            Toast.makeText(getApplicationContext(), "Error Creating Pet", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getApplicationContext(), "Pet Created", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-
+                    CreatePet createPet = new CreatePet(petUsernameText, petNameText, petType, username, CreatePet_screen.this, CreatePet_screen.this);
+                    createPet.execute();
                 }
             }
         });
@@ -115,5 +110,16 @@ public class CreatePet_screen extends Activity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void createPetFinish(String responseValue) {
+        if (responseValue.compareTo("1") == 0){
+            Toast.makeText(getApplicationContext(), "Error Creating Pet", Toast.LENGTH_SHORT).show();
+        }else{
+            Intent intent = new Intent(this, CreatePet_add_photo_screen.class);
+            startActivity(intent);
+            this.finish();
+        }
     }
 }

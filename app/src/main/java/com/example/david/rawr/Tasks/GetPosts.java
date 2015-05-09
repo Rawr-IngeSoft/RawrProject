@@ -1,22 +1,15 @@
-package com.example.david.rawr.db;
+package com.example.david.rawr.Tasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.david.rawr.Interfaces.GetPostsResponse;
 import com.example.david.rawr.models.Post;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +17,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Estudiante on 24/04/2015.
@@ -45,7 +37,7 @@ public class GetPosts extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String... params) {
 
         HttpClient client = new DefaultHttpClient();
-        HttpGet get = new HttpGet(url_get_posts+"?username=dug");
+        HttpGet get = new HttpGet(url_get_posts+"?username=spirit");
 
 
         try {

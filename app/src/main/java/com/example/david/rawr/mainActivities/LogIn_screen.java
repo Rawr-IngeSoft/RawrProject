@@ -110,7 +110,7 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
                                     editor.putString("username", ownerId);
                                     editor.putString("name", ownerName);
                                     editor.putString("lastName",ownerLastName);
-                                    editor.putString("pictureUri", ownerPicture);
+                                    editor.putString("ownerPictureUri", ownerPicture);
                                     editor.commit();
                                     startActivity(intent);
                                     LogIn_screen.this.finish();

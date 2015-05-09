@@ -8,9 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,66 +15,51 @@ import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.UploadPhotoResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.UploadPhoto;
+import com.example.david.rawr.Tasks.UploadPhoto;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 //REQ-048
-public class sign_up_add_photo_screen extends Activity implements View.OnClickListener, UploadPhotoResponse {
+public class CreatePet_add_photo_screen extends Activity implements View.OnClickListener, UploadPhotoResponse {
 
-    Button selectButton, nextButton;
+    Button selectButton, nextButton, omiteButton;
     ImageView photoImageView;
     Bitmap bitmap = null;
     SharedPreferences sharedpreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up_add_photo_screen);
+        setContentView(R.layout.activity_create_pet_add_photo_screen);
         selectButton = (Button)findViewById(R.id.selectImage);
         nextButton = (Button)findViewById(R.id.next);
+        omiteButton = (Button)findViewById(R.id.omit);
         photoImageView = (ImageView)findViewById(R.id.signUp_imageView);
         selectButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);
+        omiteButton.setOnClickListener(this);
         sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_sign_up_add_photo_window, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     //REQ-048
     @Override
     public void onClick(View v) {
-
+        Intent intent;
         switch (v.getId()){
             case(R.id.selectImage):
-                Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 0);
             break;
             case(R.id.next):
                 if(bitmap != null){
-                    UploadPhoto uploadPhoto = new UploadPhoto(bitmap, sharedpreferences.getString("username",""), this );
+                    UploadPhoto uploadPhoto = new UploadPhoto(bitmap, sharedpreferences.getString("petUsername",""), this );
                     uploadPhoto.execute();
                 }
+            break;
+            case (R.id.omit):
+                intent = new Intent(this, Newsfeed_screen.class);
+                this.finish();
+                startActivity(intent);
             break;
         }
     }
@@ -102,11 +84,11 @@ public class sign_up_add_photo_screen extends Activity implements View.OnClickLi
 
     @Override
     public void uploadFinish(ArrayList<String> response) {
-        String pictureUri = "http://178.62.233.249/photos/" + sharedpreferences.getString("username","") + response.get(1);
+        String pictureUri = "http://178.62.233.249/photos/" + sharedpreferences.getString("petUsername","") + response.get(1);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("pictureUri", pictureUri);
         editor.commit();
-        Intent intent = new Intent(sign_up_add_photo_screen.this, Owner_Profile_screen.class);
+        Intent intent = new Intent(CreatePet_add_photo_screen.this, Newsfeed_screen.class);
         startActivity(intent);
         this.finish();
     }
