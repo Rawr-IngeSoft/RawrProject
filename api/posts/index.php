@@ -1,7 +1,8 @@
 <?php
-include '../db_connect.php';
+include '../../db_connect.php';
 
 if($_SERVER['REQUEST_METHOD']=="GET"){
+	$conn = dbConnect();
 	echo "hicieron un request GET";
 }elseif($_SERVER['REQUEST_METHOD']=="POST"){
 	echo "hicieron un request POST";
