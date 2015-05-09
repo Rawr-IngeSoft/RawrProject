@@ -1,6 +1,5 @@
 package com.example.david.rawr.otherClasses;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.GetPhoto;
+import com.example.david.rawr.Tasks.GetPhoto;
 
 import java.util.concurrent.ExecutionException;
 

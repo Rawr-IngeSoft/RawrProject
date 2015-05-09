@@ -1,6 +1,5 @@
-package com.example.david.rawr.db;
+package com.example.david.rawr.Tasks;
 
-import org.apache.http.HttpEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 

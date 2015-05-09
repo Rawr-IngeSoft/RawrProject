@@ -1,6 +1,5 @@
 package com.example.david.rawr.MainActivities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,26 +8,18 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.PetChooseViewPagerAdapter;
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
-import com.example.david.rawr.Interfaces.UploadPhotoResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.GetPhoto;
+import com.example.david.rawr.Tasks.GetPhoto;
 import com.example.david.rawr.models.Pet;
-import com.example.david.rawr.otherClasses.RoundImage;
-import com.facebook.login.LoginManager;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 
 // REQ-029

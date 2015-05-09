@@ -1,10 +1,8 @@
-package com.example.david.rawr.db;
+package com.example.david.rawr.Tasks;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.CreatePetResponse;
 
@@ -22,7 +20,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by David on 15/04/2015.

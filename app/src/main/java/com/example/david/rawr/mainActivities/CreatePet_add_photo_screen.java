@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.UploadPhotoResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.UploadPhoto;
+import com.example.david.rawr.Tasks.UploadPhoto;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

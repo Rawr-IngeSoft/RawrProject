@@ -4,24 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.CreateResponse;
-import com.example.david.rawr.Interfaces.GetPhotoResponse;
-import com.example.david.rawr.Interfaces.UploadPhotoResponse;
 import com.example.david.rawr.Interfaces.ValidateResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.CreateOwner;
-import com.example.david.rawr.db.GetPhoto;
-import com.example.david.rawr.db.UploadPhoto;
-import com.example.david.rawr.db.ValidateUser;
+import com.example.david.rawr.Tasks.CreateOwner;
+import com.example.david.rawr.Tasks.ValidateUser;
 
 import java.util.ArrayList;
 

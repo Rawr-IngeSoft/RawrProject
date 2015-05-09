@@ -1,47 +1,44 @@
 package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
-import android.content.ClipData;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.PostListAdapter;
 import com.example.david.rawr.Interfaces.GetPostsResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.GetPhoto;
-import com.example.david.rawr.db.GetPosts;
+import com.example.david.rawr.Services.Connected_friends_listener;
+import com.example.david.rawr.Tasks.GetPhoto;
+import com.example.david.rawr.Tasks.GetPosts;
 import com.example.david.rawr.models.Post;
 import com.example.david.rawr.otherClasses.RoundImage;
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 
@@ -50,8 +47,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     ImageView localization, messages, profile, notifications, profilePicture;
     ListView postList;
     SharedPreferences sharedPreferences;
-    com.github.nkzawa.socketio.client.Socket mySocket;
-    Emitter.Listener startSession_listener;
     String username = "";
     Friends_connected_row_Adapter friends_connected_row_adapter;
     DrawerLayout dLayout;
@@ -60,6 +55,32 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     ArrayList<String> friendsList = new ArrayList<>();
     RelativeLayout buttons_container;
     float  notificationsX, notificationsY,parentX, parentY, profileX, profileY, messagesX, messagesY, localizationX, localizationY;
+    Timer friendsConnectedTimer;
+    Intent connected_friends_intent;
+    // Background service class declaration
+
+    Connected_friends_listener connected_friends_service;
+
+    // Background service connection declaration
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            Connected_friends_listener.MyBinder b = (Connected_friends_listener.MyBinder) binder;
+            connected_friends_service = b.getService();
+            Log.e("estado", "conectado");
+            friendsList = connected_friends_service.getFriendsList();
+            if (friendsList != null) {
+                friends_connected_row_adapter = new Friends_connected_row_Adapter(Newsfeed_screen.this, friendsList);
+                dList.setAdapter(friends_connected_row_adapter);
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            connected_friends_service = null;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +104,14 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_location);
         localization.setImageBitmap(bitmap);
         sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+
+        // Connected friend list
+        dList = (ListView) findViewById(R.id.newsfeed_friends_list);
+        dList.setSelector(android.R.color.holo_blue_dark);
+        friends_connected_row_adapter = new Friends_connected_row_Adapter(this, friendsList);
+        dList.setAdapter(friends_connected_row_adapter);
+
+        // Persistence services
         if(sharedPreferences.contains("pictureUri")){
             GetPhoto getPhoto = new GetPhoto(sharedPreferences.getString("pictureUri", ""), null);
             try {
@@ -101,44 +130,12 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         if(sharedPreferences.contains("username")) {
             username = sharedPreferences.getString("username", "");
         }
-        try {
-            mySocket = IO.socket("http://178.62.233.249:3000");
-            startSession_listener = new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    try {
-                        JSONObject response = new JSONObject((String)args[0]);
-                        JSONArray jsonArray = (JSONArray)response.get("users");
-                        friendsList = new ArrayList<>();
-                        if (jsonArray != null) {
-                            for (int i=0;i<jsonArray.length();i++) {
-                                friendsList.add(jsonArray.get(i).toString());
-                            }
-                        }
-                        friends_connected_row_adapter.setPetNames(friendsList);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            mySocket.on("response_start_session", startSession_listener);
-            mySocket.connect();
-            JSONObject data = new JSONObject();
-            data.put("username", username);
-            mySocket.emit("start_session", data);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         GetPosts getPosts = new GetPosts(username, this);
         getPosts.execute();
 
         dLayout = (DrawerLayout) findViewById(R.id.newsfeed_friends_sliding_list);
-        dList = (ListView) findViewById(R.id.newsfeed_friends_list);
-        dList.setSelector(android.R.color.holo_blue_dark);
-        friends_connected_row_adapter = new Friends_connected_row_Adapter(Newsfeed_screen.this, friendsList);
-        dList.setAdapter(friends_connected_row_adapter);
+
         TextView friendsHeader = new TextView(this);
         friendsHeader.setText("Friends");
         friendsHeader.setTextColor(Color.parseColor("#000000"));
@@ -172,6 +169,31 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         parentY = profilePicture.getY();
         profilePicture.bringToFront(); // Bring profile picture to front
         buttons_container.bringToFront(); //  bring container to front
+
+        // Start connected friends service
+
+        connected_friends_intent = new Intent(this, Connected_friends_listener.class).setData(Uri.parse(username));
+        this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
+        startService(connected_friends_intent);
+
+        // Refresh friend list
+        friendsConnectedTimer = new Timer();
+        friendsConnectedTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Newsfeed_screen.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        friendsList = connected_friends_service.getFriendsList();
+                        if (friendsList != null) {
+                            friends_connected_row_adapter.setPetNames(friendsList);
+                            friends_connected_row_adapter.notifyDataSetChanged();
+                        }
+                        Log.e("status", "refreshing");
+                    }
+                });
+            }
+        }, 2000, 2000);
     }
 
 
@@ -320,18 +342,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mySocket.disconnect();
-        mySocket.off("response_start_session", startSession_listener);
+        friendsConnectedTimer.cancel();
+        unbindService(mConnection);
     }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
 }

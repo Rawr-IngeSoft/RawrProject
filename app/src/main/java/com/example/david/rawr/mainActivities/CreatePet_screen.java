@@ -20,10 +20,9 @@ import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.CreatePetResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.db.CreatePet;
+import com.example.david.rawr.Tasks.CreatePet;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by david on 07/04/15.
