@@ -10,8 +10,6 @@ function obtenerIdPhoto($username, $path) {
     return $row['idPhoto'];
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 require '../../db_connect.php';
 
 if($_SERVER['REQUEST_METHOD']=="GET"){
@@ -31,13 +29,13 @@ if($_SERVER['REQUEST_METHOD']=="GET"){
 							VALUES ('$username', '$text', '$id', '$type')";
 
 	if($conn->query($mysql_query) == TRUE){
-    		$json_return= array('status' => '1');
-    		echo json_encode($json_return);
+    	$json_return= array('status' => '1', 'id': ''.$conn->insert_id);
+    	echo json_encode($json_return);
  	}else{
     	$json_return= array('status' => '0');
     	echo json_encode($json_return);
   	}
-	echo "Se crea el post con id " . $conn->insert_id;
+	
 
 }elseif ($_SERVER['REQUEST_METHOD']=="PUT") {
 	echo "hicieron un request PUT";
