@@ -15,7 +15,6 @@ function obtenerIdPhoto($username, $path) {
 require '../../db_connect.php';
 
 if($_SERVER['REQUEST_METHOD']=="GET"){
-	$conn = dbConnect();
 	echo "hicieron un request GET";
 }elseif($_SERVER['REQUEST_METHOD']=="POST"){
 	$conn = dbConnect();
@@ -31,7 +30,7 @@ if($_SERVER['REQUEST_METHOD']=="GET"){
 							VALUES ('$username', '$text', '$id', '$type')";
 
 	if($conn->query($mysql_query) == TRUE){
-    	$json_return= array('status' => '1', 'id': ''.$conn->insert_id);
+    	$json_return= array('status' => '1', 'id'=> ''.$conn->insert_id);
     	echo json_encode($json_return);
  	}else{
     	$json_return= array('status' => '0');
