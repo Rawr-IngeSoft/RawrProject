@@ -1,6 +1,7 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+require '../../db_connect.php';
+
+
 function obtenerIdPhoto($username, $path) {
    	$conn = dbConnect();
    	$sql =
@@ -12,7 +13,7 @@ function obtenerIdPhoto($username, $path) {
     return $row['idPhoto'];
 }
 
-require '../../db_connect.php';
+
 
 if($_SERVER['REQUEST_METHOD']=="GET"){
 	echo "hicieron un request GET";
