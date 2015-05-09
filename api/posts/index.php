@@ -18,6 +18,7 @@ if($_SERVER['REQUEST_METHOD']=="GET"){
 	$conn = dbConnect();
 	echo "hicieron un request GET";
 }elseif($_SERVER['REQUEST_METHOD']=="POST"){
+	$conn = dbConnect();
 	$request_body = file_get_contents('php://input');
 	$json_array = json_decode($request_body, true);
 	//sacar del JSON array los datos que necesito
