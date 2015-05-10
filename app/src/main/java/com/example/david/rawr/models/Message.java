@@ -7,20 +7,10 @@ public class Message {
 
     private String person;
     private String message;
-    private String date;
 
-    public Message(String person, String message, String date) {
+    public Message(String person, String message) {
         this.person = person;
         this.message = message;
-        this.date = date;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getMessage() {

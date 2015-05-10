@@ -2,9 +2,13 @@ package com.example.david.rawr.Tasks;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.david.rawr.Interfaces.CreatePetResponse;
+import com.example.david.rawr.SQLite.PetSQLiteHelper;
+import com.example.david.rawr.models.Pet;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -78,12 +82,19 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String responseValue) {
         if (responseValue.compareTo("1") == 0){
         }else{
+
+            // Focus actual pet
             SharedPreferences sharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor =  sharedPreferences.edit();
             editor.putString("petName", petName);
             editor.putString("petUsername", username);
             editor.putString("petType", petType);
             editor.commit();
+
+            // Save pet in sqlite
+            PetSQLiteHelper petSQLiteHelper = new PetSQLiteHelper(context);
+            petSQLiteHelper.addPet(new Pet(username,petName,petType,"",""));
+
         }
         createPetResponse.createPetFinish(responseValue);
     }

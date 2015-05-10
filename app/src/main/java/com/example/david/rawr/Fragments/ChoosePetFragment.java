@@ -1,4 +1,4 @@
-package com.example.david.rawr.otherClasses;
+package com.example.david.rawr.Fragments;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;

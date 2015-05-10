@@ -12,6 +12,9 @@ public class Pet {
         this.petPictureUri = petPictureUri;
     }
 
+    public Pet() {
+    }
+
     public Pet(String idPet, String petName, String petType, String petBirthday, String petPictureUri) {
         this.idPet = idPet;
         this.petName = petName;
@@ -38,5 +41,25 @@ public class Pet {
 
     public String getPetBirthday() {
         return petBirthday;
+    }
+
+    public void setIdPet(String idPet) {
+        this.idPet = idPet;
+    }
+
+    public void setPetName(String petName) {
+        this.petName = petName;
+    }
+
+    public void setPetType(String petType) {
+        this.petType = petType;
+    }
+
+    public void setPetBirthday(String petBirthday) {
+        this.petBirthday = petBirthday;
+    }
+
+    public void setPetPictureUri(String petPictureUri) {
+        this.petPictureUri = petPictureUri;
     }
 }

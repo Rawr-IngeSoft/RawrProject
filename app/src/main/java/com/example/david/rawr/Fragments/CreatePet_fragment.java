@@ -1,8 +1,10 @@
-package com.example.david.rawr.otherClasses;
+package com.example.david.rawr.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +13,23 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.david.rawr.Interfaces.CreatePetResponse;
+import com.example.david.rawr.MainActivities.CreatePet_add_photo_screen;
 import com.example.david.rawr.R;
+import com.example.david.rawr.Tasks.CreatePet;
 
 import java.util.ArrayList;
 
 
-public class CreatePet_fragment extends android.support.v4.app.Fragment {
+public class CreatePet_fragment extends android.support.v4.app.Fragment implements CreatePetResponse {
 
     Button createPet;
     private EditText petName;
     private EditText petUsername;
     Spinner typeList;
-    String petType = null, username = null;
+    String username = null;
     SharedPreferences sharedPreferences;
 
     @Override
@@ -43,7 +49,7 @@ public class CreatePet_fragment extends android.support.v4.app.Fragment {
         petUsername = (EditText)v.findViewById(R.id.petUsername);
         typeList = (Spinner)v.findViewById(R.id.list);
         typeList.setClickable(true);
-        ArrayList<String> types =  new ArrayList<>();
+        final ArrayList<String> types =  new ArrayList<>();
         types.add("Dog"); types.add("Cat"); types.add("Horse"); types.add("Ant"); types.add("Panda");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.pet_type_spinner_row, types);
         typeList.setAdapter(adapter);
@@ -61,9 +67,31 @@ public class CreatePet_fragment extends android.support.v4.app.Fragment {
         createPet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String petNameText = petName.getText().toString();
+                String petUsernameText = petUsername.getText().toString();
+                String petType = typeList.getSelectedItem().toString();
+                Log.e("petType", petType);
+                //TODO compare strings to regular expression
+                if(username == null || petNameText.equals("") || petUsernameText.equals("")){
+                    Toast.makeText(getActivity(), "Invalid parameters", Toast.LENGTH_SHORT).show();
+                }else{
+                    CreatePet createPet = new CreatePet(petUsernameText, petNameText, petType, username, CreatePet_fragment.this, getActivity());
+                    createPet.execute();
+                }
             }
         });
         return v;
+    }
+
+    @Override
+    public void createPetFinish(String responseValue) {
+        if (responseValue.compareTo("1") == 0){
+            Toast.makeText(getActivity(), "Error Creating Pet", Toast.LENGTH_SHORT).show();
+        }else{
+            // TODO
+            // Add photo to pet
+            Toast.makeText(getActivity(), "Congrats!!! You have a new pet", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        }
     }
 }

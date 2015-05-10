@@ -12,8 +12,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.PetChooseViewPagerAdapter;
+import com.example.david.rawr.Interfaces.CreatePetResponse;
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Tasks.GetPhoto;
@@ -30,6 +32,7 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
     SharedPreferences sharedpreferences;
     ViewPager petProfile;
     LinearLayout ownerLayout;
+    PetChooseViewPagerAdapter petChooseViewPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,34 +46,17 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         addressText = (TextView)findViewById(R.id.owner_profile_address);
         petProfile = (ViewPager)findViewById(R.id.owner_profile_viewPager);
         FragmentManager fm = getSupportFragmentManager();
-        ArrayList<Pet> petList = new ArrayList<Pet>();
         sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        petList.add(new Pet("asdas","Fabian","Dog","--/--/--",sharedpreferences.getString("pictureUri", "")));
-        petList.add(new Pet("asdas","Stiven","Dog","--/--/--",sharedpreferences.getString("pictureUri", "")));
-        petList.add(new Pet("asdas","Felipe","Dog","--/--/--",sharedpreferences.getString("pictureUri", "")));
-        PetChooseViewPagerAdapter petChooseViewPagerAdapter = new PetChooseViewPagerAdapter(fm, petList,this);
+        petChooseViewPagerAdapter = new PetChooseViewPagerAdapter(fm,this);
         petProfile.setAdapter(petChooseViewPagerAdapter);
-        // TODO get birthday dat
-        //if (sharedpreferences.contains("username")) {
-            birthdayText.setText("08/07/1993");
-        //}
         if(sharedpreferences.contains("name")) {
             nameText.setText(sharedpreferences.getString("name", "") + " " );
         }
         if(sharedpreferences.contains("lastName")){
             lastNameText.setText(sharedpreferences.getString("lastName", ""));
         }
-        if(sharedpreferences.contains("ownerPictureUri")){
+        if(sharedpreferences.contains("ownerPictureUri")) {
             GetPhoto getPhoto = new GetPhoto(sharedpreferences.getString("ownerPictureUri", ""), this);
-            /*try {
-                Bitmap bitmap = getPhoto.execute().get();
-                if(bitmap != null)
-                    photo.setImageBitmap(bitmap);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }*/
         }
     }
 
@@ -97,4 +83,6 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         }
         return false;
     }
+
+
 }

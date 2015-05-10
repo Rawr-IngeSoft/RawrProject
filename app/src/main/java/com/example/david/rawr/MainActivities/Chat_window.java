@@ -31,7 +31,6 @@ public class Chat_window extends Activity implements View.OnClickListener{
     Button send_button;
     com.github.nkzawa.socketio.client.Socket mySocket;
     JSONObject data;
-    Emitter.Listener chat_message_listener;
     ListView messagesList;
     ArrayList<Message> messages = new ArrayList<>();
     MessagesListAdapter messagesListAdapter;
@@ -52,26 +51,6 @@ public class Chat_window extends Activity implements View.OnClickListener{
         messagesList.setAdapter(messagesListAdapter);
         try {
             mySocket = IO.socket("http://178.62.233.249:3000");
-            chat_message_listener = new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    try {
-                        data = (JSONObject)args[0];
-                        final String msg = (String)data.get("message");
-                        Chat_window.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                messagesListAdapter.getData().add(new Message(msg, receiver, ""));
-                                messagesListAdapter.notifyDataSetChanged();
-                                messagesList.setAdapter(messagesListAdapter);
-                            }
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            mySocket.on("chat_message", chat_message_listener);
             mySocket.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -93,7 +72,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
                 Chat_window.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        messagesListAdapter.getData().add(new Message(message.getText().toString(), username,""));
+                        messagesListAdapter.getData().add(new Message(message.getText().toString(), username));
                         messagesListAdapter.notifyDataSetChanged();
                         messagesList.setAdapter(messagesListAdapter);
                     }
@@ -115,6 +94,5 @@ public class Chat_window extends Activity implements View.OnClickListener{
         super.onBackPressed();
         this.finish();
         mySocket.disconnect();
-        mySocket.off("chat_message", chat_message_listener);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +30,7 @@ import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.PostListAdapter;
 import com.example.david.rawr.Interfaces.GetPostsResponse;
 import com.example.david.rawr.R;
-import com.example.david.rawr.Services.Connected_friends_listener;
+import com.example.david.rawr.Services.Chat_service;
 import com.example.david.rawr.Tasks.GetPhoto;
 import com.example.david.rawr.Tasks.GetPosts;
 import com.example.david.rawr.models.Post;
@@ -55,9 +57,10 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     float  notificationsX, notificationsY,parentX, parentY, profileX, profileY, messagesX, messagesY, localizationX, localizationY;
     Timer friendsConnectedTimer;
     Intent connected_friends_intent;
+    NotificationManager notificationManager;
     // Background service class declaration
 
-    Connected_friends_listener connected_friends_service;
+    Chat_service chat_service;
 
     // Background service connection declaration
     private ServiceConnection mConnection;
@@ -85,6 +88,9 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_location);
         localization.setImageBitmap(bitmap);
         sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+
+        // Notification manager
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         // Connected friend list
         dList = (ListView) findViewById(R.id.newsfeed_friends_list);
@@ -115,11 +121,10 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         mConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
-                Connected_friends_listener.MyBinder b = (Connected_friends_listener.MyBinder) binder;
-                connected_friends_service = b.getService();
-                Log.e("estado", "conectado");
+                Chat_service.MyBinder b = (Chat_service.MyBinder) binder;
+                chat_service = b.getService();
 
-                friendsList = connected_friends_service.getFriendsList();
+                friendsList = chat_service.getFriendsList();
                 if (friendsList != null) {
                     friends_connected_row_adapter = new Friends_connected_row_Adapter(Newsfeed_screen.this, friendsList);
                     dList.setAdapter(friends_connected_row_adapter);
@@ -130,7 +135,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                connected_friends_service = null;
+                chat_service = null;
             }
         };
 
@@ -176,9 +181,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
         // Start connected friends service
 
-        connected_friends_intent = new Intent(this, Connected_friends_listener.class).setData(Uri.parse(username));
+        connected_friends_intent = new Intent(this, Chat_service.class).setData(Uri.parse(username));
         this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
-        startService(connected_friends_intent);
 
         // Refresh friend list
         friendsConnectedTimer = new Timer();
@@ -188,15 +192,17 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                 Newsfeed_screen.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        friendsList = connected_friends_service.getFriendsList();
+                        friendsList = chat_service.getFriendsList();
                         if (friendsList != null) {
-                            for(String f: friendsList){
-                                Log.e("AMIGAZO! ",f);
+                            if (!friendsList.equals(friends_connected_row_adapter.getPetNames())){
+                                Notification n = new Notification.Builder(Newsfeed_screen.this)
+                                        .setContentTitle("Amigo Conectado")
+                                        .setSmallIcon(R.drawable.logo_icon).build();
+                                notificationManager.notify(0,n);
                             }
                             if(!friendsList.contains(username)){
                                 friendsList.add(username);
                             }
-
                             friends_connected_row_adapter.setPetNames(friendsList);
 
                             friends_connected_row_adapter.notifyDataSetChanged();
@@ -355,7 +361,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     protected void onDestroy() {
         super.onDestroy();
         friendsConnectedTimer.cancel();
-        connected_friends_service.disconnect();
         unbindService(mConnection);
     }
 }
