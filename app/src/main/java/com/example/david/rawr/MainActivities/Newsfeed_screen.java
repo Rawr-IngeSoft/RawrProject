@@ -56,7 +56,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     RelativeLayout buttons_container;
     float  notificationsX, notificationsY,parentX, parentY, profileX, profileY, messagesX, messagesY, localizationX, localizationY;
     Timer friendsConnectedTimer;
-    Intent connected_friends_intent;
     NotificationManager notificationManager;
     // Background service class declaration
 
@@ -181,7 +180,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
         // Start connected friends service
 
-        connected_friends_intent = new Intent(this, Chat_service.class).setData(Uri.parse(username));
+        Intent connected_friends_intent = new Intent(this, Chat_service.class);
         this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
 
         // Refresh friend list
@@ -194,17 +193,10 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                     public void run() {
                         friendsList = chat_service.getFriendsList();
                         if (friendsList != null) {
-                            if (!friendsList.equals(friends_connected_row_adapter.getPetNames())){
-                                Notification n = new Notification.Builder(Newsfeed_screen.this)
-                                        .setContentTitle("Amigo Conectado")
-                                        .setSmallIcon(R.drawable.logo_icon).build();
-                                notificationManager.notify(0,n);
-                            }
                             if(!friendsList.contains(username)){
                                 friendsList.add(username);
                             }
                             friends_connected_row_adapter.setPetNames(friendsList);
-
                             friends_connected_row_adapter.notifyDataSetChanged();
                             dList.setAdapter(friends_connected_row_adapter);
                         }

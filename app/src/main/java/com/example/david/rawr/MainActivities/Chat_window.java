@@ -3,8 +3,10 @@ package com.example.david.rawr.MainActivities;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -68,6 +70,8 @@ public class Chat_window extends Activity implements View.OnClickListener{
                 chat_service = null;
             }
         };
+        Intent connected_friends_intent = new Intent(this, Chat_service.class).setData(Uri.parse(username));
+        this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
     }
 
     @Override
@@ -99,6 +103,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unbindService(mConnection);
 
     }
 
