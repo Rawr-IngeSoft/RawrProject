@@ -86,11 +86,18 @@ public class Chat_window extends Activity implements View.OnClickListener{
                     data.put("sender", username);
                     data.put("receiver", receiver);
                     data.put("message", message.getText().toString());
-                    message.setText("");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                Chat_window.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        messagesListAdapter.getData().add(message.getText().toString());
+                        messagesListAdapter.notifyDataSetChanged();
+                        messagesList.setAdapter(messagesListAdapter);
+                    }
+                });
+                message.setText("");
                 mySocket.emit("chat_message", data);
                 break;
         }

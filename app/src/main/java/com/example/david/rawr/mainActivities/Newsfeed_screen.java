@@ -62,24 +62,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     Connected_friends_listener connected_friends_service;
 
     // Background service connection declaration
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder binder) {
-            Connected_friends_listener.MyBinder b = (Connected_friends_listener.MyBinder) binder;
-            connected_friends_service = b.getService();
-            Log.e("estado", "conectado");
-            friendsList = connected_friends_service.getFriendsList();
-            if (friendsList != null) {
-                friends_connected_row_adapter = new Friends_connected_row_Adapter(Newsfeed_screen.this, friendsList);
-                dList.setAdapter(friends_connected_row_adapter);
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            connected_friends_service = null;
-        }
-    };
+    private ServiceConnection mConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +113,25 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         if(sharedPreferences.contains("username")) {
             username = sharedPreferences.getString("username", "");
         }
+
+        mConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder binder) {
+                Connected_friends_listener.MyBinder b = (Connected_friends_listener.MyBinder) binder;
+                connected_friends_service = b.getService();
+                Log.e("estado", "conectado");
+                friendsList = connected_friends_service.getFriendsList();
+                if (friendsList != null) {
+                    friends_connected_row_adapter = new Friends_connected_row_Adapter(Newsfeed_screen.this, friendsList);
+                    dList.setAdapter(friends_connected_row_adapter);
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                connected_friends_service = null;
+            }
+        };
 
         GetPosts getPosts = new GetPosts(username, this);
         getPosts.execute();
