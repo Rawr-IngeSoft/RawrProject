@@ -1,14 +1,12 @@
 package com.example.david.rawr.Adapters;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.david.rawr.MainActivities.Owner_Profile_screen;
 import com.example.david.rawr.SQLite.PetSQLiteHelper;
-import com.example.david.rawr.models.Pet;
+import com.example.david.rawr.Models.Pet;
 import com.example.david.rawr.Fragments.ChoosePetFragment;
 import com.example.david.rawr.Fragments.CreatePet_fragment;
 

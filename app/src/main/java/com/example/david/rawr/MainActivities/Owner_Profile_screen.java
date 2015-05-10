@@ -12,16 +12,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.PetChooseViewPagerAdapter;
-import com.example.david.rawr.Interfaces.CreatePetResponse;
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Tasks.GetPhoto;
-import com.example.david.rawr.models.Pet;
-
-import java.util.ArrayList;
 
 
 // REQ-029

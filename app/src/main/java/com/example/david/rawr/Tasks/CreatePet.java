@@ -2,28 +2,23 @@ package com.example.david.rawr.Tasks;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.david.rawr.Interfaces.CreatePetResponse;
 import com.example.david.rawr.SQLite.PetSQLiteHelper;
-import com.example.david.rawr.models.Pet;
+import com.example.david.rawr.Models.Pet;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by David on 15/04/2015.
@@ -38,6 +33,7 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
     private HttpResponse response;
     private static String url_create_pet = "http://178.62.233.249/rawr/create_pet.php";
     private CreatePetResponse createPetResponse;
+    private SharedPreferences sharedPreferences;
     private Context context;
     public CreatePet(String username, String petName, String petType, String owner, CreatePetResponse createPetResponse, Context context) {
         this.username = username;
@@ -46,33 +42,41 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
         this.owner = owner;
         this.createPetResponse = createPetResponse;
         this.context = context;
+        sharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
     }
 
     protected String doInBackground(String... args) {
-
-        // Building Parameters
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("username", this.username));
-        params.add(new BasicNameValuePair("name", this.petName));
-        params.add(new BasicNameValuePair("type", this.petType));
-        params.add(new BasicNameValuePair("owner_username", this.owner));
-
-        HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(url_create_pet);
-        String responseValue = "";
+        String status = "0";
         try {
-            post.setEntity(new UrlEncodedFormEntity(params));
+            // Building Parameters
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("username", this.username);
+            jsonObject.put("name", this.petName);
+            jsonObject.put("type", this.petType);
+            jsonObject.put("owner_username", this.owner);
+            HttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost(url_create_pet);
+            post.setHeader("Accept", "application/json");
+            post.setHeader("Content-type", "application/json");
+
+            StringEntity se = new StringEntity(jsonObject.toString());
+            post.setEntity(se);
+
+            HttpResponse response;
             response = client.execute(post);
-            Header header = response.getFirstHeader("Content-Length");
-            responseValue = header.getValue();
+            JsonParser jsonParser = new JsonParser(response.getEntity().getContent());
+            JSONObject jsonResponse= jsonParser.getjObject();
+            status = jsonResponse.getString("status");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return responseValue;
+        return status;
     }
 
     /**
@@ -81,8 +85,6 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
      */
     protected void onPostExecute(String responseValue) {
         if (responseValue.compareTo("1") == 0){
-        }else{
-
             // Focus actual pet
             SharedPreferences sharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor =  sharedPreferences.edit();
@@ -94,7 +96,6 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
             // Save pet in sqlite
             PetSQLiteHelper petSQLiteHelper = new PetSQLiteHelper(context);
             petSQLiteHelper.addPet(new Pet(username,petName,petType,"",""));
-
         }
         createPetResponse.createPetFinish(responseValue);
     }

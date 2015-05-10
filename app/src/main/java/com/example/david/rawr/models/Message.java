@@ -1,4 +1,4 @@
-package com.example.david.rawr.models;
+package com.example.david.rawr.Models;
 
 /**
  * Created by david on 09/05/2015.

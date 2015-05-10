@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.david.rawr.R;
-import com.example.david.rawr.models.Post;
+import com.example.david.rawr.Models.Post;
 
 import java.util.ArrayList;
 

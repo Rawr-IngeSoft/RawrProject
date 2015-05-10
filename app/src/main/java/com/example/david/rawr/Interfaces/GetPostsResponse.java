@@ -1,6 +1,6 @@
 package com.example.david.rawr.Interfaces;
 
-import com.example.david.rawr.models.Post;
+import com.example.david.rawr.Models.Post;
 
 import java.util.ArrayList;
 

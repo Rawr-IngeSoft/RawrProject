@@ -12,7 +12,7 @@ import android.os.IBinder;
 
 import com.example.david.rawr.MainActivities.Chat_window;
 import com.example.david.rawr.R;
-import com.example.david.rawr.models.Message;
+import com.example.david.rawr.Models.Message;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
@@ -118,6 +118,9 @@ public  class Chat_service extends Service {
         return friendsList;
     }
 
+    public void sendMessage(JSONObject data){
+        mySocket.emit("chat_message", data);
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

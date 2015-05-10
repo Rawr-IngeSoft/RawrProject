@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.david.rawr.models.Pet;
+import com.example.david.rawr.Models.Pet;
 
 import java.util.ArrayList;
 
@@ -59,5 +59,12 @@ public class PetSQLiteHelper extends SQLiteOpenHelper {
         }
         db.close();
         return pets;
+    }
+
+    public void clearDB(){
+        String query = "delete from Pet";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
     }
 }

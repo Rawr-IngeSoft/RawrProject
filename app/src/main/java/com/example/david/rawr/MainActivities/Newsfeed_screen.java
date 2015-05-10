@@ -33,7 +33,7 @@ import com.example.david.rawr.R;
 import com.example.david.rawr.Services.Chat_service;
 import com.example.david.rawr.Tasks.GetPhoto;
 import com.example.david.rawr.Tasks.GetPosts;
-import com.example.david.rawr.models.Post;
+import com.example.david.rawr.Models.Post;
 import com.example.david.rawr.otherClasses.RoundImage;
 
 import java.util.ArrayList;

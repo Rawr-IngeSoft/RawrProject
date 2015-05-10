@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.example.david.rawr.Adapters.ConfigurationListAdapter;
 import com.example.david.rawr.R;
+import com.example.david.rawr.SQLite.PetSQLiteHelper;
 import com.facebook.login.LoginManager;
 
 
@@ -33,10 +34,9 @@ public class Configuration_screen extends Activity  {
                 Log.e("position", String.valueOf(position));
                 if (position == 5) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.remove("username");
-                    editor.remove("name");
-                    editor.remove("lastName");
-                    editor.remove("pictureUri");
+                    PetSQLiteHelper petSQLiteHelper = new PetSQLiteHelper(Configuration_screen.this);
+                    petSQLiteHelper.clearDB();
+                    editor.clear();
                     editor.commit();
                     if(LoginManager.getInstance() != null) {
                         LoginManager.getInstance().logOut();

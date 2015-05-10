@@ -1,19 +1,23 @@
 package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.MessagesListAdapter;
 import com.example.david.rawr.R;
-import com.example.david.rawr.models.Message;
-import com.github.nkzawa.emitter.Emitter;
+import com.example.david.rawr.Models.Message;
+import com.example.david.rawr.Services.Chat_service;
 import com.github.nkzawa.socketio.client.IO;
 
 import org.json.JSONException;
@@ -29,9 +33,12 @@ public class Chat_window extends Activity implements View.OnClickListener{
     SharedPreferences sharedPreferences;
     EditText message;
     Button send_button;
-    com.github.nkzawa.socketio.client.Socket mySocket;
     JSONObject data;
     ListView messagesList;
+    // Background service connection declaration
+    ServiceConnection mConnection;
+    private Chat_service chat_service;
+
     ArrayList<Message> messages = new ArrayList<>();
     MessagesListAdapter messagesListAdapter;
     @Override
@@ -49,12 +56,18 @@ public class Chat_window extends Activity implements View.OnClickListener{
         messagesList = (ListView) findViewById(R.id.chat_window_messages_list);
         messagesListAdapter = new MessagesListAdapter(this, messages);
         messagesList.setAdapter(messagesListAdapter);
-        try {
-            mySocket = IO.socket("http://178.62.233.249:3000");
-            mySocket.connect();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        mConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder binder) {
+                Chat_service.MyBinder b = (Chat_service.MyBinder) binder;
+                chat_service = b.getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                chat_service = null;
+            }
+        };
     }
 
     @Override
@@ -78,7 +91,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
                     }
                 });
                 message.setText("");
-                mySocket.emit("chat_message", data);
+                chat_service.sendMessage(data);
                 break;
         }
     }
@@ -93,6 +106,5 @@ public class Chat_window extends Activity implements View.OnClickListener{
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
-        mySocket.disconnect();
     }
 }

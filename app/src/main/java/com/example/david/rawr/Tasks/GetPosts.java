@@ -3,7 +3,7 @@ package com.example.david.rawr.Tasks;
 import android.os.AsyncTask;
 
 import com.example.david.rawr.Interfaces.GetPostsResponse;
-import com.example.david.rawr.models.Post;
+import com.example.david.rawr.Models.Post;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
