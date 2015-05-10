@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.example.david.rawr.MainActivities.Chat_window;
 import com.example.david.rawr.R;
@@ -108,6 +109,12 @@ public  class Chat_service extends Service {
         return iBinder;
     }
 
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.e("status", "unbinded");
+        return super.onUnbind(intent);
+    }
+
     public class MyBinder extends Binder {
         public Chat_service getService(){
             return Chat_service.this;
@@ -123,6 +130,7 @@ public  class Chat_service extends Service {
     }
     @Override
     public void onDestroy() {
+        Log.e("status", "destroyed");
         super.onDestroy();
         mySocket.disconnect();
         mySocket.off("response_start_session",startSession_listener);
