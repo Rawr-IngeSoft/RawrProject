@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.david.rawr.R;
+import com.example.david.rawr.models.Message;
 import com.example.david.rawr.models.Post;
 
 import java.util.ArrayList;
@@ -17,10 +18,10 @@ import java.util.ArrayList;
  */
 public class MessagesListAdapter extends BaseAdapter {
     Context context;
-    ArrayList<String> data;
+    ArrayList<Message> data;
     private static LayoutInflater inflater;
 
-    public MessagesListAdapter(Context context, ArrayList<String> data) {
+    public MessagesListAdapter(Context context, ArrayList<Message> data) {
         this.context = context;
         this.data = data;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -46,16 +47,18 @@ public class MessagesListAdapter extends BaseAdapter {
         if(convertView == null){
             convertView = inflater.inflate(R.layout.messages_list_row, null);
             TextView msgTV = (TextView)convertView.findViewById(R.id.messages_list_row_message);
-            msgTV.setText(data.get(position));
+            TextView personTV = (TextView)convertView.findViewById(R.id.messages_list_row_person);
+            msgTV.setText(data.get(position).getMessage());
+            personTV.setText(data.get(position).getPerson() + ": ");
         }
         return convertView;
     }
 
-    public ArrayList<String> getData() {
+    public ArrayList<Message> getData() {
         return data;
     }
 
-    public void setData(ArrayList<String> data) {
+    public void setData(ArrayList<Message> data) {
         this.data = data;
     }
 }

@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.example.david.rawr.Adapters.MessagesListAdapter;
 import com.example.david.rawr.R;
+import com.example.david.rawr.models.Message;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 
@@ -32,7 +33,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
     JSONObject data;
     Emitter.Listener chat_message_listener;
     ListView messagesList;
-    ArrayList<String> messages = new ArrayList<>();
+    ArrayList<Message> messages = new ArrayList<>();
     MessagesListAdapter messagesListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
                         Chat_window.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                messagesListAdapter.getData().add(msg);
+                                messagesListAdapter.getData().add(new Message(msg, receiver, ""));
                                 messagesListAdapter.notifyDataSetChanged();
                                 messagesList.setAdapter(messagesListAdapter);
                             }
@@ -92,7 +93,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
                 Chat_window.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        messagesListAdapter.getData().add(message.getText().toString());
+                        messagesListAdapter.getData().add(new Message(message.getText().toString(), username,""));
                         messagesListAdapter.notifyDataSetChanged();
                         messagesList.setAdapter(messagesListAdapter);
                     }
