@@ -99,8 +99,14 @@ public class Chat_window extends Activity implements View.OnClickListener{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
         mySocket.disconnect();
         mySocket.off("chat_message", chat_message_listener);
     }
-
 }
