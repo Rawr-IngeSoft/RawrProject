@@ -1,7 +1,9 @@
 package com.example.david.rawr.Services;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
@@ -39,30 +41,40 @@ public class Connected_friends_listener extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
+            mySocket = IO.socket("http://178.62.233.249:3000");
+
+            JSONObject data = new JSONObject();
+            SharedPreferences sharedPreferences;
+            sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+            username=sharedPreferences.getString("username", "");
+            data.put("username", username);
+            mySocket.connect();
+            mySocket.emit("start_session", data);
+
+            friendsList= new ArrayList();
             username = intent.getDataString();
             startSession_listener = new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
                     try {
+                            Log.e("CON FRIENDS", "SI");
                         JSONObject response = new JSONObject((String) args[0]);
                         JSONArray jsonArray = (JSONArray) response.get("users");
-                        friendsList = new ArrayList<>();
+                        friendsList = new ArrayList<String>();
                         if (jsonArray != null) {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 friendsList.add(jsonArray.get(i).toString());
                             }
                         }
+                        friendsList.add(username);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             };
-            mySocket = IO.socket("http://178.62.233.249:3000");
+
             mySocket.on("response_start_session", startSession_listener);
-            JSONObject data = new JSONObject();
-            data.put("username", username);
-            mySocket.connect();
-            mySocket.emit("start_session", data);
+
         } catch (URISyntaxException e) {
             e.printStackTrace();
         } catch (JSONException e) {

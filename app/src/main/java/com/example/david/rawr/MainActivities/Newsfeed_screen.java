@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -24,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.PostListAdapter;
@@ -111,7 +109,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             profilePicture.setImageBitmap(RoundImage.getRoundedShape(largeIcon));
         }
         if(sharedPreferences.contains("username")) {
-            username = sharedPreferences.getString("username", "");
+            username = sharedPreferences.getString("username", "");sharedPreferences.getString("username", "");
         }
 
         mConnection = new ServiceConnection() {
@@ -120,10 +118,13 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                 Connected_friends_listener.MyBinder b = (Connected_friends_listener.MyBinder) binder;
                 connected_friends_service = b.getService();
                 Log.e("estado", "conectado");
+
                 friendsList = connected_friends_service.getFriendsList();
                 if (friendsList != null) {
                     friends_connected_row_adapter = new Friends_connected_row_Adapter(Newsfeed_screen.this, friendsList);
                     dList.setAdapter(friends_connected_row_adapter);
+                }else{
+                    Log.e("LISTA", "nulllu");
                 }
             }
 
@@ -152,6 +153,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
                 dLayout.closeDrawers();
                 Intent intent = new Intent(Newsfeed_screen.this, Chat_window.class);
+
                 intent.putExtra("idPet", dList.getItemAtPosition(position).toString());
                 startActivity(intent);
             }
@@ -189,9 +191,14 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                         friendsList = connected_friends_service.getFriendsList();
                         if (friendsList != null) {
                             for(String f: friendsList){
-                                Log.e("friend",f);
+                                Log.e("AMIGAZO! ",f);
                             }
+                            if(!friendsList.contains(username)){
+                                friendsList.add(username);
+                            }
+
                             friends_connected_row_adapter.setPetNames(friendsList);
+
                             friends_connected_row_adapter.notifyDataSetChanged();
                             dList.setAdapter(friends_connected_row_adapter);
                         }
