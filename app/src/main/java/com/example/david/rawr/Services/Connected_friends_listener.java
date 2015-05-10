@@ -82,6 +82,11 @@ public class Connected_friends_listener extends Service {
         }
     }
 
+    public void disconnect(){
+        mySocket.disconnect();
+        mySocket.off("response_start_session",startSession_listener);
+        mySocket = null;
+    }
     public ArrayList<String> getFriendsList(){
         return friendsList;
     }

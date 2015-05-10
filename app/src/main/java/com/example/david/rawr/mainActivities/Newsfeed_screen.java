@@ -186,6 +186,9 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                     public void run() {
                         friendsList = connected_friends_service.getFriendsList();
                         if (friendsList != null) {
+                            for(String f: friendsList){
+                                Log.e("friend",f);
+                            }
                             friends_connected_row_adapter.setPetNames(friendsList);
                             friends_connected_row_adapter.notifyDataSetChanged();
                             dList.setAdapter(friends_connected_row_adapter);
@@ -343,6 +346,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     protected void onDestroy() {
         super.onDestroy();
         friendsConnectedTimer.cancel();
+        connected_friends_service.disconnect();
         unbindService(mConnection);
     }
 }
