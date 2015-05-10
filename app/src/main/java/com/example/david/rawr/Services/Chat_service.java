@@ -2,6 +2,7 @@ package com.example.david.rawr.Services;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.example.david.rawr.MainActivities.Chat_window;
 import com.example.david.rawr.R;
 import com.example.david.rawr.models.Message;
 import com.github.nkzawa.emitter.Emitter;
@@ -71,12 +73,16 @@ public  class Chat_service extends Service {
                 public void call(Object... args) {
                     try {
                         JSONObject data = (JSONObject)args[0];
+                        Intent intent = new Intent(getApplicationContext(), Chat_window.class);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0, intent,0);
                         Message msg = new Message((String)data.get("sender"),(String)data.get("message"));
-                        Notification n = new Notification.Builder(Chat_service.this)
+                        Notification notification = new Notification.Builder(Chat_service.this)
                                     .setSmallIcon(R.drawable.logo_icon)
                                     .setContentTitle(msg.getPerson())
-                                    .setContentText(msg.getMessage()).build();
-                        notificationManager.notify(0,n);
+                                    .setContentText(msg.getMessage())
+                                    .setAutoCancel(true)
+                                    .setContentIntent(pendingIntent).build();
+                        notificationManager.notify(0,notification);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
