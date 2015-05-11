@@ -7,8 +7,8 @@ $conn = dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
     "SELECT p.username, p.owner_username, p.name, p.type, ph.path
-     FROM Pet p, Photo ph
-     WHERE p.username = ph.username AND p.owner_username = '$username' ";
+     FROM Pet p LEFT JOIN Photo ph ON p.username = ph.username
+     WHERE  p.owner_username = '$username'";
 
 // ahora toca recorrer el query
 $result = $conn->query($sql);
@@ -27,8 +27,9 @@ if ($result->num_rows > 0) {
         array_push($retorno, $arreglo);
 
     }
-    $json = array('pets'=>$retorno, "status"=>"0");
+    $json = array('pets'=>$retorno, "status"=>"1");
     echo json_encode($json);
  }else{
-    echo 'pasó algo muy raro';
+    $json = array("status"=>"0");
+    echo json_encode($json);
  }
