@@ -32,8 +32,9 @@ if ($result->num_rows > 0) {
         array_push($retorno, $arreglo);
 
     }
-    $json = array('friends'=>$retorno, "status"=>"0");
+    $json = array('friends'=>$retorno, "status"=>"1");
     echo json_encode($json);
  }else{
-    echo 'pasó algo muy raro';
+    $json = array("status"=>"0");
+    echo json_encode($json);
  }
