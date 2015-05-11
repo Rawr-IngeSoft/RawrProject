@@ -6,7 +6,7 @@ header("Content-Type: application/json; charset=UTF-8");
 $conn = dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
-    "SELECT p.username, p.owner_username, p.name, p.type, ph.path
+    "SELECT p.username, p.owner_username, p.name, p.type, ph.path, p.birth_date, p.gender
      FROM Pet p LEFT JOIN Photo ph ON p.username = ph.username
      WHERE  p.owner_username = '$username'";
 
@@ -19,10 +19,14 @@ if ($result->num_rows > 0) {
     
        // Crear un diccionario de Post
         $arreglo = array(
+            "username"=>$row['username'],
             "owner"=>$row['owner_username'],
             "name"=> $row['name'],
             "type"=> $row['type'],
-            "path"=> $row['path']
+            "path"=> $row['path'],
+            "birth_date"=> $row['birth_date'],
+            "gender"=> $row['gender'],
+
             );
         array_push($retorno, $arreglo);
 
