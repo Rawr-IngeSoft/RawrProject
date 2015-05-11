@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include 'db_connect.php';
 // header para mostrar que se va a recbir un JSON
 header("Content-Type: application/json; charset=UTF-8");
