@@ -43,6 +43,20 @@ public  class Chat_service extends Service {
         public List<String> getFriendsList() throws RemoteException {
             return friendsList;
         }
+
+        @Override
+        public void sendMessage(String sender, String receiver, String msg) throws RemoteException {
+            JSONObject data = new JSONObject();
+            try {
+                data.put("sender", sender);
+                data.put("receiver", receiver);
+                data.put("message", msg);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mySocket.emit("chat_message", data);
+        }
+
     };
 
     // Binder for communication

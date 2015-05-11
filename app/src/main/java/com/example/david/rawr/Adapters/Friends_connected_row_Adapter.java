@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.david.rawr.Models.Friend;
 import com.example.david.rawr.R;
 
 import java.util.ArrayList;
@@ -17,23 +18,23 @@ import java.util.ArrayList;
 public class Friends_connected_row_Adapter extends BaseAdapter {
 
     Context context;
-    ArrayList<String> petNames;
+    ArrayList<Friend> friends;
     private static LayoutInflater inflater;
 
-    public Friends_connected_row_Adapter(Context context, ArrayList<String> petNames) {
-        this.petNames = petNames;
+    public Friends_connected_row_Adapter(Context context, ArrayList<Friend> friends) {
+        this.friends = friends;
         this.context = context;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return petNames.size();
+        return friends.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return petNames.get(position);
+        return friends.get(position);
     }
 
     @Override
@@ -46,16 +47,12 @@ public class Friends_connected_row_Adapter extends BaseAdapter {
         if(convertView == null){
             convertView = inflater.inflate(R.layout.friends_connected_row, null);
             TextView petName = (TextView)convertView.findViewById(R.id.friends_connected_row_petName);
-            petName.setText(petNames.get(position));
+            petName.setText(friends.get(position).getPetName());
         }
         return convertView;
     }
 
-    public ArrayList<String> getPetNames() {
-        return petNames;
-    }
-
-    public void setPetNames(ArrayList<String> petNames) {
-        this.petNames = petNames;
+    public void setFriends(ArrayList<Friend> friends) {
+        this.friends = friends;
     }
 }

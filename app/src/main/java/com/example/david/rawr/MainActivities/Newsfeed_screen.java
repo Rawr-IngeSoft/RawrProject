@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -32,7 +33,9 @@ import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.PostListAdapter;
 import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.Interfaces.GetPostsResponse;
+import com.example.david.rawr.Models.Friend;
 import com.example.david.rawr.R;
+import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Services.Chat_service;
 import com.example.david.rawr.Tasks.GetPhoto;
 import com.example.david.rawr.Tasks.GetPosts;
@@ -55,12 +58,13 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     DrawerLayout dLayout;
     ListView dList;
     boolean buttonsVisible = true;
-    ArrayList<String> friendsList = new ArrayList<>();
+    ArrayList<Friend> friendsList = new ArrayList<>();
     RelativeLayout buttons_container;
     float  notificationsX, notificationsY,parentX, parentY, profileX, profileY, messagesX, messagesY, localizationX, localizationY;
     Timer friendsConnectedTimer;
     NotificationManager notificationManager;
-    // Background service class declaration
+    // DB Manager
+    SQLiteHelper  sqLiteHelper = new SQLiteHelper(this);
 
     // Background service connection declaration
     private ServiceConnection mConnection;
@@ -96,6 +100,9 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         // Connected friend list
         dList = (ListView) findViewById(R.id.newsfeed_friends_list);
         dList.setSelector(android.R.color.holo_blue_dark);
+
+        //Show friendlis
+        friendsList = sqLiteHelper.getFriends();
         friends_connected_row_adapter = new Friends_connected_row_Adapter(this, friendsList);
         dList.setAdapter(friends_connected_row_adapter);
 
@@ -124,15 +131,18 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             public void onServiceConnected(ComponentName name, IBinder binder) {
                 service = IRemoteService.Stub.asInterface(binder);
                 try {
-                    friendsList = (ArrayList<String>)service.getFriendsList();
+                    ArrayList<String> connectedFriends = (ArrayList<String>)service.getFriendsList();
+                    if (connectedFriends != null) {
+                        for(Friend friend: friendsList){
+                            if (connectedFriends.contains(friend.getPetName())){
+                                friend.setConnected(true);
+                            }
+                        }
+                        friends_connected_row_adapter.setFriends(friendsList);
+                        friends_connected_row_adapter.notifyDataSetChanged();
+                    }
                 } catch (RemoteException e) {
                     e.printStackTrace();
-                }
-                if (friendsList != null) {
-                    friends_connected_row_adapter = new Friends_connected_row_Adapter(Newsfeed_screen.this, friendsList);
-                    dList.setAdapter(friends_connected_row_adapter);
-                }else{
-                    Log.e("LISTA", "nulllu");
                 }
             }
 
@@ -182,7 +192,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         profilePicture.bringToFront(); // Bring profile picture to front
         buttons_container.bringToFront(); //  bring container to front
 
-        // Start connected friends service
+        // bind connected friends service
         if (service == null) {
             Intent connected_friends_intent = new Intent();
             connected_friends_intent.setAction("service.Chat");
@@ -198,18 +208,19 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                     public void run() {
                         try {
                             if(service != null) {
-                                friendsList = (ArrayList<String>) service.getFriendsList();
+                                ArrayList<String> connectedFriends = (ArrayList<String>) service.getFriendsList();
+                                if (connectedFriends != null) {
+                                    for(Friend friend: friendsList){
+                                        if (connectedFriends.contains(friend.getPetName())){
+                                            friend.setConnected(true);
+                                        }
+                                    }
+                                    friends_connected_row_adapter.setFriends(friendsList);
+                                    friends_connected_row_adapter.notifyDataSetChanged();
+                                }
                             }
                         } catch (RemoteException e) {
                             e.printStackTrace();
-                        }
-                        if (friendsList != null) {
-                            if(!friendsList.contains(username)){
-                                friendsList.add(username);
-                            }
-                            friends_connected_row_adapter.setPetNames(friendsList);
-                            friends_connected_row_adapter.notifyDataSetChanged();
-                            dList.setAdapter(friends_connected_row_adapter);
                         }
                     }
                 });

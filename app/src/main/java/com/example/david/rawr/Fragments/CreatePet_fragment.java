@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,8 +29,9 @@ public class CreatePet_fragment extends android.support.v4.app.Fragment implemen
     Button createPet;
     private EditText petName;
     private EditText petUsername;
+    private RadioGroup gender;
     Spinner typeList;
-    String username = null;
+    String username = null, genderString = "Female";
     SharedPreferences sharedPreferences;
 
     @Override
@@ -49,6 +51,17 @@ public class CreatePet_fragment extends android.support.v4.app.Fragment implemen
         petUsername = (EditText)v.findViewById(R.id.petUsername);
         typeList = (Spinner)v.findViewById(R.id.list);
         typeList.setClickable(true);
+        gender = (RadioGroup)v.findViewById(R.id.createPet_fragment_gender_RG);
+        gender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.createPet_fragment_gender_Female) {
+                    genderString = "Female";
+                } else{
+                    genderString = "Male";
+                }
+            }
+        });
         final ArrayList<String> types =  new ArrayList<>();
         types.add("Dog"); types.add("Cat"); types.add("Horse"); types.add("Ant"); types.add("Panda");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.pet_type_spinner_row, types);
@@ -75,7 +88,7 @@ public class CreatePet_fragment extends android.support.v4.app.Fragment implemen
                 if(username == null || petNameText.equals("") || petUsernameText.equals("")){
                     Toast.makeText(getActivity(), "Invalid parameters", Toast.LENGTH_SHORT).show();
                 }else{
-                    CreatePet createPet = new CreatePet(petUsernameText, petNameText, petType, username, CreatePet_fragment.this, getActivity());
+                    CreatePet createPet = new CreatePet(petUsernameText, petNameText, petType, username, genderString, CreatePet_fragment.this, getActivity());
                     createPet.execute();
                 }
             }

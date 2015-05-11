@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 import com.example.david.rawr.Interfaces.CreatePetResponse;
-import com.example.david.rawr.SQLite.PetSQLiteHelper;
+import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Models.Pet;
 
 import org.apache.http.HttpResponse;
@@ -30,18 +30,19 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
     private final String petName;
     private final String petType;
     private final String owner;
-    private HttpResponse response;
+    private final String petGender;
     private static String url_create_pet = "http://178.62.233.249/rawr/create_pet.php";
     private CreatePetResponse createPetResponse;
     private SharedPreferences sharedPreferences;
     private Context context;
-    public CreatePet(String username, String petName, String petType, String owner, CreatePetResponse createPetResponse, Context context) {
+    public CreatePet(String username, String petName, String petType, String owner, String petGender, CreatePetResponse createPetResponse, Context context) {
         this.username = username;
         this.petName = petName;
         this.petType = petType;
         this.owner = owner;
         this.createPetResponse = createPetResponse;
         this.context = context;
+        this.petGender = petGender;
         sharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
     }
 
@@ -91,11 +92,12 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
             editor.putString("petName", petName);
             editor.putString("petUsername", username);
             editor.putString("petType", petType);
+            editor.putString("petGender", petGender);
             editor.commit();
 
             // Save pet in sqlite
-            PetSQLiteHelper petSQLiteHelper = new PetSQLiteHelper(context);
-            petSQLiteHelper.addPet(new Pet(username,petName,petType,"",""));
+            SQLiteHelper SQLiteHelper = new SQLiteHelper(context);
+            SQLiteHelper.addPet(new Pet(username,petName,petType,"","", petGender));
         }
         createPetResponse.createPetFinish(responseValue);
     }

@@ -38,19 +38,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:id="@+id/createPet_fragment_gender_RG">
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Female"
             android:textSize="15dp"
             android:layout_marginRight="20dp"
+            android:id="@+id/createPet_fragment_gender_Female"
             />
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Male"
             android:textSize="15dp"
+            android:id="@+id/createPet_fragment_gender_Male"
             />
     </RadioGroup>
     <Button

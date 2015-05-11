@@ -6,21 +6,26 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.CreateResponse;
+import com.example.david.rawr.Interfaces.GetFriendsResponse;
 import com.example.david.rawr.Interfaces.ValidateResponse;
+import com.example.david.rawr.Models.Friend;
 import com.example.david.rawr.R;
+import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Tasks.CreateOwner;
+import com.example.david.rawr.Tasks.GetFriends;
 import com.example.david.rawr.Tasks.ValidateUser;
 
 import java.util.ArrayList;
 
 
-public class Loading_screen extends Activity implements ValidateResponse, CreateResponse {
+public class Loading_screen extends Activity implements ValidateResponse, CreateResponse, GetFriendsResponse {
 
     String username, serviceType;
     SharedPreferences sharedpreferences;
@@ -34,11 +39,6 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         frameAnimation.start();
         serviceType = getIntent().getStringExtra("serviceType");
         if(serviceType.compareTo("logIn") == 0) {
-            if (sharedpreferences.contains("username")) {
-                Intent intent = new Intent(this, Newsfeed_screen.class);
-                startActivity(intent);
-                this.finish();
-            }
             username = getIntent().getStringExtra("username");
             String password = getIntent().getStringExtra("password");
             // Validate User
@@ -102,24 +102,37 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             editor.putString("name", name );
             editor.putString("lastName", lastName );
             editor.commit();
-            String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
-            Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
-            intent = new Intent(this, Newsfeed_screen.class);
+            if (sharedpreferences.contains("petUsername")) {
+                GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername",""), this);
+                getFriends.execute();
+            }else {
+                String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
+                Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
+                intent = new Intent(this, Newsfeed_screen.class);
+                startActivity(intent);
+                this.finish();
+            }
         }else{
             intent = new Intent(this, LogIn_screen.class);
             Toast.makeText(this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+            this.finish();
         }
-        startActivity(intent);
-        this.finish();
+
     }
 
     @Override
     public void createFinish(String status) {
         Intent intent;
         if (serviceType.compareTo("facebook") == 0) {
-            intent = new Intent(this, Newsfeed_screen.class);
-            startActivity(intent);
-            this.finish();
+            if (sharedpreferences.contains("petUsername")) {
+                GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername",""), this);
+                getFriends.execute();
+            }else {
+                intent = new Intent(this, Newsfeed_screen.class);
+                startActivity(intent);
+                this.finish();
+            }
         }else{
             if (status.compareTo("1") == 0) {
                 String msg = "Welcome " + sharedpreferences.getString("name","") + " " + sharedpreferences.getString("lastName","");
@@ -134,4 +147,18 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         }
     }
 
+    @Override
+    public void getFriendsFinish(ArrayList<Friend> output) {
+        SQLiteHelper SQLiteHelper = new SQLiteHelper(this);
+        Log.e("Friends","");
+        for (Friend friend: output){
+            Log.e("friend", friend.getPetName());
+            SQLiteHelper.addFriend(friend);
+        }
+        String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
+        Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, Newsfeed_screen.class);
+        startActivity(intent);
+        this.finish();
+    }
 }

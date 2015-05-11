@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.david.rawr.SQLite.PetSQLiteHelper;
+import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Models.Pet;
 import com.example.david.rawr.Fragments.ChoosePetFragment;
 import com.example.david.rawr.Fragments.CreatePet_fragment;
@@ -21,8 +21,8 @@ public class PetChooseViewPagerAdapter extends FragmentPagerAdapter{
 
     public PetChooseViewPagerAdapter(android.support.v4.app.FragmentManager fm, Context context){
         super(fm);
-        PetSQLiteHelper petSQLiteHelper = new PetSQLiteHelper(context);
-        petList = petSQLiteHelper.getPets();
+        SQLiteHelper SQLiteHelper = new SQLiteHelper(context);
+        petList = SQLiteHelper.getPets();
     }
 
     @Override

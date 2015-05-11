@@ -5,7 +5,7 @@ package com.example.david.rawr.Models;
  */
 public class Pet {
 
-    private String idPet, petName, petType, petBirthday, petPictureUri;
+    private String idPet, petName, petType, petBirthday, petPictureUri, petGender;
 
     public Pet(String petName, String petPictureUri) {
         this.petName = petName;
@@ -15,12 +15,13 @@ public class Pet {
     public Pet() {
     }
 
-    public Pet(String idPet, String petName, String petType, String petBirthday, String petPictureUri) {
+    public Pet(String idPet, String petName, String petType, String petBirthday, String petPictureUri, String gender) {
         this.idPet = idPet;
         this.petName = petName;
         this.petType = petType;
         this.petBirthday = petBirthday;
         this.petPictureUri = petPictureUri;
+        this.petGender = gender;
     }
 
     public String getPetPictureUri() {
@@ -62,4 +63,13 @@ public class Pet {
     public void setPetPictureUri(String petPictureUri) {
         this.petPictureUri = petPictureUri;
     }
+
+    public String getPetGender() {
+        return petGender;
+    }
+
+    public void setPetGender(String petGender) {
+        this.petGender = petGender;
+    }
+
 }

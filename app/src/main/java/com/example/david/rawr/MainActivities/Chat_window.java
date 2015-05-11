@@ -9,12 +9,16 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.MessagesListAdapter;
+import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Models.Message;
 import com.example.david.rawr.Services.Chat_service;
@@ -37,7 +41,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
     ListView messagesList;
     // Background service connection declaration
     ServiceConnection mConnection;
-    private Chat_service chat_service;
+    protected IRemoteService service;
 
     ArrayList<Message> messages = new ArrayList<>();
     MessagesListAdapter messagesListAdapter;
@@ -59,29 +63,29 @@ public class Chat_window extends Activity implements View.OnClickListener{
         mConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
-
-                //chat_service = b.getService();
+                service = IRemoteService.Stub.asInterface(binder);
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-               // chat_service = null;
+                service = null;
             }
         };
-        Intent connected_friends_intent = new Intent(this, Chat_service.class).setData(Uri.parse(username));
-        this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
+        // Start connected friends service
+        if (service == null) {
+            Intent connected_friends_intent = new Intent();
+            connected_friends_intent.setAction("service.Chat");
+            this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.chat_window_send_button:
-                data = new JSONObject();
                 try {
-                    data.put("sender", username);
-                    data.put("receiver", receiver);
-                    data.put("message", message.getText().toString());
-                } catch (JSONException e) {
+                    service.sendMessage(username,receiver,message.getText().toString());
+                } catch (RemoteException e) {
                     e.printStackTrace();
                 }
                 Chat_window.this.runOnUiThread(new Runnable() {
@@ -93,7 +97,6 @@ public class Chat_window extends Activity implements View.OnClickListener{
                     }
                 });
                 message.setText("");
-                chat_service.sendMessage(data);
                 break;
         }
     }
@@ -101,7 +104,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //unbindService(mConnection);
+        unbindService(mConnection);
 
     }
 

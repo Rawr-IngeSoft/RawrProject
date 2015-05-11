@@ -6,4 +6,5 @@ package com.example.david.rawr;
 interface IRemoteService {
 
     List<String> getFriendsList();
+    void sendMessage(String sender, String reciever, String msg);
 }
