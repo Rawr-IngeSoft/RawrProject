@@ -24,7 +24,10 @@ if ($result->num_rows > 0) {
             "username"=>$row['username'],
             "owner"=> $row['owner_username'],
             "name"=> $row['name'],
-            "type"=> $row['type']
+            "type"=> $row['type'],
+            "race"=> $row['race'],
+            "birth_date"=> $row['birth_date'],
+            "gender"=> $row['gender']
             );
         array_push($retorno, $arreglo);
 
