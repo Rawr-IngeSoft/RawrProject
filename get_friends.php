@@ -8,10 +8,9 @@ header("Content-Type: application/json; charset=UTF-8");
 $conn = dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
-    "SELECT f.username, f.owner_username, f.name, f.type, f.race, f.birth_date, f.gender 
+    "SELECT p.username, p.owner_username, p.name, p.type, p.race, p.birth_date, p.gender 
      FROM Friends f, Pet p
-     WHERE f.username_friend='$username'
-     AND f.username=p.username";
+     WHERE f.username_friend='$username' AND f.username=p.username";
 
 // ahora toca recorrer el query
 $result = $conn->query($sql);
