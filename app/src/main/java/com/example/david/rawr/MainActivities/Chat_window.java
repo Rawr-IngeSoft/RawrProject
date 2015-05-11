@@ -9,13 +9,11 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.MessagesListAdapter;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Models.Message;
@@ -61,8 +59,8 @@ public class Chat_window extends Activity implements View.OnClickListener{
         mConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
-                Chat_service.MyBinder b = (Chat_service.MyBinder) binder;
-                chat_service = b.getService();
+
+                //chat_service = b.getService();
             }
 
             @Override

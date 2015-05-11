@@ -14,6 +14,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 
 import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.PostListAdapter;
+import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.Interfaces.GetPostsResponse;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Services.Chat_service;
@@ -59,10 +62,9 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     NotificationManager notificationManager;
     // Background service class declaration
 
-    Chat_service chat_service;
-
     // Background service connection declaration
     private ServiceConnection mConnection;
+    protected IRemoteService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,10 +122,12 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         mConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
-                Chat_service.MyBinder b = (Chat_service.MyBinder) binder;
-                chat_service = b.getService();
-
-                friendsList = chat_service.getFriendsList();
+                service = IRemoteService.Stub.asInterface(binder);
+                try {
+                    friendsList = (ArrayList<String>)service.getFriendsList();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 if (friendsList != null) {
                     friends_connected_row_adapter = new Friends_connected_row_Adapter(Newsfeed_screen.this, friendsList);
                     dList.setAdapter(friends_connected_row_adapter);
@@ -134,7 +138,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                chat_service = null;
+                service = null;
             }
         };
 
@@ -179,10 +183,11 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         buttons_container.bringToFront(); //  bring container to front
 
         // Start connected friends service
-
-        Intent connected_friends_intent = new Intent(this, Chat_service.class);
-        this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
-
+        if (service == null) {
+            Intent connected_friends_intent = new Intent();
+            connected_friends_intent.setAction("service.Chat");
+            this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
+        }
         // Refresh friend list
         friendsConnectedTimer = new Timer();
         friendsConnectedTimer.scheduleAtFixedRate(new TimerTask() {
@@ -191,7 +196,13 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                 Newsfeed_screen.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        friendsList = chat_service.getFriendsList();
+                        try {
+                            if(service != null) {
+                                friendsList = (ArrayList<String>) service.getFriendsList();
+                            }
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
                         if (friendsList != null) {
                             if(!friendsList.contains(username)){
                                 friendsList.add(username);
@@ -353,6 +364,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     protected void onDestroy() {
         super.onDestroy();
         friendsConnectedTimer.cancel();
-        //unbindService(mConnection);
+        unbindService(mConnection);
     }
 }

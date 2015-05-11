@@ -7,10 +7,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Binder;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.util.Log;
 
+import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.MainActivities.Chat_window;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Models.Message;
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by david on 09/05/2015.
@@ -35,9 +37,15 @@ public  class Chat_service extends Service {
     Emitter.Listener startSession_listener, chat_message_listener;
     String username;
     ArrayList<String> friendsList;
-    IBinder iBinder = new MyBinder();
     NotificationManager notificationManager;
+    IRemoteService.Stub myBinder = new IRemoteService.Stub() {
+        @Override
+        public List<String> getFriendsList() throws RemoteException {
+            return friendsList;
+        }
+    };
 
+    // Binder for communication
     @Override
     public void onCreate() {
         super.onCreate();
@@ -106,19 +114,13 @@ public  class Chat_service extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return iBinder;
+        return myBinder;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
         Log.e("status", "unbinded");
         return super.onUnbind(intent);
-    }
-
-    public class MyBinder extends Binder {
-        public Chat_service getService(){
-            return Chat_service.this;
-        }
     }
 
     public ArrayList<String> getFriendsList(){

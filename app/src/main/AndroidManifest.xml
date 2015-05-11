@@ -80,8 +80,11 @@
         <service
             android:name = ".Services.Chat_service"
             android:exported = "false"
-            android:process=":rawr_chat"
-            />
+            android:process=":rawr_chat">
+            <intent-filter>
+                <action android:name="service.Chat"/>
+            </intent-filter>
+        </service>
         <receiver android:name=".Communication.MyReceiver" android:enabled="true" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
