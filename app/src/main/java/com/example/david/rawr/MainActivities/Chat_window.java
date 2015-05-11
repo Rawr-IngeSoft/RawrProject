@@ -20,7 +20,7 @@ import com.example.david.rawr.Adapters.MessagesListAdapter;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Models.Message;
 import com.example.david.rawr.Services.Chat_service;
-import com.github.nkzawa.socketio.client.IO;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,7 +67,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                chat_service = null;
+               // chat_service = null;
             }
         };
         Intent connected_friends_intent = new Intent(this, Chat_service.class).setData(Uri.parse(username));
@@ -103,7 +103,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(mConnection);
+        //unbindService(mConnection);
 
     }
 

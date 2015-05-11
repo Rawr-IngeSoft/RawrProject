@@ -353,6 +353,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     protected void onDestroy() {
         super.onDestroy();
         friendsConnectedTimer.cancel();
-        unbindService(mConnection);
+        //unbindService(mConnection);
     }
 }
