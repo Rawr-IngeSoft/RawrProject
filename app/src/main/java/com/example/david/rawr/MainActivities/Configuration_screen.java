@@ -31,7 +31,6 @@ public class Configuration_screen extends Activity  {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("position", String.valueOf(position));
                 if (position == 5) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     SQLiteHelper SQLiteHelper = new SQLiteHelper(Configuration_screen.this);

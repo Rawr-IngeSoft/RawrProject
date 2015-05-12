@@ -83,7 +83,6 @@ public class CreatePet_fragment extends android.support.v4.app.Fragment implemen
                 String petNameText = petName.getText().toString();
                 String petUsernameText = petUsername.getText().toString();
                 String petType = typeList.getSelectedItem().toString();
-                Log.e("petType", petType);
                 //TODO compare strings to regular expression
                 if(username == null || petNameText.equals("") || petUsernameText.equals("")){
                     Toast.makeText(getActivity(), "Invalid parameters", Toast.LENGTH_SHORT).show();

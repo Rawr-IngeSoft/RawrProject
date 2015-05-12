@@ -14,18 +14,22 @@ import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.CreateResponse;
 import com.example.david.rawr.Interfaces.GetFriendsResponse;
+import com.example.david.rawr.Interfaces.GetPetsResponse;
 import com.example.david.rawr.Interfaces.ValidateResponse;
 import com.example.david.rawr.Models.Friend;
+import com.example.david.rawr.Models.Pet;
 import com.example.david.rawr.R;
 import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Tasks.CreateOwner;
+import com.example.david.rawr.Tasks.CreatePet;
 import com.example.david.rawr.Tasks.GetFriends;
+import com.example.david.rawr.Tasks.GetPets;
 import com.example.david.rawr.Tasks.ValidateUser;
 
 import java.util.ArrayList;
 
 
-public class Loading_screen extends Activity implements ValidateResponse, CreateResponse, GetFriendsResponse {
+public class Loading_screen extends Activity implements ValidateResponse, CreateResponse, GetFriendsResponse, GetPetsResponse {
 
     String username, serviceType;
     SharedPreferences sharedpreferences;
@@ -125,9 +129,9 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
     public void createFinish(String status) {
         Intent intent;
         if (serviceType.compareTo("facebook") == 0) {
-            if (sharedpreferences.contains("petUsername")) {
-                GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername",""), this);
-                getFriends.execute();
+            if (sharedpreferences.contains("username")) {
+                GetPets getPets = new GetPets(sharedpreferences.getString("username", ""), this);
+                getPets.execute();
             }else {
                 intent = new Intent(this, Newsfeed_screen.class);
                 startActivity(intent);
@@ -150,9 +154,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
     @Override
     public void getFriendsFinish(ArrayList<Friend> output) {
         SQLiteHelper SQLiteHelper = new SQLiteHelper(this);
-        Log.e("Friends","");
         for (Friend friend: output){
-            Log.e("friend", friend.getPetName());
             SQLiteHelper.addFriend(friend);
         }
         String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
@@ -160,5 +162,20 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         Intent intent = new Intent(this, Newsfeed_screen.class);
         startActivity(intent);
         this.finish();
+    }
+
+    @Override
+    public void getPetsFinish(ArrayList<Pet> output) {
+        if (!output.isEmpty()) {
+            Pet pet = output.get(0);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("petName", pet.getPetName());
+            editor.putString("petUsername", pet.getIdPet());
+            editor.putString("petType", pet.getPetType());
+            editor.putString("petGender", pet.getPetGender());
+            editor.commit();
+            GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername", ""), this);
+            getFriends.execute();
+        }
     }
 }

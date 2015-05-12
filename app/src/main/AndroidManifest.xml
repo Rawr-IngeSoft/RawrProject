@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
+    <uses-sdk android:maxSdkVersion="7"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo_icon"
@@ -79,7 +79,7 @@
         </activity>
         <service
             android:name = ".Services.Chat_service"
-            android:exported = "false"
+            android:exported = "true"
             android:process=":rawr_chat">
             <intent-filter>
                 <action android:name="service.Chat"/>

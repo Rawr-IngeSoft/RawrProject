@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 public class Chat_window extends Activity implements View.OnClickListener{
 
-    String receiver, username;
+    String receiver, petUsername;
     SharedPreferences sharedPreferences;
     EditText message;
     Button send_button;
@@ -50,8 +50,8 @@ public class Chat_window extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_window);
         sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        if(sharedPreferences.contains("username")) {
-            username = sharedPreferences.getString("username", "");
+        if(sharedPreferences.contains("petUsername")) {
+            petUsername = sharedPreferences.getString("petUsername", "");
         }
         receiver = getIntent().getStringExtra("idPet");
         send_button = (Button) findViewById(R.id.chat_window_send_button);
@@ -84,14 +84,15 @@ public class Chat_window extends Activity implements View.OnClickListener{
         switch(v.getId()){
             case R.id.chat_window_send_button:
                 try {
-                    service.sendMessage(username,receiver,message.getText().toString());
+                    Log.e("status", "click_btn");
+                    service.sendMessage(petUsername,receiver,message.getText().toString());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
                 Chat_window.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        messagesListAdapter.getData().add(new Message(message.getText().toString(), username));
+                        messagesListAdapter.getData().add(new Message(message.getText().toString(), petUsername));
                         messagesListAdapter.notifyDataSetChanged();
                         messagesList.setAdapter(messagesListAdapter);
                     }

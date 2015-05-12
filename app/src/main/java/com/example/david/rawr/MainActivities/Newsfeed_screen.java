@@ -101,7 +101,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         dList = (ListView) findViewById(R.id.newsfeed_friends_list);
         dList.setSelector(android.R.color.holo_blue_dark);
 
-        //Show friendlis
+        //Show friendlist
         friendsList = sqLiteHelper.getFriends();
         friends_connected_row_adapter = new Friends_connected_row_Adapter(this, friendsList);
         dList.setAdapter(friends_connected_row_adapter);
@@ -152,8 +152,12 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             }
         };
 
-        GetPosts getPosts = new GetPosts(username, this);
-        getPosts.execute();
+        if(sharedPreferences.contains("petUsername")) {
+            friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", "")));
+            GetPosts getPosts = new GetPosts(sharedPreferences.getString("petUsername", ""), this);
+            getPosts.execute();
+        }
+
 
         dLayout = (DrawerLayout) findViewById(R.id.newsfeed_friends_sliding_list);
 
@@ -171,8 +175,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
                 dLayout.closeDrawers();
                 Intent intent = new Intent(Newsfeed_screen.this, Chat_window.class);
-
-                intent.putExtra("idPet", dList.getItemAtPosition(position).toString());
+                Friend f = (Friend)dList.getItemAtPosition(position);
+                intent.putExtra("idPet", f.getPetUsername());
                 startActivity(intent);
             }
 
@@ -197,6 +201,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             Intent connected_friends_intent = new Intent();
             connected_friends_intent.setAction("service.Chat");
             this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
+            Log.e("status", "bind");
         }
         // Refresh friend list
         friendsConnectedTimer = new Timer();

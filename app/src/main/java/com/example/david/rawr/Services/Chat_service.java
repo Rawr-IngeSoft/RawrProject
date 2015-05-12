@@ -33,7 +33,7 @@ import java.util.List;
 
 public  class Chat_service extends Service {
 
-    Socket mySocket;
+    Socket mySocket = null;
     Emitter.Listener startSession_listener, chat_message_listener;
     String username;
     ArrayList<String> friendsList;
@@ -47,6 +47,8 @@ public  class Chat_service extends Service {
         @Override
         public void sendMessage(String sender, String receiver, String msg) throws RemoteException {
             JSONObject data = new JSONObject();
+            Log.e("sender", sender);
+            Log.e("receiver", receiver);
             try {
                 data.put("sender", sender);
                 data.put("receiver", receiver);
@@ -62,14 +64,15 @@ public  class Chat_service extends Service {
     // Binder for communication
     @Override
     public void onCreate() {
+        Log.e("status","on_create");
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
+            Log.e("status","starting_service");
             mySocket = IO.socket("http://178.62.233.249:3000");
-            notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
             JSONObject data = new JSONObject();
             SharedPreferences sharedPreferences;
             sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
@@ -95,6 +98,7 @@ public  class Chat_service extends Service {
                 @Override
                 public void call(Object... args) {
                     try {
+                        Log.e("status", "listen_msg");
                         JSONObject data = (JSONObject)args[0];
                         Intent intent = new Intent(getApplicationContext(), Chat_window.class);
                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0, intent,0);
@@ -137,13 +141,6 @@ public  class Chat_service extends Service {
         return super.onUnbind(intent);
     }
 
-    public ArrayList<String> getFriendsList(){
-        return friendsList;
-    }
-
-    public void sendMessage(JSONObject data){
-        mySocket.emit("chat_message", data);
-    }
     @Override
     public void onDestroy() {
         Log.e("status", "destroyed");
