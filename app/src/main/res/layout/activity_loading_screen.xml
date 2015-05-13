@@ -19,7 +19,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/loading_screen_imageView_animation"
-        android:background="@drawable/frame_animation"
+        android:background="#000000"
         android:layout_gravity="center_vertical|right"
         />
 

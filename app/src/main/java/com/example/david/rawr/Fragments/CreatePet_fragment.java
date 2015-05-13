@@ -97,7 +97,7 @@ public class CreatePet_fragment extends android.support.v4.app.Fragment implemen
 
     @Override
     public void createPetFinish(String responseValue) {
-        if (responseValue.compareTo("1") == 0){
+        if (responseValue.compareTo("1") == 1){
             Toast.makeText(getActivity(), "Error Creating Pet", Toast.LENGTH_SHORT).show();
         }else{
             // TODO

@@ -35,7 +35,7 @@ public  class Chat_service extends Service {
 
     Socket mySocket = null;
     Emitter.Listener startSession_listener, chat_message_listener;
-    String username;
+    String petUsername;
     ArrayList<String> friendsList;
     NotificationManager notificationManager;
     IRemoteService.Stub myBinder = new IRemoteService.Stub() {
@@ -85,6 +85,7 @@ public  class Chat_service extends Service {
                         friendsList = new ArrayList<String>();
                         if (jsonArray != null) {
                             for (int i = 0; i < jsonArray.length(); i++) {
+                                Log.e("connected", jsonArray.get(i).toString());
                                 friendsList.add(jsonArray.get(i).toString());
                             }
                         }
@@ -102,7 +103,7 @@ public  class Chat_service extends Service {
                         JSONObject data = (JSONObject)args[0];
                         Intent intent = new Intent(getApplicationContext(), Chat_window.class);
                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0, intent,0);
-                        Message msg = new Message((String)data.get("sender"),(String)data.get("message"));
+                        Message msg = new Message((String)data.get("message"),(String)data.get("sender"));
                         Notification notification = new Notification.Builder(Chat_service.this)
                                     .setSmallIcon(R.drawable.logo_icon)
                                     .setContentTitle(msg.getPerson())
@@ -115,8 +116,10 @@ public  class Chat_service extends Service {
                     }
                 }
             };
-            username=sharedPreferences.getString("username", "");
-            data.put("username", username);
+            notificationManager = (NotificationManager)
+                    getSystemService(NOTIFICATION_SERVICE);
+            petUsername=sharedPreferences.getString("petUsername", "");
+            data.put("username", petUsername);
             friendsList= new ArrayList();
             mySocket.on("chat_message", chat_message_listener);
             mySocket.on("response_start_session", startSession_listener);

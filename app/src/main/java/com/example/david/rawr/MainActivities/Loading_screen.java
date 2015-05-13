@@ -39,8 +39,8 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         setContentView(R.layout.activity_loading_screen);
         ImageView img = (ImageView)findViewById(R.id.loading_screen_imageView_animation);
-        AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
-        frameAnimation.start();
+        //AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
+        //frameAnimation.start();
         serviceType = getIntent().getStringExtra("serviceType");
         if(serviceType.compareTo("logIn") == 0) {
             username = getIntent().getStringExtra("username");

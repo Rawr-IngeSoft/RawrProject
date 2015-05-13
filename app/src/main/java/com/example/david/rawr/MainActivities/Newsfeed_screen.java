@@ -43,6 +43,8 @@ import com.example.david.rawr.Models.Post;
 import com.example.david.rawr.otherClasses.RoundImage;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -132,14 +134,29 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                 service = IRemoteService.Stub.asInterface(binder);
                 try {
                     ArrayList<String> connectedFriends = (ArrayList<String>)service.getFriendsList();
+                    boolean connected = false;
+                    for(Friend friend: friendsList){
+                        Log.e(friend.getPetName(),String.valueOf(friend.getPriority()));
+                    }
                     if (connectedFriends != null) {
                         for(Friend friend: friendsList){
-                            if (connectedFriends.contains(friend.getPetName())){
-                                friend.setConnected(true);
+                            for (String connFriend: connectedFriends){
+                                if (connFriend.equals(friend.getPetUsername())){
+                                    friend.setConnected(true);
+                                    connected = true;
+                                }
                             }
+                            if (!connected){
+                                friend.setConnected(false);
+                            }
+                            connected = false;
+                        }
+                        Collections.sort(friendsList);
+                        for(Friend friend: friendsList){
+                            Log.e(friend.getPetName(),String.valueOf(friend.getPriority()));
                         }
                         friends_connected_row_adapter.setFriends(friendsList);
-                        friends_connected_row_adapter.notifyDataSetChanged();
+                        dList.setAdapter(friends_connected_row_adapter);
                     }
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -213,15 +230,24 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                     public void run() {
                         try {
                             if(service != null) {
+                                boolean connected = false;
                                 ArrayList<String> connectedFriends = (ArrayList<String>) service.getFriendsList();
                                 if (connectedFriends != null) {
                                     for(Friend friend: friendsList){
-                                        if (connectedFriends.contains(friend.getPetName())){
-                                            friend.setConnected(true);
+                                        for (String connFriend: connectedFriends){
+                                            if (connFriend.equals(friend.getPetUsername())){
+                                                friend.setConnected(true);
+                                                connected = true;
+                                            }
                                         }
+                                        if (!connected){
+                                            friend.setConnected(false);
+                                        }
+                                        connected = false;
                                     }
+                                    Collections.sort(friendsList);
                                     friends_connected_row_adapter.setFriends(friendsList);
-                                    friends_connected_row_adapter.notifyDataSetChanged();
+                                    dList.setAdapter(friends_connected_row_adapter);
                                 }
                             }
                         } catch (RemoteException e) {
@@ -246,7 +272,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             case R.id.newsfeed_friends_button:
                 intent = new Intent(this, Owner_Profile_screen.class);
                 startActivity(intent);
-                this.finish();
                 break;
             case R.id.newsfeed_profile_picture:
                 TranslateAnimation animation_notification, animation_profile, animation_messages, animation_localization;

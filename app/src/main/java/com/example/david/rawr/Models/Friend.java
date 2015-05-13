@@ -3,11 +3,11 @@ package com.example.david.rawr.Models;
 /**
  * Created by david on 11/05/2015.
  */
-public class Friend {
+public class Friend implements Comparable{
 
     private String petUsername, petName;
     private boolean connected = false;
-
+    private int priority = 0;
     public Friend(){};
 
     public Friend(String petUsername, String petName) {
@@ -37,5 +37,24 @@ public class Friend {
 
     public void setConnected(boolean connected) {
         this.connected = connected;
+        if (connected){
+            priority = 1;
+        }else{
+            priority = 0;
+        }
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    @Override
+    public int compareTo(Object another) {
+        Friend friend = (Friend) another;
+        if (friend.getPriority() >= priority){
+            return 1;
+        }else{
+            return -1;
+        }
     }
 }
