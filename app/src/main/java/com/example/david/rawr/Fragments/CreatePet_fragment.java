@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,9 +29,10 @@ public class CreatePet_fragment extends android.support.v4.app.Fragment implemen
     Button createPet;
     private EditText petName;
     private EditText petUsername;
-    Spinner typeList;
-    String username = null;
-    SharedPreferences sharedPreferences;
+    private Spinner typeList;
+    private String username = null;
+    private SharedPreferences sharedPreferences;
+    private ImageView profilePicture;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,13 +46,17 @@ public class CreatePet_fragment extends android.support.v4.app.Fragment implemen
         if(sharedPreferences.contains("username")) {
             username = sharedPreferences.getString("username", "");
         }
-        createPet = (Button)v.findViewById(R.id.createPet_fragment_create_button);
-        petName = (EditText)v.findViewById(R.id.petName);
-        petUsername = (EditText)v.findViewById(R.id.petUsername);
-        typeList = (Spinner)v.findViewById(R.id.list);
+        createPet = (Button)v.findViewById(R.id.fragment_create_pet_button_createPet);
+        petName = (EditText)v.findViewById(R.id.fragment_create_pet_EditText_petName);
+        profilePicture = (ImageView)v.findViewById(R.id.fragment_create_pet_imageView_profilePicture);
+        profilePicture.getLayoutParams().height = 350;
+        profilePicture.getLayoutParams().width = 350;
+        //profilePicture.requestFocus();
+
+        typeList = (Spinner)v.findViewById(R.id.fragment_create_pet_Spinner_list);
         typeList.setClickable(true);
         final ArrayList<String> types =  new ArrayList<>();
-        types.add("Dog"); types.add("Cat"); types.add("Horse"); types.add("Ant"); types.add("Panda");
+        types.add("Animal"); types.add("Dog"); types.add("Cat"); types.add("Horse"); types.add("Ant"); types.add("Panda");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.pet_type_spinner_row, types);
         typeList.setAdapter(adapter);
         typeList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

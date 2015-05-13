@@ -1,64 +1,93 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
     android:layout_height="match_parent" android:layout_gravity="center" tools:context="com.example.david.rawr.Fragments.CreatePet_fragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
-
-    <EditText
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/petUsername"
-        android:hint="Pet Username"
-        android:gravity="center_horizontal"
-        android:textSize="17dp"
-        android:textColor="@color/background_floating_material_dark" />
-
-    <EditText
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/petName"
-        android:layout_gravity="center_horizontal"
-        android:hint="Pet Name"
-        android:gravity="center_horizontal"
-        android:textSize="17dp"
-        android:textColor="@color/background_floating_material_dark"/>
-
-    <Spinner
-        android:layout_marginTop="10dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/list"
-        android:groupIndicator="@null"
-        android:textAlignment="center"
-        android:textFilterEnabled="false" />
-    <RadioGroup
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="10dp">
-        <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Female"
-            android:textSize="15dp"
-            android:layout_marginRight="20dp"
-            />
-        <RadioButton
+            android:layout_height="fill_parent"
+            android:src="@drawable/default_profilepicture_male"
+            android:id="@+id/fragment_create_pet_imageView_profilePicture"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Male"
-            android:textSize="15dp"
-            />
-    </RadioGroup>
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_create_pet_EditText_petName"
+                android:layout_gravity="center_horizontal"
+                android:hint="Pet Name"
+                android:gravity="center_horizontal"
+                android:textSize="17dp"
+                android:background="@drawable/edit_text_style_inside"
+                android:textColor="@color/background_floating_material_dark"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+            <Spinner
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_create_pet_Spinner_list"
+                android:background="@drawable/edit_text_style_inside"
+                android:groupIndicator="@null"
+                android:textAlignment="center"
+                android:textFilterEnabled="false"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                />
+
+            <RadioGroup
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Female"
+                    android:textSize="15dp"
+                    android:layout_marginRight="20dp"
+                    />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:textSize="15dp"
+                    />
+
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/registerPet"
-        android:id="@+id/createPet_fragment_create_button"
-        android:background="@drawable/button_style"
-        android:layout_marginTop="20dp" />
+        android:id="@+id/fragment_create_pet_button_createPet"
+        android:background="@drawable/button_style_inside"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
 
 </LinearLayout>

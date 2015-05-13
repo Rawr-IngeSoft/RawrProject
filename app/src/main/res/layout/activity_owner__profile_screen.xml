@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.david.rawr.MainActivities.Owner_Profile_screen"
-    android:background="#BBE778"
+    android:background="#B4EA63"
+
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="fill_parent"
@@ -87,12 +88,20 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_create_pet_imageView_line"
+        android:layout_gravity="top"
+        android:src="@drawable/line"/>
+
     <android.support.v4.view.ViewPager
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/owner_profile_viewPager"
         android:layout_weight="1"
-        android:background="#EDF3C7">
+        android:background="#C8EB92">
     </android.support.v4.view.ViewPager>
 
 </LinearLayout>
