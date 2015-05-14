@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Models.Pet;
@@ -18,11 +19,13 @@ import java.util.ArrayList;
 public class PetChooseViewPagerAdapter extends FragmentPagerAdapter{
 
     private ArrayList<Pet> petList;
-
+    SQLiteHelper SQLiteHelper;
+    Context context;
     public PetChooseViewPagerAdapter(android.support.v4.app.FragmentManager fm, Context context){
         super(fm);
-        SQLiteHelper SQLiteHelper = new SQLiteHelper(context);
+        SQLiteHelper = new SQLiteHelper(context);
         petList = SQLiteHelper.getPets();
+        this.context = context;
     }
 
     @Override
@@ -35,6 +38,8 @@ public class PetChooseViewPagerAdapter extends FragmentPagerAdapter{
             data.putString("petType", pet.getPetType());
             data.putString("petBirthday", pet.getPetBirthday());
             data.putString("pictureUri", pet.getPetPictureUri());
+            data.putBoolean("selected", pet.isSelected());
+            data.putString("petUsername", pet.getIdPet());
             choosePetFragment.setArguments(data);
             return choosePetFragment;
         }else{
@@ -47,6 +52,7 @@ public class PetChooseViewPagerAdapter extends FragmentPagerAdapter{
     public int getCount() {
         return petList.size()+1;
     }
+
 
     public ArrayList<Pet> getPetList() {
         return petList;

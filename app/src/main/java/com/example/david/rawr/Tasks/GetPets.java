@@ -52,6 +52,7 @@ public class GetPets extends AsyncTask<String, Integer, String> {
                 JSONArray jsonArray = jsonResponse.getJSONArray("pets");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jo = jsonArray.getJSONObject(i);
+                    Log.e("path",jo.getString("path"));
                     Pet petToAdd = new Pet(jo.getString("username"), jo.getString("name"), jo.getString("type"), jo.getString("birth_date"), jo.getString("path"), jo.getString("gender"));
                     pets.add(petToAdd);
                 }

@@ -8,19 +8,27 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.david.rawr.Adapters.PetChooseViewPagerAdapter;
+import com.example.david.rawr.Interfaces.GetFriendsResponse;
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
+import com.example.david.rawr.Models.Friend;
+import com.example.david.rawr.Models.Pet;
 import com.example.david.rawr.R;
+import com.example.david.rawr.SQLite.SQLiteHelper;
+import com.example.david.rawr.Tasks.GetFriends;
 import com.example.david.rawr.Tasks.GetPhoto;
+
+import java.util.ArrayList;
 
 
 // REQ-029
-public class Owner_Profile_screen extends FragmentActivity implements GetPhotoResponse, View.OnLongClickListener{
+public class Owner_Profile_screen extends FragmentActivity implements GetPhotoResponse, View.OnLongClickListener,GetFriendsResponse{
 
     ImageView photo;
     TextView birthdayText, nameText, addressText, lastNameText;
@@ -28,6 +36,7 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
     ViewPager petProfile;
     LinearLayout ownerLayout;
     PetChooseViewPagerAdapter petChooseViewPagerAdapter;
+    FragmentManager fm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +49,7 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         lastNameText = (TextView)findViewById(R.id.owner_profile_lastName);
         addressText = (TextView)findViewById(R.id.owner_profile_address);
         petProfile = (ViewPager)findViewById(R.id.owner_profile_viewPager);
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
         sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         petChooseViewPagerAdapter = new PetChooseViewPagerAdapter(fm,this);
         petProfile.setAdapter(petChooseViewPagerAdapter);
@@ -50,15 +59,13 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         if(sharedpreferences.contains("lastName")){
             lastNameText.setText(sharedpreferences.getString("lastName", ""));
         }
-        if(sharedpreferences.contains("ownerPictureUri")) {
-            GetPhoto getPhoto = new GetPhoto(sharedpreferences.getString("ownerPictureUri", ""), this);
+        if(sharedpreferences.contains("ownerPictureUri") && sharedpreferences.contains("petUsername")) {
+            GetPhoto getPhoto = new GetPhoto(sharedpreferences.getString("ownerPictureUri", ""),sharedpreferences.getString("petUsername", ""), this);
         }
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, Newsfeed_screen.class);
-        startActivity(intent);
         this.finish();
     }
 
@@ -79,5 +86,28 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         return false;
     }
 
+    public void update(String petUsername){
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("petUsername", petUsername);
+        editor.commit();
 
+        // Gettings friends of new pet
+        GetFriends getFriends = new GetFriends(petUsername, this);
+        getFriends.execute();
+
+        // TODO reload all data with selected pet
+
+    }
+
+    @Override
+    public void getFriendsFinish(ArrayList<Friend> output) {
+
+        // Cleaning local db and getting all data of new pet
+        SQLiteHelper sqLiteHelper = new SQLiteHelper(this);
+        sqLiteHelper.clearFriends();
+        for(Friend friend: output){
+            sqLiteHelper.addFriend(friend);
+        }
+        this.finish();
+    }
 }

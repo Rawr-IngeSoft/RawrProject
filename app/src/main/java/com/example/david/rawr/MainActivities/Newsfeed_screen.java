@@ -103,14 +103,25 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         dList = (ListView) findViewById(R.id.newsfeed_friends_list);
         dList.setSelector(android.R.color.holo_blue_dark);
 
-        //Show friendlist
+        // Getting friends
         friendsList = sqLiteHelper.getFriends();
+
+        // Getting posts
+        if(sharedPreferences.contains("petUsername")) {
+            Log.e("petusername", sharedPreferences.getString("petUsername",""));
+            friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", "")));
+            GetPosts getPosts = new GetPosts(sharedPreferences.getString("petUsername", ""), this);
+            getPosts.execute();
+        }
+
+        //Show friendlist
+
         friends_connected_row_adapter = new Friends_connected_row_Adapter(this, friendsList);
         dList.setAdapter(friends_connected_row_adapter);
 
         // Persistence services
-        if(sharedPreferences.contains("pictureUri")){
-            GetPhoto getPhoto = new GetPhoto(sharedPreferences.getString("pictureUri", ""), null);
+        if(sharedPreferences.contains("pictureUri") && sharedPreferences.contains("petUsername")){
+            GetPhoto getPhoto = new GetPhoto(sharedPreferences.getString("pictureUri", ""), sharedPreferences.getString("petusername",""), null);
             try {
                 bitmap = getPhoto.execute().get();
                 if(bitmap != null)
@@ -135,9 +146,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                 try {
                     ArrayList<String> connectedFriends = (ArrayList<String>)service.getFriendsList();
                     boolean connected = false;
-                    for(Friend friend: friendsList){
-                        Log.e(friend.getPetName(),String.valueOf(friend.getPriority()));
-                    }
                     if (connectedFriends != null) {
                         for(Friend friend: friendsList){
                             for (String connFriend: connectedFriends){
@@ -152,9 +160,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                             connected = false;
                         }
                         Collections.sort(friendsList);
-                        for(Friend friend: friendsList){
-                            Log.e(friend.getPetName(),String.valueOf(friend.getPriority()));
-                        }
                         friends_connected_row_adapter.setFriends(friendsList);
                         dList.setAdapter(friends_connected_row_adapter);
                     }
@@ -168,13 +173,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                 service = null;
             }
         };
-
-        if(sharedPreferences.contains("petUsername")) {
-            friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", "")));
-            GetPosts getPosts = new GetPosts(sharedPreferences.getString("petUsername", ""), this);
-            getPosts.execute();
-        }
-
 
         dLayout = (DrawerLayout) findViewById(R.id.newsfeed_friends_sliding_list);
 
@@ -407,4 +405,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         friendsConnectedTimer.cancel();
         unbindService(mConnection);
     }
+
+
 }

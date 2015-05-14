@@ -1,31 +1,48 @@
 package com.example.david.rawr.Models;
 
+import android.util.Log;
+
 /**
  * Created by david on 27/04/2015.
  */
 public class Pet {
 
-    private String idPet, petName, petType, petBirthday, petPictureUri, petGender;
+    private String idPet, petName, petType, petBirthday, path, petGender;
+    private boolean selected = false;
 
-    public Pet(String petName, String petPictureUri) {
+    public Pet(String petName, String path) {
         this.petName = petName;
-        this.petPictureUri = petPictureUri;
+        this.path = path;
     }
 
     public Pet() {
     }
 
-    public Pet(String idPet, String petName, String petType, String petBirthday, String petPictureUri, String gender) {
+    public Pet(String idPet, String petName, String petType, String petBirthday, String path, String gender) {
         this.idPet = idPet;
         this.petName = petName;
         this.petType = petType;
         this.petBirthday = petBirthday;
-        this.petPictureUri = petPictureUri;
+        this.path = path;
         this.petGender = gender;
     }
 
+    public void setSelected(String selected) {
+
+        if (selected.equals("'true'")){
+            this.selected = true;
+        }else{
+            this.selected = false;
+        }
+    }
+
+    public boolean isSelected() {
+
+        return selected;
+    }
+
     public String getPetPictureUri() {
-        return petPictureUri;
+        return path;
     }
 
     public String getIdPet() {
@@ -61,7 +78,7 @@ public class Pet {
     }
 
     public void setPetPictureUri(String petPictureUri) {
-        this.petPictureUri = petPictureUri;
+        this.path = petPictureUri;
     }
 
     public String getPetGender() {

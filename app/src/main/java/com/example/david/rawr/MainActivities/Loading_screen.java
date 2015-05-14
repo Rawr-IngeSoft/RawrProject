@@ -33,9 +33,11 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
 
     String username, serviceType;
     SharedPreferences sharedpreferences;
+    SQLiteHelper SQLiteHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SQLiteHelper = new SQLiteHelper(this);
         sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         setContentView(R.layout.activity_loading_screen);
         ImageView img = (ImageView)findViewById(R.id.loading_screen_imageView_animation);
@@ -166,7 +168,10 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
 
     @Override
     public void getPetsFinish(ArrayList<Pet> output) {
-        if (!output.isEmpty()) {
+        for(Pet pet: output){
+            SQLiteHelper.addPet(pet);
+        }
+        if (!sharedpreferences.contains("petUsername")) {
             Pet pet = output.get(0);
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putString("petName", pet.getPetName());
@@ -174,8 +179,8 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             editor.putString("petType", pet.getPetType());
             editor.putString("petGender", pet.getPetGender());
             editor.commit();
-            GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername", ""), this);
-            getFriends.execute();
         }
+        GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername", ""), this);
+        getFriends.execute();
     }
 }

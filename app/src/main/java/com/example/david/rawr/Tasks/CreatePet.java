@@ -55,6 +55,7 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
             jsonObject.put("name", this.petName);
             jsonObject.put("type", this.petType);
             jsonObject.put("owner_username", this.owner);
+            jsonObject.put("gender", this.petGender);
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(url_create_pet);
             post.setHeader("Accept", "application/json");
