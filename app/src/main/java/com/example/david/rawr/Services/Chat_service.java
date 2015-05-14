@@ -59,6 +59,17 @@ public  class Chat_service extends Service {
             mySocket.emit("chat_message", data);
         }
 
+        @Override
+        public void changePet(String petUsername) throws RemoteException {
+            JSONObject data = new JSONObject();
+            try {
+                data.put("username", petUsername);
+                mySocket.emit("start_session", data);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     };
 
     // Binder for communication
@@ -85,7 +96,6 @@ public  class Chat_service extends Service {
                         friendsList = new ArrayList<String>();
                         if (jsonArray != null) {
                             for (int i = 0; i < jsonArray.length(); i++) {
-                                Log.e("connected", jsonArray.get(i).toString());
                                 friendsList.add(jsonArray.get(i).toString());
                             }
                         }

@@ -7,4 +7,5 @@ interface IRemoteService {
 
     List<String> getFriendsList();
     void sendMessage(String sender, String reciever, String msg);
+    void changePet(String petUsername);
 }

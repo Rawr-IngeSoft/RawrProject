@@ -2,6 +2,7 @@ package com.example.david.rawr.SQLite;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -76,7 +77,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
     public ArrayList<Pet> getPets(){
         String query = "select * from Pet";
-        Log.e("getting","pets");
         ArrayList<Pet> pets = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -97,13 +97,46 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return pets;
     }
 
-    public void selectPet(String petUsername){
+    public Pet getPet(String petUsername){
+        String query = "select * from Pet where petUsername="+"'"+petUsername+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Pet pet = null;
+        if(cursor.moveToFirst()){
+            do{
+                pet = new Pet();
+                pet.setPetName(cursor.getString(0));
+                pet.setIdPet(cursor.getString(1));
+                pet.setPetType(cursor.getString(2));
+                pet.setPetGender(cursor.getString(3));
+                pet.setSelected(cursor.getString(4));
+                pet.setPetPictureUri(cursor.getString(5));
+            }while (cursor.moveToNext());
+        }
+        return pet;
+    }
+
+    public void selectPet(String petUsername, SharedPreferences sharedPreferences){
+
+        // Update db
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("selected","'true'");
-        db.update("Pet",contentValues,"petUsername="+"'"+petUsername+"'",null);
-        contentValues.put("selected","'false'");
+        db.update("Pet", contentValues, "petUsername=" + "'" + petUsername + "'", null);
+        contentValues.put("selected", "'false'");
         db.update("Pet",contentValues,"petUsername<>"+"'"+petUsername+"'",null);
+
+        // Getting the pet selected
+        Pet pet = getPet(petUsername);
+        // Update shared preferences
+        if(pet != null) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("petUsername", petUsername);
+            editor.putString("petName", pet.getPetName());
+            editor.putString("petType",pet.getPetType());
+            editor.putString("petGender",pet.getPetGender());
+            editor.commit();
+        }
     }
 
 

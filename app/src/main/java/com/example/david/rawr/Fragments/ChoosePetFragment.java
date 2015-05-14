@@ -1,6 +1,7 @@
 package com.example.david.rawr.Fragments;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -29,14 +30,12 @@ public class ChoosePetFragment extends android.support.v4.app.Fragment implement
 
     String petNameText, petTypeText, petBirthayText, pictureUri, petUsername;
     boolean selected;
-    SQLiteHelper sqLiteHelper;
     FrameLayout frameContainer;
     ImageView petPicture;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sqLiteHelper = new SQLiteHelper(getActivity());
         /** Getting the arguments to the Bundle object */
         Bundle data = getArguments();
 
@@ -84,7 +83,6 @@ public class ChoosePetFragment extends android.support.v4.app.Fragment implement
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fragment_choose_pet_container:
-                sqLiteHelper.selectPet(petUsername);
                 Owner_Profile_screen owner_profile_screen = (Owner_Profile_screen)getActivity();
                 owner_profile_screen.update(petUsername);
                 break;

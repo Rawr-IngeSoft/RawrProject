@@ -1,10 +1,14 @@
 package com.example.david.rawr.MainActivities;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -15,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.david.rawr.Adapters.PetChooseViewPagerAdapter;
+import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.Interfaces.GetFriendsResponse;
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
 import com.example.david.rawr.Models.Friend;
@@ -25,6 +30,7 @@ import com.example.david.rawr.Tasks.GetFriends;
 import com.example.david.rawr.Tasks.GetPhoto;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 // REQ-029
@@ -37,9 +43,31 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
     LinearLayout ownerLayout;
     PetChooseViewPagerAdapter petChooseViewPagerAdapter;
     FragmentManager fm;
+    // Background service connection declaration
+    private ServiceConnection mConnection;
+    protected IRemoteService service;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // service bind
+        mConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder binder) {
+                service = IRemoteService.Stub.asInterface(binder);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                service = null;
+            }
+        };
+        if (service == null) {
+            Intent connected_friends_intent = new Intent();
+            connected_friends_intent.setAction("service.Chat");
+            this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
+            Log.e("status", "bind");
+        }
         setContentView(R.layout.activity_owner__profile_screen);
         ownerLayout = (LinearLayout)findViewById(R.id.owner_profile_owner_layout);
         ownerLayout.setOnLongClickListener(this);
@@ -66,6 +94,8 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
 
     @Override
     public void onBackPressed() {
+        Intent intent = new Intent(this, Owner_Profile_screen.class);
+        startActivity(intent);
         this.finish();
     }
 
@@ -87,15 +117,19 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
     }
 
     public void update(String petUsername){
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString("petUsername", petUsername);
-        editor.commit();
 
+        // Updating service
+        try {
+            service.changePet(petUsername);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        // Updating db and shared preferences
+        SQLiteHelper sqLiteHelper = new SQLiteHelper(this);
+        sqLiteHelper.selectPet(petUsername,sharedpreferences);
         // Gettings friends of new pet
         GetFriends getFriends = new GetFriends(petUsername, this);
         getFriends.execute();
-
-        // TODO reload all data with selected pet
 
     }
 
@@ -108,6 +142,14 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         for(Friend friend: output){
             sqLiteHelper.addFriend(friend);
         }
+        Intent intent = new Intent(this, Newsfeed_screen.class);
+        startActivity(intent);
         this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbindService(mConnection);
+        super.onDestroy();
     }
 }
