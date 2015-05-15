@@ -15,7 +15,6 @@ import java.util.TimerTask;
 
 
 public class Welcome_screen extends Activity {
-
     int count = 0;
     TextView icon;
     @Override

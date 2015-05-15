@@ -3,7 +3,9 @@ package com.example.david.rawr.Tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.david.rawr.Interfaces.GetPostsResponse;
+import com.example.david.rawr.Interfaces.GetFriendsResponse;
+import com.example.david.rawr.Models.Friend;
+import com.example.david.rawr.Models.Pet;
 import com.example.david.rawr.Models.Post;
 
 import org.apache.http.HttpResponse;
@@ -20,38 +22,36 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
- * Created by Estudiante on 24/04/2015.
+ * Created by david on 11/05/2015.
  */
-public class GetPosts extends AsyncTask<String, Integer, String> {
 
-    String idPet;
-    ArrayList<Post> postArrayList;
-    GetPostsResponse getPostsResponse;
-    private static String url_get_posts = "http://178.62.233.249/rawr/get_posts.php";
-    public GetPosts(String idPet, GetPostsResponse getPostsResponse) {
-        this.idPet = idPet;
-        this.getPostsResponse = getPostsResponse;
-        postArrayList = new ArrayList<>();
+public class GetFriends extends AsyncTask<String, Integer, String> {
+
+    private static String url_get_friends = "http://178.62.233.249/rawr/get_friends.php";
+    private String username;
+    private GetFriendsResponse getFriendsResponse;
+    private ArrayList<Friend> friends;
+    public GetFriends(String username, GetFriendsResponse getFriendsResponse) {
+        this.username = username;
+        this.getFriendsResponse = getFriendsResponse;
+        friends = new ArrayList<>();
     }
 
     @Override
     protected String doInBackground(String... params) {
-
         HttpClient client = new DefaultHttpClient();
-        String query = url_get_posts+"?username="+idPet;
-        HttpGet get = new HttpGet(query);
-
+        HttpGet get = new HttpGet(url_get_friends+"?username="+username);
 
         try {
             HttpResponse response = client.execute(get);
             JsonParser jsonParser = new JsonParser(response.getEntity().getContent());
             JSONObject jsonResponse= jsonParser.getjObject();
             if(jsonResponse != null){
-                JSONArray jsonArray = jsonResponse.getJSONArray("posts");
+                JSONArray jsonArray = jsonResponse.getJSONArray("friends");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jo = jsonArray.getJSONObject(i);
-                    Post postToAdd = new Post(jo.getString("idPet"), jo.getString("text"), jo.getString("date"));
-                    postArrayList.add(postToAdd);
+                    Friend friendToAdd = new Friend(jo.getString("username"), jo.getString("name"));
+                    friends.add(friendToAdd);
                 }
             }
         } catch (UnsupportedEncodingException e) {
@@ -67,6 +67,6 @@ public class GetPosts extends AsyncTask<String, Integer, String> {
     }
 
     protected void onPostExecute(String responseValue) {
-        getPostsResponse.getPostsFinish(postArrayList);
+        getFriendsResponse.getFriendsFinish(friends);
     }
 }

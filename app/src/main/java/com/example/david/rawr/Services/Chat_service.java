@@ -7,10 +7,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Binder;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.util.Log;
 
+import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.MainActivities.Chat_window;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Models.Message;
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by david on 09/05/2015.
@@ -31,23 +33,57 @@ import java.util.ArrayList;
 
 public  class Chat_service extends Service {
 
-    Socket mySocket;
+    Socket mySocket = null;
     Emitter.Listener startSession_listener, chat_message_listener;
-    String username;
+    String petUsername;
     ArrayList<String> friendsList;
-    IBinder iBinder = new MyBinder();
     NotificationManager notificationManager;
+    IRemoteService.Stub myBinder = new IRemoteService.Stub() {
+        @Override
+        public List<String> getFriendsList() throws RemoteException {
+            return friendsList;
+        }
 
+        @Override
+        public void sendMessage(String sender, String receiver, String msg) throws RemoteException {
+            JSONObject data = new JSONObject();
+            Log.e("sender", sender);
+            Log.e("receiver", receiver);
+            try {
+                data.put("sender", sender);
+                data.put("receiver", receiver);
+                data.put("message", msg);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mySocket.emit("chat_message", data);
+        }
+
+        @Override
+        public void changePet(String petUsername) throws RemoteException {
+            JSONObject data = new JSONObject();
+            try {
+                data.put("username", petUsername);
+                mySocket.emit("start_session", data);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+    };
+
+    // Binder for communication
     @Override
     public void onCreate() {
+        Log.e("status","on_create");
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
+            Log.e("status","starting_service");
             mySocket = IO.socket("http://178.62.233.249:3000");
-            notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
             JSONObject data = new JSONObject();
             SharedPreferences sharedPreferences;
             sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
@@ -73,10 +109,11 @@ public  class Chat_service extends Service {
                 @Override
                 public void call(Object... args) {
                     try {
+                        Log.e("status", "listen_msg");
                         JSONObject data = (JSONObject)args[0];
                         Intent intent = new Intent(getApplicationContext(), Chat_window.class);
                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0, intent,0);
-                        Message msg = new Message((String)data.get("sender"),(String)data.get("message"));
+                        Message msg = new Message((String)data.get("message"),(String)data.get("sender"));
                         Notification notification = new Notification.Builder(Chat_service.this)
                                     .setSmallIcon(R.drawable.logo_icon)
                                     .setContentTitle(msg.getPerson())
@@ -89,8 +126,10 @@ public  class Chat_service extends Service {
                     }
                 }
             };
-            username=sharedPreferences.getString("username", "");
-            data.put("username", username);
+            notificationManager = (NotificationManager)
+                    getSystemService(NOTIFICATION_SERVICE);
+            petUsername=sharedPreferences.getString("petUsername", "");
+            data.put("username", petUsername);
             friendsList= new ArrayList();
             mySocket.on("chat_message", chat_message_listener);
             mySocket.on("response_start_session", startSession_listener);
@@ -106,7 +145,7 @@ public  class Chat_service extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return iBinder;
+        return myBinder;
     }
 
     @Override
@@ -115,19 +154,6 @@ public  class Chat_service extends Service {
         return super.onUnbind(intent);
     }
 
-    public class MyBinder extends Binder {
-        public Chat_service getService(){
-            return Chat_service.this;
-        }
-    }
-
-    public ArrayList<String> getFriendsList(){
-        return friendsList;
-    }
-
-    public void sendMessage(JSONObject data){
-        mySocket.emit("chat_message", data);
-    }
     @Override
     public void onDestroy() {
         Log.e("status", "destroyed");

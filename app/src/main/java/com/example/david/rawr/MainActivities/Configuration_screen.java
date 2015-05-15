@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import com.example.david.rawr.Adapters.ConfigurationListAdapter;
 import com.example.david.rawr.R;
-import com.example.david.rawr.SQLite.PetSQLiteHelper;
+import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.facebook.login.LoginManager;
 
 
@@ -31,11 +31,10 @@ public class Configuration_screen extends Activity  {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("position", String.valueOf(position));
                 if (position == 5) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    PetSQLiteHelper petSQLiteHelper = new PetSQLiteHelper(Configuration_screen.this);
-                    petSQLiteHelper.clearDB();
+                    SQLiteHelper SQLiteHelper = new SQLiteHelper(Configuration_screen.this);
+                    SQLiteHelper.clearDB();
                     editor.clear();
                     editor.commit();
                     if(LoginManager.getInstance() != null) {

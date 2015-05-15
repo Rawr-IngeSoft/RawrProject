@@ -1,13 +1,22 @@
 package com.example.david.rawr.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.david.rawr.Models.Friend;
 import com.example.david.rawr.R;
+import com.example.david.rawr.otherClasses.RoundImage;
 
 import java.util.ArrayList;
 
@@ -17,23 +26,23 @@ import java.util.ArrayList;
 public class Friends_connected_row_Adapter extends BaseAdapter {
 
     Context context;
-    ArrayList<String> petNames;
+    ArrayList<Friend> friends;
     private static LayoutInflater inflater;
 
-    public Friends_connected_row_Adapter(Context context, ArrayList<String> petNames) {
-        this.petNames = petNames;
+    public Friends_connected_row_Adapter(Context context, ArrayList<Friend> friends) {
+        this.friends = friends;
         this.context = context;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return petNames.size();
+        return friends.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return petNames.get(position);
+        return friends.get(position);
     }
 
     @Override
@@ -46,16 +55,27 @@ public class Friends_connected_row_Adapter extends BaseAdapter {
         if(convertView == null){
             convertView = inflater.inflate(R.layout.friends_connected_row, null);
             TextView petName = (TextView)convertView.findViewById(R.id.friends_connected_row_petName);
-            petName.setText(petNames.get(position));
+            ImageView picture = (ImageView)convertView.findViewById(R.id.friends_connected_row_picture);
+            LinearLayout container = (LinearLayout)convertView.findViewById(R.id.friends_connected_row_container);
+            petName.setText(friends.get(position).getPetName());
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_profilepicture_male);
+            picture.setImageBitmap(RoundImage.getRoundedShape(bitmap));
+            if (friends.get(position).isConnected()){
+                container.setBackgroundColor(Color.parseColor("#c6f274"));
+            }else{
+                container.setBackgroundColor(Color.parseColor("#c5e0d2"));
+            }
         }
         return convertView;
     }
 
-    public ArrayList<String> getPetNames() {
-        return petNames;
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+
     }
 
-    public void setPetNames(ArrayList<String> petNames) {
-        this.petNames = petNames;
+    public void setFriends(ArrayList<Friend> friends) {
+        this.friends = friends;
     }
 }

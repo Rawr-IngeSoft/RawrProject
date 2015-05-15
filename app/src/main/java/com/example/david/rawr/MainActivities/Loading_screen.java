@@ -6,39 +6,45 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.CreateResponse;
+import com.example.david.rawr.Interfaces.GetFriendsResponse;
+import com.example.david.rawr.Interfaces.GetPetsResponse;
 import com.example.david.rawr.Interfaces.ValidateResponse;
+import com.example.david.rawr.Models.Friend;
+import com.example.david.rawr.Models.Pet;
 import com.example.david.rawr.R;
+import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Tasks.CreateOwner;
+import com.example.david.rawr.Tasks.CreatePet;
+import com.example.david.rawr.Tasks.GetFriends;
+import com.example.david.rawr.Tasks.GetPets;
 import com.example.david.rawr.Tasks.ValidateUser;
 
 import java.util.ArrayList;
 
 
-public class Loading_screen extends Activity implements ValidateResponse, CreateResponse {
+public class Loading_screen extends Activity implements ValidateResponse, CreateResponse, GetFriendsResponse, GetPetsResponse {
 
     String username, serviceType;
     SharedPreferences sharedpreferences;
+    SQLiteHelper SQLiteHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SQLiteHelper = new SQLiteHelper(this);
         sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         setContentView(R.layout.activity_loading_screen);
         ImageView img = (ImageView)findViewById(R.id.loading_screen_imageView_animation);
-        AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
-        frameAnimation.start();
+        //AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
+        //frameAnimation.start();
         serviceType = getIntent().getStringExtra("serviceType");
         if(serviceType.compareTo("logIn") == 0) {
-            if (sharedpreferences.contains("username")) {
-                Intent intent = new Intent(this, Newsfeed_screen.class);
-                startActivity(intent);
-                this.finish();
-            }
             username = getIntent().getStringExtra("username");
             String password = getIntent().getStringExtra("password");
             // Validate User
@@ -102,24 +108,37 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             editor.putString("name", name );
             editor.putString("lastName", lastName );
             editor.commit();
-            String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
-            Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
-            intent = new Intent(this, Newsfeed_screen.class);
+            if (sharedpreferences.contains("petUsername")) {
+                GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername",""), this);
+                getFriends.execute();
+            }else {
+                String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
+                Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
+                intent = new Intent(this, Newsfeed_screen.class);
+                startActivity(intent);
+                this.finish();
+            }
         }else{
             intent = new Intent(this, LogIn_screen.class);
             Toast.makeText(this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+            this.finish();
         }
-        startActivity(intent);
-        this.finish();
+
     }
 
     @Override
     public void createFinish(String status) {
         Intent intent;
         if (serviceType.compareTo("facebook") == 0) {
-            intent = new Intent(this, Newsfeed_screen.class);
-            startActivity(intent);
-            this.finish();
+            if (sharedpreferences.contains("username")) {
+                GetPets getPets = new GetPets(sharedpreferences.getString("username", ""), this);
+                getPets.execute();
+            }else {
+                intent = new Intent(this, Newsfeed_screen.class);
+                startActivity(intent);
+                this.finish();
+            }
         }else{
             if (status.compareTo("1") == 0) {
                 String msg = "Welcome " + sharedpreferences.getString("name","") + " " + sharedpreferences.getString("lastName","");
@@ -134,4 +153,41 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         }
     }
 
+    @Override
+    public void getFriendsFinish(ArrayList<Friend> output) {
+        SQLiteHelper SQLiteHelper = new SQLiteHelper(this);
+        for (Friend friend: output){
+            SQLiteHelper.addFriend(friend);
+        }
+        String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
+        Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, Newsfeed_screen.class);
+        startActivity(intent);
+        this.finish();
+    }
+
+    @Override
+    public void getPetsFinish(ArrayList<Pet> output) {
+        for(Pet pet: output){
+            SQLiteHelper.addPet(pet);
+        }
+        if (!sharedpreferences.contains("petUsername")) {
+            if (!output.isEmpty()) {
+                Pet pet = output.get(0);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("petName", pet.getPetName());
+                editor.putString("petUsername", pet.getIdPet());
+                editor.putString("petType", pet.getPetType());
+                editor.putString("petGender", pet.getPetGender());
+                editor.commit();
+                GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername", ""), this);
+                getFriends.execute();
+            }else{
+                Intent intent = new Intent(this, Newsfeed_screen.class);
+                startActivity(intent);
+                this.finish();
+            }
+        }
+
+    }
 }

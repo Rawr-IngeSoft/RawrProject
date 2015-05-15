@@ -8,12 +8,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,8 +31,11 @@ import android.widget.TextView;
 
 import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.PostListAdapter;
+import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.Interfaces.GetPostsResponse;
+import com.example.david.rawr.Models.Friend;
 import com.example.david.rawr.R;
+import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Services.Chat_service;
 import com.example.david.rawr.Tasks.GetPhoto;
 import com.example.david.rawr.Tasks.GetPosts;
@@ -37,6 +43,8 @@ import com.example.david.rawr.Models.Post;
 import com.example.david.rawr.otherClasses.RoundImage;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -44,48 +52,54 @@ import java.util.concurrent.ExecutionException;
 
 public class Newsfeed_screen extends Activity implements GetPostsResponse, View.OnClickListener {
 
-    ImageView localization, messages, profile, notifications, profilePicture;
-    ListView postList;
-    SharedPreferences sharedPreferences;
-    String username = "";
-    Friends_connected_row_Adapter friends_connected_row_adapter;
-    DrawerLayout dLayout;
-    ListView dList;
-    boolean buttonsVisible = true;
-    ArrayList<String> friendsList = new ArrayList<>();
-    RelativeLayout buttons_container;
-    float  notificationsX, notificationsY,parentX, parentY, profileX, profileY, messagesX, messagesY, localizationX, localizationY;
-    Timer friendsConnectedTimer;
-    NotificationManager notificationManager;
-    // Background service class declaration
-
-    Chat_service chat_service;
+    private ImageView localization, search, profile, notifications, profilePicture;
+    private ListView postList;
+    private SharedPreferences sharedPreferences;
+    private String username = "";
+    private Friends_connected_row_Adapter friends_connected_row_adapter;
+    private DrawerLayout dLayout;
+    private ListView dList;
+    private boolean buttonsVisible = true;
+    private ArrayList<Friend> friendsList = new ArrayList<>();
+    private RelativeLayout buttons_container;
+    private float  notificationsX, notificationsY,parentX, parentY, profileX, profileY, searchX, searchY, localizationX, localizationY;
+    private Timer friendsConnectedTimer;
+    private  NotificationManager notificationManager;
+    // DB Manager
+    SQLiteHelper  sqLiteHelper = new SQLiteHelper(this);
 
     // Background service connection declaration
     private ServiceConnection mConnection;
+    protected IRemoteService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bitmap bitmap;
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_newsfeed_screen);
-        localization = (ImageView)findViewById(R.id.newsfeed_localization_button);
-        messages = (ImageView)findViewById(R.id.newsfeed_message_button);
-        profile = (ImageView)findViewById(R.id.newsfeed_friends_button);
-        notifications = (ImageView)findViewById(R.id.newsfeed_notification_button);
-        postList = (ListView)findViewById(R.id.newsfeed_list);
-        profilePicture = (ImageView)findViewById(R.id.newsfeed_profile_picture);
-        buttons_container = (RelativeLayout)findViewById(R.id.newsfeed_buttons_container);
-        profilePicture.setOnClickListener(this);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_notifications);
-        notifications.setImageBitmap(bitmap);
+
+        localization = (ImageView)findViewById(R.id.newsfeed_imageView_localization);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_location);
+        localization.setImageBitmap(bitmap);
+
+        search = (ImageView)findViewById(R.id.newsfeed_imageView_search);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_search);
+        search.setImageBitmap(bitmap);
+
+        profile = (ImageView)findViewById(R.id.newsfeed_imageView_profile);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_profile);
         profile.setImageBitmap(bitmap);
         profile.setOnClickListener(this);
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_messages);
-        messages.setImageBitmap(bitmap);
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_location);
-        localization.setImageBitmap(bitmap);
+
+        notifications = (ImageView)findViewById(R.id.newsfeed_imageView_notifications);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_notifications);
+        notifications.setImageBitmap(bitmap);
+
+        postList = (ListView)findViewById(R.id.newsfeed_list);
+        profilePicture = (ImageView)findViewById(R.id.newsfeed_imageView_profilePicture);
+        buttons_container = (RelativeLayout)findViewById(R.id.newsfeed_buttons_container);
+        profilePicture.setOnClickListener(this);
         sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
 
         // Notification manager
@@ -94,12 +108,26 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         // Connected friend list
         dList = (ListView) findViewById(R.id.newsfeed_friends_list);
         dList.setSelector(android.R.color.holo_blue_dark);
+
+        // Getting friends
+        friendsList = sqLiteHelper.getFriends();
+
+        // Getting posts
+        if(sharedPreferences.contains("petUsername")) {
+            Log.e("petusername", sharedPreferences.getString("petUsername",""));
+            friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", "")));
+            GetPosts getPosts = new GetPosts(sharedPreferences.getString("petUsername", ""), this);
+            getPosts.execute();
+        }
+
+        //Show friendlist
+
         friends_connected_row_adapter = new Friends_connected_row_Adapter(this, friendsList);
         dList.setAdapter(friends_connected_row_adapter);
 
         // Persistence services
-        if(sharedPreferences.contains("pictureUri")){
-            GetPhoto getPhoto = new GetPhoto(sharedPreferences.getString("pictureUri", ""), null);
+        if(sharedPreferences.contains("pictureUri") && sharedPreferences.contains("petUsername")){
+            GetPhoto getPhoto = new GetPhoto(sharedPreferences.getString("pictureUri", ""), sharedPreferences.getString("petusername",""), null);
             try {
                 bitmap = getPhoto.execute().get();
                 if(bitmap != null)
@@ -120,26 +148,43 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         mConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
-                Chat_service.MyBinder b = (Chat_service.MyBinder) binder;
-                chat_service = b.getService();
-
-                friendsList = chat_service.getFriendsList();
+                service = IRemoteService.Stub.asInterface(binder);
+                try {
+                    ArrayList<String> connectedFriends = (ArrayList<String>)service.getFriendsList();
+                    boolean connected = false;
+                    if (connectedFriends != null) {
+                        for(Friend friend: friendsList){
+                            for (String connFriend: connectedFriends){
+                                if (connFriend.equals(friend.getPetUsername())){
+                                    friend.setConnected(true);
+                                    connected = true;
+                                }
+                            }
+                            if (!connected){
+                                friend.setConnected(false);
+                            }
+                            connected = false;
+                        }
+                        Collections.sort(friendsList);
+                        friends_connected_row_adapter.setFriends(friendsList);
+                        dList.setAdapter(friends_connected_row_adapter);
+                    }
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 if (friendsList != null) {
                     friends_connected_row_adapter = new Friends_connected_row_Adapter(Newsfeed_screen.this, friendsList);
                     dList.setAdapter(friends_connected_row_adapter);
                 }else{
-                    Log.e("LISTA", "nulllu");
+                    Log.e("LISTA", "null");
                 }
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                chat_service = null;
+                service = null;
             }
         };
-
-        GetPosts getPosts = new GetPosts(username, this);
-        getPosts.execute();
 
         dLayout = (DrawerLayout) findViewById(R.id.newsfeed_friends_sliding_list);
 
@@ -157,8 +202,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
                 dLayout.closeDrawers();
                 Intent intent = new Intent(Newsfeed_screen.this, Chat_window.class);
-
-                intent.putExtra("idPet", dList.getItemAtPosition(position).toString());
+                Friend f = (Friend)dList.getItemAtPosition(position);
+                intent.putExtra("idPet", f.getPetUsername());
                 startActivity(intent);
             }
 
@@ -169,8 +214,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         notificationsY = notifications.getY();
         profileX = profile.getX();
         profileY = profile.getY();
-        messagesX = messages.getX();
-        messagesY = messages.getY();
+        searchX = search.getX();
+        searchY = search.getY();
         localizationX = localization.getX();
         localizationY = localization.getY();
         parentX = profilePicture.getX();
@@ -178,10 +223,13 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         profilePicture.bringToFront(); // Bring profile picture to front
         buttons_container.bringToFront(); //  bring container to front
 
-        // Start connected friends service
-
-        Intent connected_friends_intent = new Intent(this, Chat_service.class);
-        this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
+        // bind connected friends service
+        if (service == null) {
+            Intent connected_friends_intent = new Intent();
+            connected_friends_intent.setAction("service.Chat");
+            this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
+            Log.e("status", "bind");
+        }
 
         // Refresh friend list
         friendsConnectedTimer = new Timer();
@@ -191,21 +239,36 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                 Newsfeed_screen.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        friendsList = chat_service.getFriendsList();
-                        if (friendsList != null) {
-                            if(!friendsList.contains(username)){
-                                friendsList.add(username);
+                        try {
+                            if(service != null) {
+                                boolean connected = false;
+                                ArrayList<String> connectedFriends = (ArrayList<String>) service.getFriendsList();
+                                if (connectedFriends != null) {
+                                    for(Friend friend: friendsList){
+                                        for (String connFriend: connectedFriends){
+                                            if (connFriend.equals(friend.getPetUsername())){
+                                                friend.setConnected(true);
+                                                connected = true;
+                                            }
+                                        }
+                                        if (!connected){
+                                            friend.setConnected(false);
+                                        }
+                                        connected = false;
+                                    }
+                                    Collections.sort(friendsList);
+                                    friends_connected_row_adapter.setFriends(friendsList);
+                                    dList.setAdapter(friends_connected_row_adapter);
+                                }
                             }
-                            friends_connected_row_adapter.setPetNames(friendsList);
-                            friends_connected_row_adapter.notifyDataSetChanged();
-                            dList.setAdapter(friends_connected_row_adapter);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
                         }
                     }
                 });
             }
         }, 2000, 2000);
     }
-
 
     @Override
     public void getPostsFinish(ArrayList<Post> output) {
@@ -214,31 +277,33 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
     @Override
     public void onClick(View v) {
+
         Intent intent;
         switch(v.getId()){
-            case R.id.newsfeed_friends_button:
+            case R.id.newsfeed_imageView_profile:
                 intent = new Intent(this, Owner_Profile_screen.class);
                 startActivity(intent);
                 this.finish();
                 break;
-            case R.id.newsfeed_profile_picture:
-                TranslateAnimation animation_notification, animation_profile, animation_messages, animation_localization;
+
+            case R.id.newsfeed_imageView_profilePicture:
+                TranslateAnimation animation_notification, animation_profile, animation_search, animation_localization;
                 if (buttonsVisible == true){
                     buttonsVisible = false;
                     animation_notification = new TranslateAnimation(0, -parentX+notificationsX-90, 0, -parentY+notificationsY-30);
                     animation_profile = new TranslateAnimation(0, -parentX+profileX-90, 0, -parentY+profileY+20);
-                    animation_messages = new TranslateAnimation(0, -parentX+messagesX-40, 0, -parentY+messagesY-80);
+                    animation_search = new TranslateAnimation(0, -parentX+searchX-40, 0, -parentY+searchY-80);
                     animation_localization = new TranslateAnimation(0, -parentX+localizationX+40, 0, -parentY+localizationY-90);
                 }else {
                     animation_notification = new TranslateAnimation( 0, parentX-notificationsX+90, 0,  parentY-notificationsY+30);
                     animation_profile = new TranslateAnimation( 0, parentX-profileX+90, 0,  parentY-profileY-20);
-                    animation_messages = new TranslateAnimation( 0, parentX-messagesX+40, 0,  parentY-messagesY+80);
+                    animation_search = new TranslateAnimation( 0, parentX-searchX+40, 0,  parentY-searchY+80);
                     animation_localization = new TranslateAnimation(0, parentX-localizationX-40, 0, parentY-localizationY+90);
                     buttonsVisible = true;
                 }
                 animation_notification.setDuration(500);
                 animation_profile.setDuration(500);
-                animation_messages.setDuration(500);
+                animation_search.setDuration(500);
                 animation_localization.setDuration(500);
 
                 animation_localization.setAnimationListener(new Animation.AnimationListener() {
@@ -266,7 +331,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
                     }
                 });
-                animation_messages.setAnimationListener(new Animation.AnimationListener() {
+                animation_search.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
 
@@ -274,16 +339,16 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        messages.clearAnimation();
-                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) messages.getLayoutParams();
+                        search.clearAnimation();
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) search.getLayoutParams();
                         if (buttonsVisible == false) {
-                            params.topMargin += (-parentY + messagesY-80);
-                            params.leftMargin += (-parentX + messagesX - 40);
+                            params.topMargin += (-parentY + searchY-80);
+                            params.leftMargin += (-parentX + searchX - 40);
                         } else {
-                            params.topMargin += (parentY - messagesY+80);
-                            params.leftMargin += (parentX - messagesX + 40);
+                            params.topMargin += (parentY - searchY+80);
+                            params.leftMargin += (parentX - searchX + 40);
                         }
-                        messages.setLayoutParams(params);
+                        search.setLayoutParams(params);
                     }
 
                     @Override
@@ -343,7 +408,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                 });
                 notifications.startAnimation(animation_notification);
                 profile.startAnimation(animation_profile);
-                messages.startAnimation(animation_messages);
+                search.startAnimation(animation_search);
                 localization.startAnimation(animation_localization);
                 break;
         }
@@ -353,6 +418,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     protected void onDestroy() {
         super.onDestroy();
         friendsConnectedTimer.cancel();
-        //unbindService(mConnection);
+        unbindService(mConnection);
     }
+
+
 }
