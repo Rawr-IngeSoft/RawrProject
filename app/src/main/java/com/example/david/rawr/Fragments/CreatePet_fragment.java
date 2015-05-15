@@ -1,7 +1,10 @@
 package com.example.david.rawr.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +19,16 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.CreatePetResponse;
+import com.example.david.rawr.MainActivities.Owner_Profile_screen;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Tasks.CreatePet;
+import com.example.david.rawr.otherClasses.RoundImage;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 
-public class CreatePet_fragment extends android.support.v4.app.Fragment implements CreatePetResponse {
+public class CreatePet_fragment extends android.support.v4.app.Fragment implements CreatePetResponse, View.OnClickListener {
 
     Button createPet;
     private EditText petName;
@@ -48,9 +54,12 @@ public class CreatePet_fragment extends android.support.v4.app.Fragment implemen
         createPet = (Button)v.findViewById(R.id.fragment_create_pet_button_createPet);
         petName = (EditText)v.findViewById(R.id.fragment_create_pet_EditText_petName);
         profilePicture = (ImageView)v.findViewById(R.id.fragment_create_pet_imageView_profilePicture);
-        profilePicture.getLayoutParams().height = 350;
-        profilePicture.getLayoutParams().width = 350;
+        profilePicture.setOnClickListener(this);
+        profilePicture.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profile_picture_female)));
+        //profilePicture.getLayoutParams().height = 350;
+        //profilePicture.getLayoutParams().width = 350;
         //profilePicture.requestFocus();
+        petUsername = (EditText)v.findViewById(R.id.fragment_create_pet_EditText_petUsername);
 
         typeList = (Spinner)v.findViewById(R.id.fragment_create_pet_Spinner_list);
         typeList.setClickable(true);
@@ -107,6 +116,26 @@ public class CreatePet_fragment extends android.support.v4.app.Fragment implemen
             // Add photo to pet
             Toast.makeText(getActivity(), "Congrats!!! You have a new pet", Toast.LENGTH_SHORT).show();
             getActivity().finish();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fragment_create_pet_imageView_profilePicture:
+                Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 0);
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == -1){
+            Uri targetUri = data.getData();
+            Owner_Profile_screen owner_profile_screen = (Owner_Profile_screen)getActivity();
+            owner_profile_screen.refreshCreatedPetPicture(targetUri, profilePicture);
         }
     }
 }

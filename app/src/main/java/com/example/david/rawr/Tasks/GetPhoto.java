@@ -41,6 +41,7 @@ public class GetPhoto extends AsyncTask<String, Integer, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap responseValue) {
-        getPhotoResponse.getPhotoFinish(responseValue);
+        if(getPhotoResponse != null)
+            getPhotoResponse.getPhotoFinish(responseValue);
     }
 }

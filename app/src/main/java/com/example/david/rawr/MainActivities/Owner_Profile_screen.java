@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.PetChooseViewPagerAdapter;
 import com.example.david.rawr.IRemoteService;
@@ -28,7 +31,9 @@ import com.example.david.rawr.R;
 import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Tasks.GetFriends;
 import com.example.david.rawr.Tasks.GetPhoto;
+import com.example.david.rawr.otherClasses.RoundImage;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -94,7 +99,7 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, Owner_Profile_screen.class);
+        Intent intent = new Intent(this, Newsfeed_screen.class);
         startActivity(intent);
         this.finish();
     }
@@ -133,6 +138,18 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
 
     }
 
+    public void refreshCreatedPetPicture(Uri targetUri, ImageView petPicture){
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("pictureUri", targetUri.toString());
+        editor.commit();
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+            petPicture.setImageBitmap(RoundImage.getRoundedShape(bitmap));
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this, "Error loading the photo", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
     @Override
     public void getFriendsFinish(ArrayList<Friend> output) {
 

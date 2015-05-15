@@ -30,7 +30,7 @@ public class ChoosePetFragment extends android.support.v4.app.Fragment implement
 
     String petNameText, petTypeText, petBirthayText, pictureUri, petUsername;
     boolean selected;
-    LinearLayout frameContainer;
+    FrameLayout frameContainer;
     ImageView petPicture;
 
     @Override
@@ -55,7 +55,7 @@ public class ChoosePetFragment extends android.support.v4.app.Fragment implement
         TextView petType = (TextView) v.findViewById(R.id.choosePetType);
         TextView petBirthday = (TextView) v.findViewById(R.id.choosePetBirthday);
         petPicture = (ImageView)v.findViewById(R.id.choosePetImageView);
-        frameContainer = (LinearLayout)v.findViewById(R.id.fragment_choose_pet_container);
+        frameContainer = (FrameLayout)v.findViewById(R.id.fragment_choose_pet_container);
         if(selected){
             frameContainer.setBackgroundColor(Color.parseColor("#c6f274"));
         }else{
@@ -75,7 +75,7 @@ public class ChoosePetFragment extends android.support.v4.app.Fragment implement
         if (bitmap != null) {
             petPicture.setImageBitmap(RoundImage.getRoundedShape(bitmap));
         }else{
-            petPicture.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profile_picture_female)));
+            //petPicture.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profile_picture_female)));
         }
     }
 

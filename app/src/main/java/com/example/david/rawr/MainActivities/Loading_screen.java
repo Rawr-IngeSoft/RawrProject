@@ -172,15 +172,22 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             SQLiteHelper.addPet(pet);
         }
         if (!sharedpreferences.contains("petUsername")) {
-            Pet pet = output.get(0);
-            SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.putString("petName", pet.getPetName());
-            editor.putString("petUsername", pet.getIdPet());
-            editor.putString("petType", pet.getPetType());
-            editor.putString("petGender", pet.getPetGender());
-            editor.commit();
+            if (!output.isEmpty()) {
+                Pet pet = output.get(0);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putString("petName", pet.getPetName());
+                editor.putString("petUsername", pet.getIdPet());
+                editor.putString("petType", pet.getPetType());
+                editor.putString("petGender", pet.getPetGender());
+                editor.commit();
+                GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername", ""), this);
+                getFriends.execute();
+            }else{
+                Intent intent = new Intent(this, Newsfeed_screen.class);
+                startActivity(intent);
+                this.finish();
+            }
         }
-        GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername", ""), this);
-        getFriends.execute();
+
     }
 }

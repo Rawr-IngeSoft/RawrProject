@@ -85,7 +85,8 @@ public class Chat_window extends Activity implements View.OnClickListener{
             case R.id.chat_window_send_button:
                 try {
                     Log.e("status", "click_btn");
-                    service.sendMessage(petUsername,receiver,message.getText().toString());
+                    if(!message.getText().toString().equals(""))
+                        service.sendMessage(petUsername,receiver,message.getText().toString());
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
