@@ -26,7 +26,6 @@ import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.Interfaces.GetFriendsResponse;
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
 import com.example.david.rawr.Models.Friend;
-import com.example.david.rawr.Models.Pet;
 import com.example.david.rawr.R;
 import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Tasks.GetFriends;
@@ -35,7 +34,6 @@ import com.example.david.rawr.otherClasses.RoundImage;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 // REQ-029
@@ -94,6 +92,17 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         }
         if(sharedpreferences.contains("ownerPictureUri") && sharedpreferences.contains("petUsername")) {
             GetPhoto getPhoto = new GetPhoto(sharedpreferences.getString("ownerPictureUri", ""),sharedpreferences.getString("petUsername", ""), this);
+            getPhoto.execute();
+        }else{
+            if (sharedpreferences.contains("petGender")) {
+                if (sharedpreferences.getString("petGender", "").equals("Female")) {
+                    photo.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profile_picture_female)));
+                } else {
+                    photo.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profilepicture_male)));
+                }
+            }else{
+                photo.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profilepicture_male)));
+            }
         }
     }
 
@@ -106,7 +115,19 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
 
     @Override
     public void getPhotoFinish(Bitmap bitmap) {
-
+        if (bitmap != null) {
+            photo.setImageBitmap(RoundImage.getRoundedShape(bitmap));
+        }else{
+            if (sharedpreferences.contains("petGender")) {
+                if (sharedpreferences.getString("petGender", "").equals("Female")) {
+                    photo.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profile_picture_female)));
+                } else {
+                    photo.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profilepicture_male)));
+                }
+            }else{
+                photo.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profilepicture_male)));
+            }
+        }
     }
 
     @Override
