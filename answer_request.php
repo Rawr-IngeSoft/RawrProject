@@ -34,10 +34,21 @@ if($result > 0){
     if($conn->query($sql) == TRUE){
       $sql="INSERT INTO Friends(username, username_friend)
             VALUES ('$sender', '$receiver')";
-      if($conn->query($sql) == TRUE)
-        $json_return= array('status' => '1');
-      else
+      if($conn->query($sql) == TRUE){
+         $sql="INSERT INTO Friends(username, username_friend)
+            VALUES ('$sender', '$receiver')";
+          if($conn->query($sql) == TRUE){
+		 $json_return= array('status' => '1');
+          }else{
+ 		//roll back
+	      $sql="DELETE FROM Friends
+        	    WHERE username='$sender' AND username_friend='$receiver'";
+              $json_return= array('status' => '0');
+
+	  }
+      }else{
         $json_return= array('status' => '0');
+      }
       echo json_encode($json_return);
     }else{
 
