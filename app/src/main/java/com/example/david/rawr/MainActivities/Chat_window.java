@@ -1,6 +1,7 @@
 package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Chat_window extends Activity implements View.OnClickListener{
@@ -78,6 +80,16 @@ public class Chat_window extends Activity implements View.OnClickListener{
         // Start connected friends service
         if (service == null) {
             Intent connected_friends_intent = new Intent();
+            ActivityManager am = (ActivityManager) getBaseContext().getSystemService(Context.ACTIVITY_SERVICE);
+            // Return a list of the tasks that are currently running,
+            // with the most recent being first and older ones after in order.
+            // Taken 1 inside getRunningTasks method means want to take only
+            // top activity from stack and forgot the olders.
+            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+
+            ComponentName componentInfo = taskInfo.get(0).topActivity;
+            componentInfo.getPackageName();
+            connected_friends_intent.setPackage(componentInfo.getPackageName());
             connected_friends_intent.setAction("service.Chat");
             this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
         }
