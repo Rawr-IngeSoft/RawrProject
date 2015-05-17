@@ -56,10 +56,10 @@ public class Chat_window extends Activity implements View.OnClickListener{
         if(sharedPreferences.contains("petUsername")) {
             petUsername = sharedPreferences.getString("petUsername", "");
         }
-        if(sharedPreferences.contains("petUsername")) {
+        if(sharedPreferences.contains("receiver")) {
             receiver = sharedPreferences.getString("receiver", "");
         }
-
+        //TODO read history from sqlite
         send_button = (Button) findViewById(R.id.chat_window_send_button);
         send_button.setOnClickListener(this);
         message = (EditText) findViewById(R.id.chat_window_message);

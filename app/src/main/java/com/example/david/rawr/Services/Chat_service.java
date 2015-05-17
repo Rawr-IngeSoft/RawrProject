@@ -133,8 +133,10 @@ public  class Chat_service extends Service {
                         PendingIntent pendingIntent = PendingIntent.getActivity(Chat_service.this,0, intentNotification,0);
                         notificationBuilder.setContentTitle(data.getString("sender"));
                         notificationBuilder.setContentIntent(pendingIntent);
+                        notificationBuilder.setStyle(inboxStyle);
                         notificationManager.notify(0,notificationBuilder.build());
                         sharedPreferences.edit().putString("receiver",data.getString("sender") ).commit();
+                        // TODO write in sqlite
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
