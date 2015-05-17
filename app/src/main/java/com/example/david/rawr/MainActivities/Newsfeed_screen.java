@@ -196,7 +196,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                 dLayout.closeDrawers();
                 Intent intent = new Intent(Newsfeed_screen.this, Chat_window.class);
                 Friend f = (Friend)dList.getItemAtPosition(position);
-                intent.putExtra("idPet", f.getPetUsername());
+                sharedPreferences.edit().putString("receiver", f.getPetUsername()).commit();
                 startActivity(intent);
             }
 

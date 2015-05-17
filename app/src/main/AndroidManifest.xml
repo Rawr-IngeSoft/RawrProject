@@ -77,6 +77,10 @@
             android:name=".MainActivities.Chat_window"
             android:label="@string/title_activity_chat_window"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.example.david.rawr.MainActivities.Chat_window" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <service
             android:name = ".Services.Chat_service"

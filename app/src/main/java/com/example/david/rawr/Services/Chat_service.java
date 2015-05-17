@@ -45,6 +45,7 @@ public  class Chat_service extends Service {
     NotificationCompat.Builder notificationBuilder;
     HashMap<String,String> notifications;
     NotificationCompat.InboxStyle inboxStyle;
+    SharedPreferences sharedPreferences;
 
     IRemoteService.Stub myBinder = new IRemoteService.Stub() {
         @Override
@@ -90,21 +91,17 @@ public  class Chat_service extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
             notifications = new HashMap<>();
-            Intent intentNotification = new Intent(getApplicationContext(), Chat_window.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0, intentNotification,0);
             notificationManager = (NotificationManager)
                     getSystemService(NOTIFICATION_SERVICE);
             inboxStyle = new NotificationCompat.InboxStyle();
             notificationBuilder = new NotificationCompat.Builder(Chat_service.this)
                     .setSmallIcon(R.drawable.logo_icon)
                     .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
                     .setDefaults(Notification.DEFAULT_VIBRATE)
                     .setStyle(inboxStyle)
                     .setSound(Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/" + R.raw.notification_sound));
             mySocket = IO.socket("http://178.62.233.249:3000");
-            JSONObject data = new JSONObject();
-            SharedPreferences sharedPreferences;
+            final JSONObject data = new JSONObject();
             sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
             startSession_listener = new Emitter.Listener() {
                 @Override
@@ -131,8 +128,13 @@ public  class Chat_service extends Service {
                         JSONObject data = (JSONObject)args[0];
                         Log.e("status", data.getString("message"));
                         inboxStyle.addLine(data.getString("message"));
+                        Intent intentNotification = new Intent(Chat_service.this, Chat_window.class);
+                        intentNotification.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(Chat_service.this,0, intentNotification,0);
                         notificationBuilder.setContentTitle(data.getString("sender"));
+                        notificationBuilder.setContentIntent(pendingIntent);
                         notificationManager.notify(0,notificationBuilder.build());
+                        sharedPreferences.edit().putString("receiver",data.getString("sender") ).commit();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

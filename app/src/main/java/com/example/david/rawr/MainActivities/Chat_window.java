@@ -45,6 +45,7 @@ public class Chat_window extends Activity implements View.OnClickListener{
 
     ArrayList<Message> messages = new ArrayList<>();
     MessagesListAdapter messagesListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +54,10 @@ public class Chat_window extends Activity implements View.OnClickListener{
         if(sharedPreferences.contains("petUsername")) {
             petUsername = sharedPreferences.getString("petUsername", "");
         }
-        receiver = getIntent().getStringExtra("idPet");
+        if(sharedPreferences.contains("petUsername")) {
+            receiver = sharedPreferences.getString("receiver", "");
+        }
+
         send_button = (Button) findViewById(R.id.chat_window_send_button);
         send_button.setOnClickListener(this);
         message = (EditText) findViewById(R.id.chat_window_message);
