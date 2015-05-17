@@ -24,7 +24,7 @@ if ($result->num_rows > 0) {
        // Crear un diccionario de Post
         $arreglo = array(
             "sender"=>$row['username_sender'],
-            "owner"=> $row['username_receiver'],
+            "receiver"=> $row['username_receiver'],
             "text"=> $row['text'],
             "date"=> $row['date'],
             "status"=> $row['status']
