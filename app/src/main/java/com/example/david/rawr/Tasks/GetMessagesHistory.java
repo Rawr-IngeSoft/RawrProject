@@ -1,11 +1,10 @@
 package com.example.david.rawr.Tasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.example.david.rawr.Interfaces.GetPetsResponse;
+import com.example.david.rawr.Interfaces.GetMessagesHistoryResponse;
 import com.example.david.rawr.Interfaces.GetPostsResponse;
-import com.example.david.rawr.Models.Pet;
+import com.example.david.rawr.Models.Message;
 import com.example.david.rawr.Models.Post;
 
 import org.apache.http.HttpResponse;
@@ -22,38 +21,41 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
- * Created by david on 11/05/2015.
+ * Created by david on 16/05/2015.
  */
+public class GetMessagesHistory extends AsyncTask<String, String, String> {
 
-public class GetPets extends AsyncTask<String, Integer, String> {
+    String idPet;
+    ArrayList<Message> messagestArrayList;
+    GetMessagesHistoryResponse getMessagesHistoryResponse;
+    private static String url_get_messages = "http://178.62.233.249/rawr/get_messages.php";
 
-    private static String url_get_pets = "http://178.62.233.249/rawr/get_pets.php";
-    private String username;
-    private GetPetsResponse getPetsResponse;
-    private ArrayList<Pet> pets;
-
-    public GetPets(String username, GetPetsResponse getPetsResponse) {
-        this.username = username;
-        this.getPetsResponse = getPetsResponse;
-        pets = new ArrayList<>();
+    public GetMessagesHistory(String idPet, GetMessagesHistoryResponse getMessagesHistoryResponse) {
+        this.idPet = idPet;
+        this.getMessagesHistoryResponse = getMessagesHistoryResponse;
+        messagestArrayList = new ArrayList<>();
     }
-
 
     @Override
     protected String doInBackground(String... params) {
+
         HttpClient client = new DefaultHttpClient();
-        HttpGet get = new HttpGet(url_get_pets+"?username="+username);
+        String query = url_get_messages+"?username="+idPet;
+        HttpGet get = new HttpGet(query);
+
 
         try {
             HttpResponse response = client.execute(get);
             JsonParser jsonParser = new JsonParser(response.getEntity().getContent());
             JSONObject jsonResponse= jsonParser.getjObject();
             if(jsonResponse != null){
-                JSONArray jsonArray = jsonResponse.getJSONArray("pets");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jo = jsonArray.getJSONObject(i);
-                    Pet petToAdd = new Pet(jo.getString("username"), jo.getString("name"), jo.getString("type"), jo.getString("birth_date"), jo.getString("path"), jo.getString("gender"));
-                    pets.add(petToAdd);
+                if(jsonResponse.getString("status").compareTo("1") == 0) {
+                    JSONArray jsonArray = jsonResponse.getJSONArray("messages");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jo = jsonArray.getJSONObject(i);
+                        Message msgtToAdd = new Message(jo.getString("text"), jo.getString("sender"), jo.getString("receiver"), jo.getString("status"), jo.getString("date"));
+                        messagestArrayList.add(msgtToAdd);
+                    }
                 }
             }
         } catch (UnsupportedEncodingException e) {
@@ -69,6 +71,6 @@ public class GetPets extends AsyncTask<String, Integer, String> {
     }
 
     protected void onPostExecute(String responseValue) {
-        getPetsResponse.getPetsFinish(pets);
+        getMessagesHistoryResponse.getMessageHistoryFinish(messagestArrayList);
     }
 }

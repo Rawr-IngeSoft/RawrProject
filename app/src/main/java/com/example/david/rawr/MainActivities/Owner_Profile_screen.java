@@ -83,7 +83,6 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
             connected_friends_intent.setPackage(componentInfo.getPackageName());
 
             this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
-            Log.e("status", "bind");
         }
         setContentView(R.layout.activity_owner__profile_screen);
         ownerLayout = (LinearLayout)findViewById(R.id.owner_profile_owner_layout);

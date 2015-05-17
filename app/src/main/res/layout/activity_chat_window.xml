@@ -6,17 +6,20 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context="com.example.david.rawr.MainActivities.Chat_window">
-    <ScrollView
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight=".1">
+        android:layout_marginBottom="20dp"
+        android:layout_weight=".1"
+        >
         <ListView
             android:layout_width="fill_parent"
-            android:layout_height="5dp"
+            android:layout_height="fill_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
             android:id="@+id/chat_window_messages_list">
-
         </ListView>
-    </ScrollView>
+    </LinearLayout>
     <EditText android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chat_window_message"/>

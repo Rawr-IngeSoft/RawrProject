@@ -117,7 +117,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
         // Getting posts
         if(sharedPreferences.contains("petUsername")) {
-            Log.e("petusername", sharedPreferences.getString("petUsername",""));
             friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", "")));
             GetPosts getPosts = new GetPosts(sharedPreferences.getString("petUsername", ""), this);
             getPosts.execute();
@@ -171,7 +170,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                     friends_connected_row_adapter = new Friends_connected_row_Adapter(Newsfeed_screen.this, friendsList);
                     dList.setAdapter(friends_connected_row_adapter);
                 }else{
-                    Log.e("LISTA", "null");
                 }
             }
 
@@ -233,7 +231,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             componentInfo.getPackageName();
             connected_friends_intent.setPackage(componentInfo.getPackageName());
             this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
-            Log.e("status", "bind");
         }
 
         // Refresh friend list
@@ -429,7 +426,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
     @Override
     public void getPhotoFinish(Bitmap bitmap) {
-        Log.e("status","prueba");
         if(bitmap!= null){
             profilePicture.setImageBitmap(RoundImage.getRoundedShape(bitmap));
         }else{

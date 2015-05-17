@@ -14,22 +14,25 @@ import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.CreateResponse;
 import com.example.david.rawr.Interfaces.GetFriendsResponse;
+import com.example.david.rawr.Interfaces.GetMessagesHistoryResponse;
 import com.example.david.rawr.Interfaces.GetPetsResponse;
 import com.example.david.rawr.Interfaces.ValidateResponse;
 import com.example.david.rawr.Models.Friend;
+import com.example.david.rawr.Models.Message;
 import com.example.david.rawr.Models.Pet;
 import com.example.david.rawr.R;
 import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Tasks.CreateOwner;
 import com.example.david.rawr.Tasks.CreatePet;
 import com.example.david.rawr.Tasks.GetFriends;
+import com.example.david.rawr.Tasks.GetMessagesHistory;
 import com.example.david.rawr.Tasks.GetPets;
 import com.example.david.rawr.Tasks.ValidateUser;
 
 import java.util.ArrayList;
 
 
-public class Loading_screen extends Activity implements ValidateResponse, CreateResponse, GetFriendsResponse, GetPetsResponse {
+public class Loading_screen extends Activity implements ValidateResponse, CreateResponse, GetFriendsResponse, GetPetsResponse, GetMessagesHistoryResponse {
 
     String username, serviceType;
     SharedPreferences sharedpreferences;
@@ -159,11 +162,8 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         for (Friend friend: output){
             SQLiteHelper.addFriend(friend);
         }
-        String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
-        Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, Newsfeed_screen.class);
-        startActivity(intent);
-        this.finish();
+        GetMessagesHistory getMessagesHistory = new GetMessagesHistory(sharedpreferences.getString("petUsername", ""), this);
+        getMessagesHistory.execute();
     }
 
     @Override
@@ -189,5 +189,17 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             }
         }
 
+    }
+
+    @Override
+    public void getMessageHistoryFinish(ArrayList<Message> output) {
+        for(Message message: output){
+            SQLiteHelper.addMessage(message);
+        }
+        String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
+        Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, Newsfeed_screen.class);
+        startActivity(intent);
+        this.finish();
     }
 }

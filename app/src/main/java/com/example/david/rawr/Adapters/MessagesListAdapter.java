@@ -1,6 +1,7 @@
 package com.example.david.rawr.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,14 +42,30 @@ public class MessagesListAdapter extends BaseAdapter {
         return position;
     }
 
+    static class ViewHolder{
+        TextView msgTV, personTV, dateTV;
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null){
+        ViewHolder holder;
+
+        if(convertView == null) {
+            holder = new ViewHolder();
             convertView = inflater.inflate(R.layout.messages_list_row, null);
-            TextView msgTV = (TextView)convertView.findViewById(R.id.messages_list_row_message);
-            TextView personTV = (TextView)convertView.findViewById(R.id.messages_list_row_person);
-            msgTV.setText(data.get(position).getMessage());
-            personTV.setText(data.get(position).getPerson() + ": ");
+            holder.msgTV = (TextView)convertView.findViewById(R.id.messages_list_row_message);
+            holder.personTV = (TextView)convertView.findViewById(R.id.messages_list_row_person);
+            holder.dateTV = (TextView)convertView.findViewById(R.id.messages_list_row_date);
+            convertView.setTag(holder);
+        }else{
+            holder = (ViewHolder)convertView.getTag();
+        }
+        holder.msgTV.setText(data.get(position).getMessage());
+        holder.personTV.setText(data.get(position).getSender() + ": ");
+        holder.dateTV.setText(data.get(position).getDate());
+        if(!data.get(position).isVisible()) {
+            holder.personTV.setVisibility(View.INVISIBLE);
+        }else{
+            holder.personTV.setVisibility(View.VISIBLE);
         }
         return convertView;
     }

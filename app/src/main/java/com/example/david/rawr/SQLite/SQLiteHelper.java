@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.david.rawr.Models.Friend;
+import com.example.david.rawr.Models.Message;
 import com.example.david.rawr.Models.Pet;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     String sqlCreatePET = "CREATE TABLE Pet (petName TEXT, petUsername TEXT PRIMARY KEY, petType TEXT, petGender TEXT, selected TEXT,path TEXT)";
     String sqlCreateFriend ="CREATE TABLE Friend (petName TEXT, petUsername TEXT PRIMARY KEY)";
+    String sqlCreateMessagesHistory = "CREATE TABLE Message (message TEXT, sender TEXT, receiver TEXT, status TEXT, date TEXT)";
     public SQLiteHelper(Context context) {
         super(context, "PetDB", null, 1);
     }
@@ -29,11 +31,55 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(sqlCreatePET);
         db.execSQL(sqlCreateFriend);
+        db.execSQL(sqlCreateMessagesHistory);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public ArrayList<Message> getMessagesOf(String friend){
+        String query = "select * from Message where sender = '" + friend + "' or " + "receiver = '" + friend + "'" ;
+        ArrayList<Message> messages = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Message message;
+        if(cursor.moveToFirst()){
+            do{
+                message = new Message(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+                messages.add(message);
+            }while (cursor.moveToNext());
+        }
+        db.close();
+        return messages;
+    }
+
+    public ArrayList<Message> getMyMessages(String petUsername){
+        String query = "select * from Message where sender = '" + petUsername + "' and " + "receiver = '" + petUsername + "'" ;
+        ArrayList<Message> messages = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Message message;
+        if(cursor.moveToFirst()){
+            do{
+                message = new Message(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+                messages.add(message);
+            }while (cursor.moveToNext());
+        }
+        db.close();
+        return messages;
+    }
+    public void addMessage(Message message){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("message", message.getMessage());
+        values.put("sender", message.getSender());
+        values.put("receiver", message.getReceiver());
+        values.put("status", message.getStatus());
+        values.put("date", message.getDate());
+        db.insert("Message", null,values );
+        db.close();
     }
 
     public void addPet(Pet pet){

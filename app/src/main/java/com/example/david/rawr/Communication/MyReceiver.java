@@ -15,7 +15,6 @@ public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Log.e("action", action);
         Intent myIntent = new Intent(context, Chat_service.class);
         context.startService(myIntent);
     }

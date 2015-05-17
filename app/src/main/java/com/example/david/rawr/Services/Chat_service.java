@@ -56,8 +56,6 @@ public  class Chat_service extends Service {
         @Override
         public void sendMessage(String sender, String receiver, String msg) throws RemoteException {
             JSONObject data = new JSONObject();
-            Log.e("sender", sender);
-            Log.e("receiver", receiver);
             try {
                 data.put("sender", sender);
                 data.put("receiver", receiver);
@@ -126,7 +124,6 @@ public  class Chat_service extends Service {
                 public void call(Object... args) {
                     try {
                         JSONObject data = (JSONObject)args[0];
-                        Log.e("status", data.getString("message"));
                         inboxStyle.addLine(data.getString("message"));
                         Intent intentNotification = new Intent(Chat_service.this, Chat_window.class);
                         intentNotification.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -165,13 +162,11 @@ public  class Chat_service extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        Log.e("status", "unbinded");
         return super.onUnbind(intent);
     }
 
     @Override
     public void onDestroy() {
-        Log.e("status", "destroyed");
         super.onDestroy();
         mySocket.disconnect();
         mySocket.off("response_start_session",startSession_listener);
