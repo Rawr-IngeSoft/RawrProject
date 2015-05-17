@@ -70,6 +70,20 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
         return messages;
     }
+
+    public int getUnreadMessagesOf(String petUsername){
+        String query = "select * from Message where sender = '" + petUsername + "' and status = 'unread'" ;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        int cantity = 0;
+        if(cursor.moveToFirst()){
+            do{
+                cantity++;
+            }while (cursor.moveToNext());
+        }
+        db.close();
+        return cantity;
+    }
     public void addMessage(Message message){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
