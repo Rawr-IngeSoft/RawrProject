@@ -1,6 +1,7 @@
 package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.ComponentName;
@@ -46,6 +47,7 @@ import com.example.david.rawr.otherClasses.RoundImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -220,6 +222,16 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         if (service == null) {
             Intent connected_friends_intent = new Intent();
             connected_friends_intent.setAction("service.Chat");
+            ActivityManager am = (ActivityManager) getBaseContext().getSystemService(Context.ACTIVITY_SERVICE);
+            // Return a list of the tasks that are currently running,
+            // with the most recent being first and older ones after in order.
+            // Taken 1 inside getRunningTasks method means want to take only
+            // top activity from stack and forgot the olders.
+            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+
+            ComponentName componentInfo = taskInfo.get(0).topActivity;
+            componentInfo.getPackageName();
+            connected_friends_intent.setPackage(componentInfo.getPackageName());
             this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
             Log.e("status", "bind");
         }
