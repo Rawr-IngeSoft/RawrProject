@@ -2,37 +2,116 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp" android:clickable="false">
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="30dp"
+        android:layout_height="60dp"
         android:orientation="horizontal">
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/post_petId"
-            android:text="username"
-            android:layout_weight=".5"
-            android:layout_gravity="center_vertical"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/post_date"
-            android:text="date"
-            android:layout_weight=".5"
-            android:layout_gravity="center_vertical" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/post_profile_picture"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <ImageView
+                android:layout_width="@dimen/post_profile_picture"
+                android:layout_height="@dimen/post_profile_picture"
+                android:background="@drawable/default_profilepicture_male"
+                android:layout_gravity="center_vertical"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/post_petId"
+                    android:text="username"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:id="@+id/post_date"
+                    android:layout_marginLeft="5dp"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/post_profile_picture"
+            android:layout_weight="5">
+            <ImageView
+                android:layout_width="@dimen/post_plus_button_size"
+                android:layout_height="@dimen/post_plus_button_size"
+                android:id="@+id/post_plusButton"
+                android:layout_gravity="center"
+                android:background="@drawable/post_more_button"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
     </LinearLayout>
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
         android:id="@+id/post_text"/>
     <ImageView
-        android:layout_gravity="center_horizontal"
-        android:layout_width="300dp"
-        android:layout_height="2dp"
-        android:background="#00FF00"/>
+        android:layout_width="fill_parent"
+        android:visibility="visible"
+        android:layout_height="@dimen/post_postPicture_height"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/post_postPhoto"
+        android:scaleType="fitXY" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/post_likeQuantity"
+            android:text="2"
+            android:textSize="20dp"
+            android:textColor="#3b9c20"
+            android:layout_gravity="center_vertical"/>
+        <ImageView
+            android:layout_width="@dimen/post_button_size"
+            android:layout_height="@dimen/post_button_size"
+            android:id="@+id/post_likeButton"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/post_like_button"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/post_commentsQuantity"
+            android:text="3"
+            android:textSize="20dp"
+            android:layout_marginLeft="60dp"
+            android:textColor="#3b9c20"
+            android:layout_gravity="center_vertical"/>
+        <ImageView
+            android:layout_width="@dimen/post_button_size"
+            android:layout_height="@dimen/post_button_size"
+            android:id="@+id/post_commentButton"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/post_comment_button"
+            android:layout_marginLeft="15dp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/post_postPicture_width"
+        android:layout_height="1dp"
+        android:layout_marginBottom="20dp"
+        android:background="#3b9c20"/>
 </LinearLayout>

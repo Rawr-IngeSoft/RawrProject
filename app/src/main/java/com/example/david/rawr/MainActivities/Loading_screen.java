@@ -111,16 +111,8 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             editor.putString("name", name );
             editor.putString("lastName", lastName );
             editor.commit();
-            if (sharedpreferences.contains("petUsername")) {
-                GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername",""), this);
-                getFriends.execute();
-            }else {
-                String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
-                Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
-                intent = new Intent(this, Newsfeed_screen.class);
-                startActivity(intent);
-                this.finish();
-            }
+            GetPets getPets = new GetPets(username, this);
+            getPets.execute();
         }else{
             intent = new Intent(this, LogIn_screen.class);
             Toast.makeText(this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
@@ -171,24 +163,21 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         for(Pet pet: output){
             SQLiteHelper.addPet(pet);
         }
-        if (!sharedpreferences.contains("petUsername")) {
-            if (!output.isEmpty()) {
-                Pet pet = output.get(0);
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString("petName", pet.getPetName());
-                editor.putString("petUsername", pet.getIdPet());
-                editor.putString("petType", pet.getPetType());
-                editor.putString("petGender", pet.getPetGender());
-                editor.commit();
-                GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername", ""), this);
-                getFriends.execute();
-            }else{
-                Intent intent = new Intent(this, Newsfeed_screen.class);
-                startActivity(intent);
-                this.finish();
-            }
+        if (!output.isEmpty()) {
+            Pet pet = output.get(0);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("petName", pet.getPetName());
+            editor.putString("petUsername", pet.getIdPet());
+            editor.putString("petType", pet.getPetType());
+            editor.putString("petGender", pet.getPetGender());
+            editor.commit();
+            GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername", ""), this);
+            getFriends.execute();
+        }else{
+            Intent intent = new Intent(this, Newsfeed_screen.class);
+            startActivity(intent);
+            this.finish();
         }
-
     }
 
     @Override

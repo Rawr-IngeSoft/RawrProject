@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -46,6 +48,19 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
     LoginButton faceLoginButton;
     String ownerName, ownerLastName, ownerId, ownerPicture;
     SharedPreferences sharedpreferences;
+
+    public static boolean checkConnection(Context ctx) {
+        boolean isConnected = false;
+        ConnectivityManager connec = (ConnectivityManager) ctx
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] networks = connec.getAllNetworkInfo();
+        for (NetworkInfo n: networks) {
+            if (n.getState() == NetworkInfo.State.CONNECTED) {
+                isConnected = true;
+            }
+        }
+        return isConnected;
+    }
 
     private void getHashKey() {
         try {
@@ -89,53 +104,56 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
         faceLoginButton = (LoginButton)findViewById(R.id.faceLoginButton);
         faceLoginButton.setReadPermissions("email");
         callbackManager = CallbackManager.Factory.create();
-        faceLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(
-                                    JSONObject object,
-                                    GraphResponse response) {
-                                try {
-                                    ownerId = object.getString("id");
-                                    ownerName = object.getString("first_name");
-                                    ownerLastName = object.getString("last_name");
-                                    ownerPicture = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                                    Intent intent = new Intent(LogIn_screen.this, Loading_screen.class);
-                                    intent.putExtra("serviceType", "facebook");
-                                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                                    editor.putString("username", ownerId);
-                                    editor.putString("name", ownerName);
-                                    editor.putString("lastName",ownerLastName);
-                                    editor.putString("ownerPictureUri", ownerPicture);
-                                    editor.commit();
-                                    startActivity(intent);
-                                    LogIn_screen.this.finish();
-                                }catch(JSONException je) {
-                                    je.printStackTrace();
+        if (checkConnection(this) == true) {
+            faceLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    GraphRequest request = GraphRequest.newMeRequest(
+                            loginResult.getAccessToken(),
+                            new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(
+                                        JSONObject object,
+                                        GraphResponse response) {
+                                    try {
+                                        ownerId = object.getString("id");
+                                        ownerName = object.getString("first_name");
+                                        ownerLastName = object.getString("last_name");
+                                        ownerPicture = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                                        Intent intent = new Intent(LogIn_screen.this, Loading_screen.class);
+                                        intent.putExtra("serviceType", "facebook");
+                                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                                        editor.putString("username", ownerId);
+                                        editor.putString("name", ownerName);
+                                        editor.putString("lastName", ownerLastName);
+                                        editor.putString("ownerPictureUri", ownerPicture);
+                                        editor.commit();
+                                        startActivity(intent);
+                                        LogIn_screen.this.finish();
+                                    } catch (JSONException je) {
+                                        je.printStackTrace();
+                                    }
                                 }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,first_name, last_name, picture.type(large)");
-                request.setParameters(parameters);
-                request.executeAsync();
-            }
+                            });
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "id,first_name, last_name, picture.type(large)");
+                    request.setParameters(parameters);
+                    request.executeAsync();
+                }
 
-            @Override
-            public void onCancel() {
+                @Override
+                public void onCancel() {
 
-            }
+                }
 
-            @Override
-            public void onError(FacebookException e) {
+                @Override
+                public void onError(FacebookException e) {
 
-            }
-        });
-
+                }
+            });
+        }else{
+            Toast.makeText(this, "Turn on the internet and restart the app", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -143,25 +161,29 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
         String username = userText.getText().toString();
         String password = passText.getText().toString();
         Intent intent;
-        switch(v.getId()){
-            case (R.id.signUp):
-                // TODO
-                Toast.makeText(this, "Sing Up", Toast.LENGTH_LONG).show();
-                intent = new Intent(LogIn_screen.this, SignUp_screen.class );
-                startActivity(intent);
-                finish_screen();
-                break;
-            case (R.id.logInButton):
-                intent = new Intent(LogIn_screen.this, Loading_screen.class );
-                intent.putExtra("username", username);
-                intent.putExtra("password", password);
-                intent.putExtra("serviceType", "logIn");
-                startActivity(intent);
-                finish_screen();
-                break;
-            case (R.id.forgotPassButton):
-                Toast.makeText(this, "Sorry i don't know it", Toast.LENGTH_LONG).show();
-                break;
+        if(checkConnection(this) == true) {
+            switch (v.getId()) {
+                case (R.id.signUp):
+                    // TODO
+                    Toast.makeText(this, "Sing Up", Toast.LENGTH_LONG).show();
+                    intent = new Intent(LogIn_screen.this, SignUp_screen.class);
+                    startActivity(intent);
+                    finish_screen();
+                    break;
+                case (R.id.logInButton):
+                    intent = new Intent(LogIn_screen.this, Loading_screen.class);
+                    intent.putExtra("username", username);
+                    intent.putExtra("password", password);
+                    intent.putExtra("serviceType", "logIn");
+                    startActivity(intent);
+                    finish_screen();
+                    break;
+                case (R.id.forgotPassButton):
+                    Toast.makeText(this, "Sorry i don't know it", Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }else{
+            Toast.makeText(this, "You must be connect to the internet", Toast.LENGTH_LONG).show();
         }
     }
 

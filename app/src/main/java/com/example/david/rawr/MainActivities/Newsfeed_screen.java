@@ -60,10 +60,12 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     private SharedPreferences sharedPreferences;
     private String username = "";
     private Friends_connected_row_Adapter friends_connected_row_adapter;
+    private PostListAdapter postListAdapter;
     private DrawerLayout dLayout;
     private ListView dList;
     private boolean buttonsVisible = true;
     private ArrayList<Friend> friendsList = new ArrayList<>();
+    private ArrayList<Post> postsList = new ArrayList<>();
     private RelativeLayout buttons_container;
     private float  notificationsX, notificationsY,parentX, parentY, profileX, profileY, searchX, searchY, localizationX, localizationY;
     private Timer friendsConnectedTimer;
@@ -115,17 +117,26 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         // Getting friends
         friendsList = sqLiteHelper.getFriends();
 
+        // Show postList
+        postListAdapter = new PostListAdapter(this,postsList);
+        postList.setAdapter(postListAdapter);
+
         // Getting posts
         if(sharedPreferences.contains("petUsername")) {
-            friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", "")));
+            Log.e("petUsername", sharedPreferences.getString("petUsername", ""));
             GetPosts getPosts = new GetPosts(sharedPreferences.getString("petUsername", ""), this);
             getPosts.execute();
+
         }
 
         //Show friendlist
 
+        if(sharedPreferences.contains("petUsername"))
+            friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", "")));
         friends_connected_row_adapter = new Friends_connected_row_Adapter(this, friendsList);
         dList.setAdapter(friends_connected_row_adapter);
+
+
 
         // Persistence services
         if(sharedPreferences.contains("pictureUri") && sharedPreferences.contains("petUsername")){
@@ -274,7 +285,15 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
     @Override
     public void getPostsFinish(ArrayList<Post> output) {
-        postList.setAdapter(new PostListAdapter(this,output));
+        Log.e("posts","");
+        postsList = output;
+        for(Post p: postsList){
+            Log.e(p.getPetUsername(), p.getText());
+        }
+        postListAdapter.setData(postsList);
+        postListAdapter.notifyDataSetChanged();
+        postList.setAdapter(postListAdapter);
+
     }
 
     @Override

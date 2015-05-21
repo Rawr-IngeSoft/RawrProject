@@ -31,6 +31,7 @@ public class GetPhoto extends AsyncTask<String, Integer, Bitmap> {
         Bitmap bitmap = null;
         if (!pictureUri.equals("null")) {
             try {
+                Log.e("uri", pictureUri);
                 in = new URL(pictureUri).openStream();
                 bitmap = BitmapFactory.decodeStream(in);
             } catch (IOException e) {
@@ -41,7 +42,6 @@ public class GetPhoto extends AsyncTask<String, Integer, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap responseValue) {
-        if(getPhotoResponse != null)
             getPhotoResponse.getPhotoFinish(responseValue);
     }
 }
