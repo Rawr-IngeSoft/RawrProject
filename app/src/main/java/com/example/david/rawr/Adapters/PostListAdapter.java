@@ -72,7 +72,7 @@ public class PostListAdapter extends BaseAdapter implements GetPhotoResponse{
                 params.height=0;
                 postPicture.setLayoutParams(params);
             }else{
-                GetPhoto getPhoto = new GetPhoto( "5543aef35c496.jpg","disney", this);
+                GetPhoto getPhoto = new GetPhoto( data.get(position).getPhoto(),data.get(position).getPetUsername(), this);
                 getPhoto.execute();
             }
         }
@@ -87,10 +87,9 @@ public class PostListAdapter extends BaseAdapter implements GetPhotoResponse{
     public void getPhotoFinish(Bitmap bitmap) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.width = LinearLayout.LayoutParams.FILL_PARENT;
-        params.height = (int) context.getResources().getDimension(R.dimen.post_profile_picture);
+        params.height = (int) context.getResources().getDimension(R.dimen.post_postPicture_height);
         params.bottomMargin = 20;
         postPicture.setLayoutParams(params);
-        Log.e("bitmap", bitmap.toString());
         postPicture.setImageBitmap(bitmap);
     }
 }

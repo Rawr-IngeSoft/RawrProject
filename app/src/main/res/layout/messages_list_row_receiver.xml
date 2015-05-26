@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#e3f1df"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:text="Date"
+        android:id="@+id/messages_list_row_date"
+        android:typeface="monospace"
+        android:textColor="@color/background_floating_material_dark"
+        android:layout_marginLeft="10dp"
+        android:textSize="10dp"
+        android:gravity="center"
+        android:visibility="invisible"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/message_style_receiver"
+            android:layout_marginRight="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:textSize="15dp"
+                android:textStyle="normal"
+                android:textColor="#000000"
+                android:typeface="sans"
+                android:text="message"
+                android:id="@+id/message_text"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/message_postOwner_picture"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="5dp"/>
+</LinearLayout>

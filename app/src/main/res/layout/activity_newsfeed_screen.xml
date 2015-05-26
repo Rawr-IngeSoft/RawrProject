@@ -1,7 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.david.rawr.MainActivities.Newsfeed_screen">
+        android:background="#E3F1DF"
+    tools:context="com.example.david.rawr.MainActivities.Newsfeed_screen"
+    >
     <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,7 +75,7 @@
             android:id="@+id/newsfeed_friends_list"
             android:layout_width="240dp"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
+            android:layout_gravity="end"
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"
             android:background="#fff"/>

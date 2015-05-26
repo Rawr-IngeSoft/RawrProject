@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -47,7 +48,8 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
     String receiver, petUsername;
     SharedPreferences sharedPreferences;
     EditText message;
-    Button send_button;
+    ImageView send_button;
+    String pictureUri;
     ListView messagesList;
     SQLiteHelper SQLiteHelper;
     // Background service connection declaration
@@ -76,11 +78,11 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
             messages = SQLiteHelper.getMessagesOf(receiver);
         }
         checkSenderVisibility();
-        send_button = (Button) findViewById(R.id.chat_window_send_button);
+        send_button = (ImageView) findViewById(R.id.chat_window_send_button);
         send_button.setOnClickListener(this);
         message = (EditText) findViewById(R.id.chat_window_message);
         messagesList = (ListView) findViewById(R.id.chat_window_messages_list);
-        messagesListAdapter = new MessagesListAdapter(this, messages);
+        messagesListAdapter = new MessagesListAdapter(this, messages, petUsername);
         messagesList.setAdapter(messagesListAdapter);
         mConnection = new ServiceConnection() {
             @Override
@@ -124,7 +126,7 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
                             public void run() {
                                 Calendar calendar = Calendar.getInstance();
                                 String dateString = calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND);
-                                Message message1 = new Message(message.getText().toString(), petUsername, receiver, "read", dateString);
+                                Message message1 = new Message(message.getText().toString(), petUsername, receiver, "read", dateString, pictureUri);
                                 messages.add(message1);
                                 messagesListAdapter.setData(messages);
                                 messagesList.setAdapter(messagesListAdapter);
@@ -144,8 +146,11 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
 
         for (int i = 0; i < messages.size(); i++){
             if(i > 0){
+                Log.e(messages.get(i).getSender(),messages.get(i-1).getSender() );
                 if(messages.get(i).getSender().compareTo(messages.get(i-1).getSender()) == 0){
                     messages.get(i).setVisible(false);
+                }else{
+                    messages.get(i).setVisible(true);
                 }
             }
         }

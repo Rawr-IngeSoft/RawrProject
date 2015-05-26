@@ -1,11 +1,10 @@
 package com.example.david.rawr.Tasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.example.david.rawr.Interfaces.GetMessagesHistoryResponse;
+import com.example.david.rawr.Interfaces.GetFriendRequestsResponse;
 import com.example.david.rawr.Interfaces.GetPostsResponse;
-import com.example.david.rawr.Models.Message;
+import com.example.david.rawr.Models.FriendRequest;
 import com.example.david.rawr.Models.Post;
 
 import org.apache.http.HttpResponse;
@@ -22,26 +21,24 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
- * Created by david on 16/05/2015.
+ * Created by david on 21/05/2015.
  */
-public class GetMessagesHistory extends AsyncTask<String, String, String> {
-
+public class GetFriendRequests extends AsyncTask<String, Integer, String> {
     String idPet;
-    ArrayList<Message> messagestArrayList;
-    GetMessagesHistoryResponse getMessagesHistoryResponse;
-    private static String url_get_messages = "http://178.62.233.249/rawr/get_messages.php";
-
-    public GetMessagesHistory(String idPet, GetMessagesHistoryResponse getMessagesHistoryResponse) {
+    ArrayList<FriendRequest> friendRequests;
+    GetFriendRequestsResponse getFriendRequestsResponse;
+    private static String url_get_friendRequests = "http://178.62.233.249/rawr/get_requests.php";
+    public GetFriendRequests(String idPet, GetFriendRequestsResponse getFriendRequestsResponse) {
         this.idPet = idPet;
-        this.getMessagesHistoryResponse = getMessagesHistoryResponse;
-        messagestArrayList = new ArrayList<>();
+        this.getFriendRequestsResponse = getFriendRequestsResponse;
+        friendRequests = new ArrayList<>();
     }
 
     @Override
     protected String doInBackground(String... params) {
 
         HttpClient client = new DefaultHttpClient();
-        String query = url_get_messages+"?username="+idPet;
+        String query = url_get_friendRequests+"?username="+idPet;
         HttpGet get = new HttpGet(query);
 
 
@@ -50,14 +47,11 @@ public class GetMessagesHistory extends AsyncTask<String, String, String> {
             JsonParser jsonParser = new JsonParser(response.getEntity().getContent());
             JSONObject jsonResponse= jsonParser.getjObject();
             if(jsonResponse != null){
-                if(jsonResponse.getString("status").compareTo("1") == 0) {
-                    Log.e("messages", jsonResponse.toString());
-                    JSONArray jsonArray = jsonResponse.getJSONArray("messages");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jo = jsonArray.getJSONObject(i);
-                        Message msgtToAdd = new Message(jo.getString("text"), jo.getString("sender"), jo.getString("receiver"), jo.getString("status"), jo.getString("date"), "553ef2e678b0f.jpg");
-                        messagestArrayList.add(msgtToAdd);
-                    }
+                JSONArray jsonArray = jsonResponse.getJSONArray("requests");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jo = jsonArray.getJSONObject(i);
+                    FriendRequest requestToAdd = new FriendRequest(jo.getString("username_sender"));
+                    friendRequests.add(requestToAdd);
                 }
             }
         } catch (UnsupportedEncodingException e) {
@@ -73,6 +67,6 @@ public class GetMessagesHistory extends AsyncTask<String, String, String> {
     }
 
     protected void onPostExecute(String responseValue) {
-        getMessagesHistoryResponse.getMessageHistoryFinish(messagestArrayList);
+        getFriendRequestsResponse.getRequestsFinish(friendRequests);
     }
 }

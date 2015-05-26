@@ -13,11 +13,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.CreateResponse;
+import com.example.david.rawr.Interfaces.GetFriendRequestsResponse;
 import com.example.david.rawr.Interfaces.GetFriendsResponse;
 import com.example.david.rawr.Interfaces.GetMessagesHistoryResponse;
 import com.example.david.rawr.Interfaces.GetPetsResponse;
 import com.example.david.rawr.Interfaces.ValidateResponse;
 import com.example.david.rawr.Models.Friend;
+import com.example.david.rawr.Models.FriendRequest;
 import com.example.david.rawr.Models.Message;
 import com.example.david.rawr.Models.Pet;
 import com.example.david.rawr.R;
@@ -32,7 +34,7 @@ import com.example.david.rawr.Tasks.ValidateUser;
 import java.util.ArrayList;
 
 
-public class Loading_screen extends Activity implements ValidateResponse, CreateResponse, GetFriendsResponse, GetPetsResponse, GetMessagesHistoryResponse {
+public class Loading_screen extends Activity implements ValidateResponse, CreateResponse, GetFriendsResponse, GetPetsResponse, GetMessagesHistoryResponse, GetFriendRequestsResponse {
 
     String username, serviceType;
     SharedPreferences sharedpreferences;
@@ -190,5 +192,10 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         Intent intent = new Intent(this, Newsfeed_screen.class);
         startActivity(intent);
         this.finish();
+    }
+
+    @Override
+    public void getRequestsFinish(ArrayList<FriendRequest> output) {
+
     }
 }

@@ -2,14 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.david.rawr" >
 
+    <uses-sdk android:minSdkVersion="7" />
+
     <!-- Internet Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-sdk android:minSdkVersion="7"/>
+
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo_192"
@@ -47,57 +54,68 @@
         <activity
             android:name=".MainActivities.Loading_screen"
             android:label="@string/title_activity_create_pet_window"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".MainActivities.Newsfeed_screen"
             android:label="@string/title_activity_newsfeed_window"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MainActivities.CreatePet_add_photo_screen"
             android:label="@string/title_activity_sign_up_add_photo_window"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MainActivities.Owner_Profile_screen"
             android:label="@string/title_activity_owner__profile_window"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MainActivities.Configuration_screen"
             android:label="@string/title_activity_configuration_screen"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MainActivities.Chat_window"
             android:label="@string/title_activity_chat_window"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="com.example.david.rawr.MainActivities.Chat_window" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <service
-            android:name = ".Services.Chat_service"
-            android:exported = "true"
-            android:process=":rawr_chat">
+            android:name=".Services.Chat_service"
+            android:exported="true"
+            android:process=":rawr_chat" >
             <intent-filter>
-                <action android:name="service.Chat"/>
+                <action android:name="service.Chat" />
             </intent-filter>
         </service>
-        <receiver android:name=".Communication.MyReceiver" android:enabled="true" android:exported="false">
+
+        <receiver
+            android:name=".Communication.MyReceiver"
+            android:enabled="true"
+            android:exported="false" >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".MainActivities.friend_requests_screen"
+            android:label="@string/title_activity_friend_requests_screen" >
+        </activity>
     </application>
 
 </manifest>
