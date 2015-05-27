@@ -87,7 +87,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         localization = (ImageView)findViewById(R.id.newsfeed_imageView_localization);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_location);
         localization.setImageBitmap(bitmap);
-
+        // TODO change click event
+        localization.setOnClickListener(this);
         search = (ImageView)findViewById(R.id.newsfeed_imageView_search);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_search);
         search.setImageBitmap(bitmap);
@@ -301,6 +302,11 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
         Intent intent;
         switch(v.getId()){
+            case R.id.newsfeed_imageView_localization:
+                intent = new Intent(this, Friend_requests_screen.class);
+                startActivity(intent);
+                this.finish();
+                break;
             case R.id.newsfeed_imageView_profile:
                 intent = new Intent(this, Owner_Profile_screen.class);
                 startActivity(intent);

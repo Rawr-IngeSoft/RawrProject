@@ -14,7 +14,7 @@ import com.example.david.rawr.SQLite.SQLiteHelper;
 import java.util.ArrayList;
 
 
-public class friend_requests_screen extends ActionBarActivity {
+public class Friend_requests_screen extends ActionBarActivity {
 
     FriendsRequestAdapter friendsRequestAdapter;
     SQLiteHelper SQLiteHelper;

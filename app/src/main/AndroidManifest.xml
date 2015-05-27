@@ -113,7 +113,7 @@
         </receiver>
 
         <activity
-            android:name=".MainActivities.friend_requests_screen"
+            android:name=".MainActivities.Friend_requests_screen"
             android:label="@string/title_activity_friend_requests_screen" >
         </activity>
     </application>
