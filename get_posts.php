@@ -18,7 +18,10 @@ $sql =
             UNION  
             SELECT username
             FROM Friends 
-            WHERE username_friend = '$username') LIMIT 100";
+            WHERE username_friend = '$username'
+            UNION
+            SELECT '$username'
+            ) ORDER BY p.date LIMIT 100";
 
 // ahora toca recorrer el query
 $result = $conn->query($sql);

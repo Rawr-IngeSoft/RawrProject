@@ -6,10 +6,8 @@ header("Content-Type: application/json; charset=UTF-8");
 $conn = dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
-    "SELECT p.username, p.owner_username, p.name, p.type, ph.path, p.birth_date, p.gender
-     FROM Pet p LEFT JOIN Photo ph ON p.username = ph.username
-     WHERE  p.owner_username = '$username'
-     GROUP BY p.username";
+    "SELECT * FROM Request 
+     WHERE  username_receiver = '$username'";
 
 // ahora toca recorrer el query
 $result = $conn->query($sql);
@@ -20,19 +18,14 @@ if ($result->num_rows > 0) {
     
        // Crear un diccionario de Post
         $arreglo = array(
-            "username"=>$row['username'],
-            "owner"=>$row['owner_username'],
-            "name"=> $row['name'],
-            "type"=> $row['type'],
-            "path"=> $row['path'],
-            "birth_date"=> $row['birth_date'],
-            "gender"=> $row['gender'],
-
+            "username_sender"=>$row['username_sender'],
+            "username_receiver"=>$row['username_receiver'],
+            "status"=>$row['status']
             );
         array_push($retorno, $arreglo);
 
     }
-    $json = array('pets'=>$retorno, "status"=>"1");
+    $json = array('requests'=>$retorno, "status"=>"1");
     echo json_encode($json);
  }else{
     $json = array("status"=>"0");

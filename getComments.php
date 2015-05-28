@@ -8,7 +8,8 @@ $post = $_GET['post_id']; // esto debería cambiarse por el id pet
 $sql =
     "SELECT *
      FROM Comment
-     WHERE idPost = $post";
+     WHERE idPost = $post
+     ORDER BY date";
 
 // ahora toca recorrer el query
 $result = $conn->query($sql);

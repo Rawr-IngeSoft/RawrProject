@@ -1,4 +1,7 @@
+
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include 'db_connect.php';
 // header para mostrar que se va a recbir un JSON
 header("Content-Type: application/json; charset=UTF-8");
@@ -6,10 +9,10 @@ header("Content-Type: application/json; charset=UTF-8");
 $conn = dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
-    "SELECT p.username, p.owner_username, p.name, p.type, ph.path, p.birth_date, p.gender
-     FROM Pet p LEFT JOIN Photo ph ON p.username = ph.username
-     WHERE  p.owner_username = '$username'
-     GROUP BY p.username";
+    "SELECT m.username_sender, m.username_receiver, m.text, m.date, m.status 
+     FROM Message m
+     WHERE m.username_sender='$username' OR m.username_receiver='$username' 
+     ORDER BY m.date DESC";
 
 // ahora toca recorrer el query
 $result = $conn->query($sql);
@@ -20,19 +23,16 @@ if ($result->num_rows > 0) {
     
        // Crear un diccionario de Post
         $arreglo = array(
-            "username"=>$row['username'],
-            "owner"=>$row['owner_username'],
-            "name"=> $row['name'],
-            "type"=> $row['type'],
-            "path"=> $row['path'],
-            "birth_date"=> $row['birth_date'],
-            "gender"=> $row['gender'],
-
+            "sender"=>$row['username_sender'],
+            "receiver"=> $row['username_receiver'],
+            "text"=> $row['text'],
+            "date"=> $row['date'],
+            "status"=> $row['status']
             );
         array_push($retorno, $arreglo);
 
     }
-    $json = array('pets'=>$retorno, "status"=>"1");
+    $json = array('messages'=>$retorno, "status"=>"1");
     echo json_encode($json);
  }else{
     $json = array("status"=>"0");
