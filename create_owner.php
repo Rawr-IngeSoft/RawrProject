@@ -7,7 +7,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require 'models/Owner.php';
+include_once 'models/Owner.php';
 
 
 $request_body = file_get_contents('php://input');
