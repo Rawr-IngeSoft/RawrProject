@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require 'db_connect.php';
+include_once 'db_connect.php';
 
 class Model {
 
@@ -50,15 +50,16 @@ class Model {
     $mysql_query = "INSERT INTO " . $this->tableName() .
                    "(" . $names . ") VALUES( " . $values . ")";
 
-
     $conn = DB::dbConnect();
 
     if($conn->query($mysql_query) == TRUE){
       $json_return= array('status' => '1');
       echo json_encode($json_return);
+      return 1;
     }else{
       $json_return= array('status' => '0');
       echo json_encode($json_return);
+      return 0;
     }
   }
 }

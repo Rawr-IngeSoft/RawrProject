@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require 'User.php';
+include_once 'User.php';
 
 class Owner extends User{
   	protected $username;

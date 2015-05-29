@@ -1,14 +1,9 @@
 <?php
 /*
  * Create a new Owner row
- * atributes read from HTTP Post Request
+ * atributes read from HTTP Post Request as json
  */
 
-
-/* import user creation */
-//include 'create_user.php';
-/* import db connection file */
-//include 'db_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require 'Model.php';
+include_once 'Model.php';
 
 class User extends Model{
   	protected $username;
@@ -42,13 +42,15 @@ class User extends Model{
             }
           }
         }
-        
+
         $mysql_query = "INSERT INTO User" .
                        "(" . $names . ") VALUES( " . $values . ")";
 
-
         if($conn->query($mysql_query) == TRUE){
-          parent::save();
+          if(parent::save() === 0){
+            //roll back si sale mal
+            $conn->query("DELETE FROM User WHERE username = '$this->username'");
+          }
         }else{
           $json_return= array('status' => '0');
           echo json_encode($json_return);
