@@ -4,7 +4,7 @@ ini_set('display_errors', true);
 
 include 'db_connect.php';
 
-$conn = dbConnect();
+$conn = DB::dbConnect();
 
 $username=NULL;
 $password=NULL;
@@ -17,7 +17,7 @@ $json_array = json_decode($request_body, true);//volver el string en un arreglo
 $username= $json_array['username'];
 $password= $json_array['password'];
 
-$mysql_query = "SELECT * 
+$mysql_query = "SELECT *
 				FROM User u, Owner o
             	WHERE  u.username=o.username AND u.username='$username' AND u.password='$password' ";
 

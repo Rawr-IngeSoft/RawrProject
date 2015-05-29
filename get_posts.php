@@ -5,7 +5,7 @@ include 'db_connect.php';
 // header para mostrar que se va a recbir un JSON
 header("Content-Type: application/json; charset=UTF-8");
 // Create connection to mysql database
-$conn = dbConnect();
+$conn = DB::dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
 "SELECT p.idPost, p.username, p.text, p.date,  ph.path, p.type, p.status, p.price, p.likes
@@ -25,7 +25,7 @@ if ($result->num_rows > 0) {
     // output data of each row
     $retorno= array();
     while($row = $result->fetch_assoc()) {
-    
+
        // Crear un diccionario de Post
         $arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'], 'date'=>$row['date'], 'idPet'=>$row['username'], 'Business'=>$row['Business_username'],'photo'=>$row['path'], 'likes'=>$row['likes']);
         array_push($retorno, $arreglo);
