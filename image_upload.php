@@ -1,7 +1,7 @@
 <?php
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
-    include 'db_connect.php';
+    include_once 'models/Photo.php';
 
     $request_body = file_get_contents('php://input');
     $json_array = json_decode($request_body, true);
@@ -30,18 +30,14 @@
     fwrite($file, $binary);
 
     fclose($file);
-
-    $conn = dbConnect();
     $filename= $filename . '.' . $extension;
-    $mysql_query = "INSERT INTO Photo(path, username)
-                        VALUES('$filename', '$username')";
+    $data = array(
+        "username" => $username,
+        "path" => $filename
+    );
 
-    if($conn->query($mysql_query) == TRUE){
-        $json_return= array('status' => '1', 'path'=>$filename);
-        echo json_encode($json_return);
-    }else{
-        $json_return= array('status' => '0');
-        echo json_encode($json_return);
-    }
+    $model = new Photo();
+    $model->setAttributes($data);
+    $model->save();
 
 ?>
