@@ -8,19 +8,15 @@ header("Content-Type: application/json; charset=UTF-8");
 $conn = dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
-"SELECT p.idPost, p.username, p.text, p.date,  ph.path, p.type, p.status, p.price 
+"SELECT p.idPost, p.username, p.text, p.date,  ph.path, p.type, p.status, p.price, p.likes
  FROM Post p, Photo ph
- WHERE  p.idPhoto = ph.idPhoto AND p.username in 
+ WHERE  p.idPhoto = ph.idPhoto AND p.username in
             (
-            SELECT username_friend 
-            FROM Friends 
+            SELECT username_friend
+            FROM Friends
             WHERE username = '$username'
-            UNION  
-            SELECT username
-            FROM Friends 
-            WHERE username_friend = '$username'
-            UNION
-            SELECT '$username'
+	    UNION
+	    SELECT '$username'
             ) ORDER BY p.date LIMIT 100";
 
 // ahora toca recorrer el query
@@ -31,7 +27,7 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
     
        // Crear un diccionario de Post
-        $arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'], 'date'=>$row['date'], 'idPet'=>$row['idPet'], 'Business'=>$row['Business_username'],'photo'=>$row['path']);
+        $arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'], 'date'=>$row['date'], 'idPet'=>$row['username'], 'Business'=>$row['Business_username'],'photo'=>$row['path'], 'likes'=>$row['likes']);
         array_push($retorno, $arreglo);
 
     }
