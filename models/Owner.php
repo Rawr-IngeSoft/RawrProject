@@ -2,7 +2,6 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-//require '../db_connect.php';
 require 'User.php';
 
 class Owner extends User{
@@ -32,7 +31,7 @@ class Owner extends User{
       );
       return $attributes;
     }
-    
+
 
     /**
      * Get the value of Username
