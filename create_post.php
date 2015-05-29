@@ -1,6 +1,6 @@
 <?php
 /*
- * Create a new Owner row
+ * Create a new Post row
  * atributes read from HTTP Post Request as json
  */
 
