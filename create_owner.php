@@ -14,7 +14,6 @@ $request_body = file_get_contents('php://input');
 
 $json_array = json_decode($request_body, true);
 
-echo $request_body;
 $model = new Owner();
 $model->setAttributes($json_array);
 $model->save();
