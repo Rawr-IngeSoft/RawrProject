@@ -16,6 +16,7 @@
             <ImageView
                 android:layout_width="@dimen/post_profile_picture"
                 android:layout_height="@dimen/post_profile_picture"
+                android:id="@+id/post_senderPicture"
                 android:background="@drawable/default_profilepicture_male"
                 android:layout_gravity="center_vertical"/>
             <LinearLayout
@@ -59,6 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
+        android:textSize="20dp"
         android:layout_marginBottom="10dp"
         android:id="@+id/post_text"/>
     <ImageView

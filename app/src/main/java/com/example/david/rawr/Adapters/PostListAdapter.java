@@ -19,15 +19,15 @@ import com.example.david.rawr.Models.Post;
 import com.example.david.rawr.Tasks.GetPhoto;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by david on 24/04/2015.
  */
-public class PostListAdapter extends BaseAdapter implements GetPhotoResponse{
+public class PostListAdapter extends BaseAdapter{
 
     Context context;
     ArrayList<Post> data;
-    ImageView postPicture;
     private static LayoutInflater inflater;
 
     public PostListAdapter(Context context, ArrayList<Post> data) {
@@ -51,31 +51,48 @@ public class PostListAdapter extends BaseAdapter implements GetPhotoResponse{
         return position;
     }
 
+    static class ViewHolder{
+        TextView petIdTv;
+        TextView textTv;
+        TextView dateTv;
+        ImageView postPicture;
+        ImageView senderPicture;
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
         if(convertView == null){
-            Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/calibri.ttf");
+            holder = new ViewHolder();
             convertView = inflater.inflate(R.layout.post_row, null);
-            TextView petIdTv = (TextView)convertView.findViewById(R.id.post_petId);
-            TextView textTv = (TextView)convertView.findViewById(R.id.post_text);
-            TextView dateTv =(TextView)convertView.findViewById(R.id.post_date);
-            postPicture = (ImageView)convertView.findViewById(R.id.post_postPhoto);
-            petIdTv.setTypeface(type);
-            textTv.setTypeface(type);
-            dateTv.setTypeface(type);
-            petIdTv.setText(data.get(position).getPetUsername());
-            textTv.setText(data.get(position).getText());
-            dateTv.setText(data.get(position).getDate());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            if(data.get(position).getPhoto().compareTo("null") == 0){
-                params.width=0;
-                params.height=0;
-                postPicture.setLayoutParams(params);
-            }else{
-                GetPhoto getPhoto = new GetPhoto( data.get(position).getPhoto(),data.get(position).getPetUsername(), this);
-                getPhoto.execute();
-            }
+            holder.petIdTv = (TextView)convertView.findViewById(R.id.post_petId);
+            holder.textTv = (TextView)convertView.findViewById(R.id.post_text);
+            holder.dateTv =(TextView)convertView.findViewById(R.id.post_date);
+            holder.postPicture = (ImageView)convertView.findViewById(R.id.post_postPhoto);
+            holder.senderPicture = (ImageView)convertView.findViewById(R.id.post_senderPicture);
+            convertView.setTag(holder);
+        }else {
+            holder = (ViewHolder) convertView.getTag();
         }
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        if(data.get(position).getPhotoBitmap() == null){
+            params.width=0;
+            params.height=0;
+            holder.postPicture.setLayoutParams(params);
+        }else{
+            params.width = LinearLayout.LayoutParams.FILL_PARENT;
+            params.height = (int) context.getResources().getDimension(R.dimen.post_postPicture_height);
+            params.bottomMargin = 20;
+            holder.postPicture.setLayoutParams(params);
+            holder.postPicture.setImageBitmap(data.get(position).getPhotoBitmap());
+        }
+        Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/calibri.ttf");
+        holder.petIdTv.setTypeface(type);
+        holder.textTv.setTypeface(type);
+        holder.dateTv.setTypeface(type);
+        holder.petIdTv.setText(data.get(position).getPetUsername());
+        holder.textTv.setText(data.get(position).getText());
+        holder.dateTv.setText(data.get(position).getDate());
+        holder.senderPicture.setImageBitmap(data.get(position).getSenderPhotoBitmap());
         return convertView;
     }
 
@@ -83,13 +100,4 @@ public class PostListAdapter extends BaseAdapter implements GetPhotoResponse{
         this.data = data;
     }
 
-    @Override
-    public void getPhotoFinish(Bitmap bitmap) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.width = LinearLayout.LayoutParams.FILL_PARENT;
-        params.height = (int) context.getResources().getDimension(R.dimen.post_postPicture_height);
-        params.bottomMargin = 20;
-        postPicture.setLayoutParams(params);
-        postPicture.setImageBitmap(bitmap);
-    }
 }

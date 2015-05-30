@@ -1,14 +1,22 @@
 package com.example.david.rawr.Models;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.example.david.rawr.Interfaces.GetPhotoResponse;
+import com.example.david.rawr.R;
+import com.example.david.rawr.Tasks.GetPhoto;
 
 /**
  * Created by david on 24/04/2015.
  */
-public class Post {
-    private String petUsername, text, date, photo;
+public class Post implements GetPhotoResponse{
+    private String petUsername, text, date;
+    private Bitmap photoBitmap = null, senderPhotoBitmap = null;
+    private boolean withoutPhoto = false;
 
-    public Post(String petUsername, String text, String date, String photo) {
+    public Post(String petUsername, String text, String date, String photo, String senderPhoto) {
         if(petUsername.compareTo("null") != 0) {
             this.petUsername = petUsername;
         }else{
@@ -21,7 +29,22 @@ public class Post {
         }else{
             this.date = "unknown";
         }
-        this.photo = photo;
+        if(photo.compareTo("null") != 0) {
+            new GetPhoto(photo, petUsername, this).execute();
+        }else {
+            withoutPhoto = true;
+        }
+        if(senderPhoto.compareTo("null") != 0) {
+            new GetPhoto(senderPhoto, petUsername, this).execute();
+        }
+    }
+
+    public Bitmap getPhotoBitmap() {
+        return photoBitmap;
+    }
+
+    public Bitmap getSenderPhotoBitmap() {
+        return senderPhotoBitmap;
     }
 
     public String getPetUsername() {
@@ -36,7 +59,12 @@ public class Post {
         return date;
     }
 
-    public String getPhoto() {
-        return photo;
+    @Override
+    public void getPhotoFinish(Bitmap bitmap) {
+        if (this.photoBitmap != null || withoutPhoto == true){
+            this.senderPhotoBitmap = bitmap;
+        }else {
+            this.photoBitmap = bitmap;
+        }
     }
 }

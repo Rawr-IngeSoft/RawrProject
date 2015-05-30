@@ -1,8 +1,10 @@
 package com.example.david.rawr.Tasks;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.david.rawr.Interfaces.GetPhotoResponse;
 import com.example.david.rawr.Interfaces.GetPostsResponse;
 import com.example.david.rawr.Models.Post;
 
@@ -18,11 +20,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Estudiante on 24/04/2015.
  */
-public class GetPosts extends AsyncTask<String, Integer, String> {
+public class GetPosts extends AsyncTask<String, Integer, String> implements GetPhotoResponse{
 
     String idPet;
     ArrayList<Post> postArrayList;
@@ -50,7 +54,7 @@ public class GetPosts extends AsyncTask<String, Integer, String> {
                 JSONArray jsonArray = jsonResponse.getJSONArray("posts");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jo = jsonArray.getJSONObject(i);
-                    Post postToAdd = new Post(jo.getString("idPet"), jo.getString("text"), jo.getString("date"), jo.getString("photo"));
+                    Post postToAdd = new Post(jo.getString("idPet"), jo.getString("text"), jo.getString("date"), jo.getString("photo"), jo.getString("photoProfile"));
                     postArrayList.add(postToAdd);
                 }
             }
@@ -68,5 +72,10 @@ public class GetPosts extends AsyncTask<String, Integer, String> {
 
     protected void onPostExecute(String responseValue) {
         getPostsResponse.getPostsFinish(postArrayList);
+    }
+
+    @Override
+    public void getPhotoFinish(Bitmap bitmap) {
+
     }
 }

@@ -172,6 +172,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             editor.putString("petUsername", pet.getIdPet());
             editor.putString("petType", pet.getPetType());
             editor.putString("petGender", pet.getPetGender());
+            editor.putString("petPicture", pet.getPath());
             editor.commit();
             GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername", ""), this);
             getFriends.execute();

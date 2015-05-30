@@ -27,6 +27,14 @@ public class Pet {
         this.petGender = gender;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public void setSelected(String selected) {
 
         if (selected.equals("'true'")){
