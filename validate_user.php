@@ -18,8 +18,8 @@ $username= $json_array['username'];
 $password= $json_array['password'];
 
 $mysql_query = "SELECT * 
-				FROM User u, Owner o, Photo p
-            	WHERE  p.idPhoto = u.idPhoto_profile AND u.username=o.username AND u.username='$username' AND u.password='$password' ";
+				FROM Owner o , User u LEFT JOIN Photo p ON p.idPhoto = u.idPhoto_profile
+            	WHERE  u.username=o.username AND u.username='$username' AND u.password='$password' ";
 
 
 $returnn = $conn->query($mysql_query);
