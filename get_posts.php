@@ -39,8 +39,22 @@ if ($result->num_rows > 0) {
     $retorno= array();
     while($row = $result->fetch_assoc()) {
 
+        $usernamePost = $row['username'];
+        $sql2 = "SELECT p.path
+                 FROM User u, Photo p
+                 WHERE u.username = '$usernamePost'
+                 AND u.idPhoto_profile = p.idPhoto";
+        $result2 = $conn->query($sql2);
+        $pathProfile = 'null';
+        if($result2->num_rows > 0){
+          $resultrow = $result2->fetch_assoc();
+          $pathProfile = $resultrow['path'];
+        }
+
        // Crear un diccionario de Post
-        $arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'], 'date'=>$row['date'], 'idPet'=>$row['username'], 'photo'=>$row['path'], 'likes'=>$row['likes']);
+        $arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'],
+        'date'=>$row['date'], 'idPet'=>$row['username'], 'photo'=>$row['path'],
+        'likes'=>$row['likes'], 'photoProfile'=>$pathProfile);
         array_push($retorno, $arreglo);
 
     }
