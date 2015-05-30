@@ -16,7 +16,7 @@ $sql =
             FROM Friends
             WHERE username = '$username'
 	    UNION
-	    SELECT '$username'
+	       SELECT '$username'
             ) ORDER BY p.date LIMIT 100";
 
 // ahora toca recorrer el query
