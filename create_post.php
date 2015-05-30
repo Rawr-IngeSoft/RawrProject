@@ -10,5 +10,5 @@ $request_body = file_get_contents('php://input');
 $json_array = json_decode($request_body, true);
 $model = new Post();
 $model->setAttributes($json_array);
-$model->save();
+$model->create();
 ?>

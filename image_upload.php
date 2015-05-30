@@ -37,7 +37,8 @@
                         VALUES('$filename', '$username')";
 
     if($conn->query($mysql_query) == TRUE){
-        $json_return= array('status' => '1', 'path'=>$filename);
+
+        $json_return= array('status' => '1', 'path'=>$filename, "id"=>$conn->insert_id;);
         echo json_encode($json_return);
     }else{
         $json_return= array('status' => '0');
