@@ -33,7 +33,7 @@ if($row_cnt == 1){
 	$user = array(
 			'name' => $row['name'] ,
 			'lastname'=>$row['lastname'],
-			'picture'=>$row['idPhoto_profile'],
+			'picture'=>$row['path'],
 			'address'=>$row['address']
 			);
 	$json_return['user']=$user;
