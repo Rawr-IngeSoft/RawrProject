@@ -10,7 +10,7 @@ header("Content-Type: application/json; charset=UTF-8");
 $conn = DB::dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
-"SELECT idPost, username, text, date, path, type, status, price, likes
+"SELECT idPost, username, text, date, path, type, status, price, likes, name
  FROM (
 	 (
 	  SELECT p.idPost, p.username, p.text, p.date,  ph.path, p.type, p.status, p.price, p.likes, pet.name
@@ -65,3 +65,4 @@ if ($result->num_rows > 0) {
  }else{
     echo 'pasó algo muy raro';
  }
+
