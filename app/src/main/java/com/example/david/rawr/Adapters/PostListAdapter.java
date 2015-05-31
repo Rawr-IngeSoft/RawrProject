@@ -50,7 +50,6 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
     Uri postPhotoUri = null;
     Bitmap postPhotoBitmap = null;
     EditText textPost;
-    RelativeLayout progressAnimation;
     private static LayoutInflater inflater;
 
     public PostListAdapter(Context context, ArrayList<Post> data) {

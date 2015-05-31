@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.example.david.rawr.MainActivities.Search_friend_screen">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="10dp" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="30dp" />
+                <EditText
+                    android:layout_weight="1"
+                    android:hint="Searching a friend?"
+                    android:layout_width="fill_parent"
+                    android:background="#B4EA63"
+                    android:id="@+id/search_friend_hint"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="30dp" />
+                <ImageView
+                    android:layout_weight="5"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/search_friend_button"
+                    android:background="@drawable/button_search"/>
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="10dp" />
+    </LinearLayout>
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/search_friend_list"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="10dp">
+    </ListView>
+</LinearLayout>

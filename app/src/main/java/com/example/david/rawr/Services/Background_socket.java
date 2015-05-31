@@ -7,11 +7,13 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.util.Pair;
 
 import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.MainActivities.Chat_window;
@@ -99,6 +101,7 @@ public  class Background_socket extends Service {
         public void searchFriend(String hint) throws RemoteException {
             JSONObject data = new JSONObject();
             try {
+                Log.e("searching", hint);
                 data.put("hint", hint);
                 mySocket.emit("hint", data);
             } catch (JSONException e) {
@@ -188,8 +191,18 @@ public  class Background_socket extends Service {
             hint_listener = new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    JSONObject data = (JSONObject)args[0];
-                    Log.e("hint", data.toString());
+                    JSONObject aux = (JSONObject)args[0];
+                    try {
+                        JSONArray data = aux.getJSONArray("result");
+                        Log.e("hintarray", data.toString());
+                        JSONObject jo;
+                        for(int i = 0; i < data.length(); i++){
+                                jo = data.getJSONObject(i);
+                                sqLiteHelper.addSearchedFriend(jo.getString("username"), jo.getString("path"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             };
             petUsername=sharedPreferences.getString("petUsername", "");

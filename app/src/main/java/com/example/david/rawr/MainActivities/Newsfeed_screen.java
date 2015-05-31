@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -64,7 +65,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     private float  notificationsX, notificationsY,parentX, parentY, profileX, profileY, searchX, searchY, localizationX, localizationY;
     private Timer friendsConnectedTimer,postTimer;
     int x_profile_gap = 180, y_profile_gap = 100, x_search_gap = 160, y_search_gap = 20, x_notification_gap = 60, y_notification_gap = 180, x_localization_gap = 40, y_localization_gap = 160;
-    private  NotificationManager notificationManager;
+    NotificationManager notificationManager;
     // DB Manager
     SQLiteHelper  sqLiteHelper = new SQLiteHelper(this);
 
@@ -82,11 +83,12 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         localization = (ImageView)findViewById(R.id.newsfeed_imageView_localization);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_friend_request);
         localization.setImageBitmap(bitmap);
-        // TODO change click event
         localization.setOnClickListener(this);
+
         search = (ImageView)findViewById(R.id.newsfeed_imageView_search);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_search);
         search.setImageBitmap(bitmap);
+        search.setOnClickListener(this);
 
         profile = (ImageView)findViewById(R.id.newsfeed_imageView_profile);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_profile);
@@ -325,6 +327,10 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
         Intent intent;
         switch(v.getId()){
+            case R.id.newsfeed_imageView_search:
+                intent = new Intent(this, Search_friend_screen.class);
+                startActivity(intent);
+                break;
             case R.id.newsfeed_imageView_localization:
                 intent = new Intent(this, Friend_requests_screen.class);
                 startActivity(intent);
