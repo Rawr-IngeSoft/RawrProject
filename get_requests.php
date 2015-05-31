@@ -52,6 +52,8 @@ if ($result->num_rows > 0) {
 	    "email"=>$row['email'],
 	    "ownerBirth"=>$row['ownerBirth'],
 	    "ownerGender"=>$row['ownerGender'],
+        "ownerPicture"=> $row['owner_picture'],
+        "petPicture"=> $row['pet_picture']
             );
         array_push($retorno, $arreglo);
 
