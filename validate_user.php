@@ -17,8 +17,8 @@ $json_array = json_decode($request_body, true);//volver el string en un arreglo
 $username= $json_array['username'];
 $password= $json_array['password'];
 
-$mysql_query = "SELECT *
-				FROM User u, Owner o
+$mysql_query = "SELECT * 
+				FROM Owner o , User u LEFT JOIN Photo p ON p.idPhoto = u.idPhoto_profile
             	WHERE  u.username=o.username AND u.username='$username' AND u.password='$password' ";
 
 
@@ -33,7 +33,7 @@ if($row_cnt == 1){
 	$user = array(
 			'name' => $row['name'] ,
 			'lastname'=>$row['lastname'],
-			'picture'=>$row['idPhoto_profile'],
+			'picture'=>$row['path'],
 			'address'=>$row['address']
 			);
 	$json_return['user']=$user;
