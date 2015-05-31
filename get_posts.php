@@ -13,8 +13,9 @@ $sql =
 "SELECT idPost, username, text, date, path, type, status, price, likes
  FROM (
 	 (
-	  SELECT p.idPost, p.username, p.text, p.date,  ph.path, p.type, p.status, p.price, p.likes
-	  FROM Post p, Photo ph  WHERE  p.idPhoto = ph.idPhoto AND p.username in
+	  SELECT p.idPost, p.username, p.text, p.date,  ph.path, p.type, p.status, p.price, p.likes, pet.name
+	  FROM Post p, Photo ph, Pet pet  
+      WHERE pet.username=p.username AND p.idPhoto = ph.idPhoto AND p.username in
          	 (SELECT username_friend FROM Friends WHERE username = '$username'
 		  UNION
 		  SELECT '$username'
@@ -22,8 +23,9 @@ $sql =
 	 )
 	 UNION
 	 (
-	  SELECT p.idPost, p.username, p.text, p.date, null as path, p.type, p.status, p.price, p.likes
-	  FROM Post p  WHERE p.username in
+	  SELECT p.idPost, p.username, p.text, p.date, null as path, p.type, p.status, p.price, p.likes, pet.name
+	  FROM Post p, Pet pet
+      WHERE pet.username = p.username  AND p.username in
 		 ( SELECT username_friend FROM Friends WHERE username = '$username'
 	           UNION
 		   SELECT '$username'
@@ -54,7 +56,7 @@ if ($result->num_rows > 0) {
        // Crear un diccionario de Post
         $arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'],
         'date'=>$row['date'], 'idPet'=>$row['username'], 'photo'=>$row['path'],
-        'likes'=>$row['likes'], 'photoProfile'=>$pathProfile);
+        'likes'=>$row['likes'], 'photoProfile'=>$pathProfile, 'name'=>$row['path']);
         array_push($retorno, $arreglo);
 
     }
