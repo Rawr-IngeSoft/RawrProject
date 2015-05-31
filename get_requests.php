@@ -10,7 +10,18 @@ $sql =
     "SELECT r.text, r.status, p.*, o.name as ownerName,
      o.lastname, o.address, o.idLocation, o.email,
      o.birth_date as ownerBirth, o.gender as ownerGender
-     FROM Request r, Pet p, Owner o
+     , p2.path AS owner_picture, p1.path AS pet_picture
+     FROM Request r, 
+          (( Pet p INNER JOIN User u 
+                ON u.username = p.username
+                )
+            LEFT JOIN Photo p1 ON u.idPhoto_profile = p1.idPhoto
+            )      
+        , (( Owner o INNER JOIN User u2 
+                ON u2.username = o.username
+                )
+            LEFT JOIN Photo p2 ON u2.idPhoto_profile = p2.idPhoto
+            )
      WHERE r.username_receiver = '$username' AND
      p.username = r.username_sender AND  o.username = p.owner_username";
 //echo $username;
