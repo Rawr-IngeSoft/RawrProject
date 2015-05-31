@@ -8,9 +8,9 @@ header("Content-Type: application/json; charset=UTF-8");
 $conn = DB::dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
-    "SELECT p.username, p.owner_username, p.name, p.type, p.race, p.birth_date, p.gender
-     FROM Friends f, Pet p
-     WHERE f.username_friend='$username' AND f.username=p.username";
+    "SELECT p.username, p.owner_username, p.name, p.type, p.race, p.birth_date, p.gender, ph.path
+     FROM Friends f, Pet p, User u LEFT JOIN Photo ph on ph.idPhoto = u.idPhoto_profile
+     WHERE f.username_friend='$username' AND f.username=p.username AND u.username ='$username'";
 
 // ahora toca recorrer el query
 $result = $conn->query($sql);
@@ -27,7 +27,8 @@ if ($result->num_rows > 0) {
             "type"=> $row['type'],
             "race"=> $row['race'],
             "birth_date"=> $row['birth_date'],
-            "gender"=> $row['gender']
+            "gender"=> $row['gender'],
+            "path"=>$row['path']
             );
         array_push($retorno, $arreglo);
 
