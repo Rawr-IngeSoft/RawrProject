@@ -133,10 +133,11 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
                         checkSenderVisibility();
                         messagesListAdapter = new MessagesListAdapter(Chat_window.this, messages, petUsername, senderBitmap,receiverBitmap);
                         messagesList.setAdapter(messagesListAdapter);
+                        messagesList.setSelection(messagesList.getAdapter().getCount()-1);
                     }
                 });
             }
-        }, 1000);
+        }, 1000,1000);
     }
 
     @Override
@@ -155,6 +156,7 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
                                 messages.add(message1);
                                 messagesListAdapter.setData(messages);
                                 messagesList.setAdapter(messagesListAdapter);
+                                messagesList.setSelection(messagesList.getAdapter().getCount()-1);
                                 SQLiteHelper.addMessage(message1);
                             }
                         });

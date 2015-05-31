@@ -56,7 +56,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 message = new Message(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
-                messages.add(message);
+                messages.add(messages.size(),message);
             }while (cursor.moveToNext());
         }
         db.close();
@@ -72,7 +72,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 message = new Message(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
-                messages.add(message);
+                messages.add(messages.size(),message);
             }while (cursor.moveToNext());
         }
         db.close();

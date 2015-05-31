@@ -158,14 +158,17 @@ public  class Background_socket extends Service {
                     try {
                         JSONObject data = (JSONObject)args[0];
                         // Deploy notification
-                        inboxStyle.addLine(data.getString("message"));
-                        Intent intentNotification = new Intent(Background_socket.this, Chat_window.class);
-                        intentNotification.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        PendingIntent pendingIntent = PendingIntent.getActivity(Background_socket.this,0, intentNotification,0);
-                        notificationBuilder.setContentTitle(data.getString("sender"));
-                        notificationBuilder.setContentIntent(pendingIntent);
-                        notificationBuilder.setStyle(inboxStyle);
-                        notificationManager.notify(0, notificationBuilder.build());
+                        if (data.getString("sender").compareTo(petUsername) != 0) {
+                            inboxStyle.addLine(data.getString("message"));
+                            Log.e("msg", data.getString("message"));
+                            Intent intentNotification = new Intent(Background_socket.this, Chat_window.class);
+                            intentNotification.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            PendingIntent pendingIntent = PendingIntent.getActivity(Background_socket.this, 0, intentNotification, 0);
+                            notificationBuilder.setContentTitle(data.getString("sender"));
+                            notificationBuilder.setContentIntent(pendingIntent);
+                            notificationBuilder.setStyle(inboxStyle);
+                            notificationManager.notify(0, notificationBuilder.build());
+                        }
                         sharedPreferences.edit().putString("receiver",data.getString("sender") ).commit();
                         // write in sqlite
                         String senderPofilePic = sqLiteHelper.getFriendPhotoPath((String)data.get("sender"));
