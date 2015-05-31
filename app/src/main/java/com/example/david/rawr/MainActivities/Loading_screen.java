@@ -26,6 +26,7 @@ import com.example.david.rawr.R;
 import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Tasks.CreateOwner;
 import com.example.david.rawr.Tasks.CreatePet;
+import com.example.david.rawr.Tasks.GetFriendRequests;
 import com.example.david.rawr.Tasks.GetFriends;
 import com.example.david.rawr.Tasks.GetMessagesHistory;
 import com.example.david.rawr.Tasks.GetPets;
@@ -156,6 +157,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         for (Friend friend: output){
             SQLiteHelper.addFriend(friend);
         }
+        Log.e("status", "getting message history");
         GetMessagesHistory getMessagesHistory = new GetMessagesHistory(sharedpreferences.getString("petUsername", ""), this);
         getMessagesHistory.execute();
     }
@@ -174,8 +176,9 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             editor.putString("petGender", pet.getPetGender());
             editor.putString("petPicture", pet.getPath());
             editor.commit();
-            GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername", ""), this);
-            getFriends.execute();
+            Log.e("status", "getting friend request");
+            GetFriendRequests getFriendRequests = new GetFriendRequests(sharedpreferences.getString("petUsername", ""), this);
+            getFriendRequests.execute();
         }else{
             Intent intent = new Intent(this, Newsfeed_screen.class);
             startActivity(intent);
@@ -197,6 +200,11 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
 
     @Override
     public void getRequestsFinish(ArrayList<FriendRequest> output) {
-
+        for (FriendRequest friendRequest: output){
+            SQLiteHelper.addFriendRequest(friendRequest);
+        }
+        Log.e("status", "getting friends");
+        GetFriends getFriends = new GetFriends(sharedpreferences.getString("petUsername", ""), this);
+        getFriends.execute();
     }
 }

@@ -11,9 +11,11 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.MainActivities.Chat_window;
+import com.example.david.rawr.Models.FriendRequest;
 import com.example.david.rawr.Models.Message;
 import com.example.david.rawr.R;
 import com.example.david.rawr.SQLite.SQLiteHelper;
@@ -38,7 +40,7 @@ import java.util.List;
 public  class Background_socket extends Service {
 
     Socket mySocket = null;
-    Emitter.Listener startSession_listener, chat_message_listener, notification_listener;
+    Emitter.Listener startSession_listener, chat_message_listener, notification_listener, hint_listener;
     String petUsername;
     ArrayList<String> friendsList;
     NotificationManager notificationManager;
@@ -88,6 +90,17 @@ public  class Background_socket extends Service {
                 data.put("sender", sender);
                 data.put("receiver",receiver);
                 mySocket.emit("notification", data);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void searchFriend(String hint) throws RemoteException {
+            JSONObject data = new JSONObject();
+            try {
+                data.put("hint", hint);
+                mySocket.emit("hint", data);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -151,9 +164,9 @@ public  class Background_socket extends Service {
                         notificationBuilder.setStyle(inboxStyle);
                         notificationManager.notify(0, notificationBuilder.build());
                         sharedPreferences.edit().putString("receiver",data.getString("sender") ).commit();
-                        // TODO write in sqlite
-                        String senderPofilePic = sqLiteHelper.getProfilePicturePath((String)data.get("sender"));
-                        sqLiteHelper.addMessage(new Message((String)data.getString("message"), (String)data.getString("sender"), (String)data.getString("receiver"), "unread",(String)data.getString("date"),senderPofilePic ));
+                        // write in sqlite
+                        String senderPofilePic = sqLiteHelper.getFriendPhotoPath((String)data.get("sender"));
+                        sqLiteHelper.addMessage(new Message(data.getString("message"), data.getString("sender"), data.getString("receiver"), "unread",data.getString("date"),senderPofilePic ));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -162,7 +175,21 @@ public  class Background_socket extends Service {
             notification_listener = new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
+                    JSONObject data = (JSONObject)args[0];
+                    // write in sqlite
+                    /*try {
+                        sqLiteHelper.addFriendRequest(new FriendRequest(data.getString("sender")));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+            };
 
+            hint_listener = new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    JSONObject data = (JSONObject)args[0];
+                    Log.e("hint", data.toString());
                 }
             };
             petUsername=sharedPreferences.getString("petUsername", "");
@@ -170,7 +197,8 @@ public  class Background_socket extends Service {
             friendsList= new ArrayList();
             mySocket.on("chat_message", chat_message_listener);
             mySocket.on("response_start_session", startSession_listener);
-            mySocket.on("notification",notification_listener);
+            mySocket.on("notification", notification_listener);
+            mySocket.on("hint", hint_listener);
             mySocket.connect();
             mySocket.emit("start_session", data);
         } catch (URISyntaxException e) {
@@ -195,8 +223,10 @@ public  class Background_socket extends Service {
     public void onDestroy() {
         super.onDestroy();
         mySocket.disconnect();
-        mySocket.off("response_start_session",startSession_listener);
+        mySocket.off("response_start_session", startSession_listener);
         mySocket.off("chat_message", chat_message_listener);
+        mySocket.off("notification", notification_listener);
+        mySocket.off("hint",hint_listener);
         mySocket = null;
     }
 }

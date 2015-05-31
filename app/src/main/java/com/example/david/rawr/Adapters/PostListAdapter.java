@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,12 +50,14 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
     Uri postPhotoUri = null;
     Bitmap postPhotoBitmap = null;
     EditText textPost;
+    RelativeLayout progressAnimation;
     private static LayoutInflater inflater;
 
     public PostListAdapter(Context context, ArrayList<Post> data) {
         this.context = context;
         this.data = data;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View convertView = inflater.inflate(R.layout.activity_newsfeed_screen, null);
     }
 
     @Override
@@ -85,13 +88,6 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
 
     @Override
     public void createPostFinish(String output) {
-        postPhoto.setImageBitmap(null);
-        textPost.setText("");
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.width = 0;
-        params.height = 0;
-        postPhoto.setLayoutParams(params);
-        notifyDataSetChanged();
         SharedPreferences sharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         GetPosts getPosts = new GetPosts(sharedPreferences.getString("petUsername", ""), this);
         getPosts.execute();
@@ -149,7 +145,7 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
             holder.petIdTv.setTypeface(type);
             holder.textTv.setTypeface(type);
             holder.dateTv.setTypeface(type);
-            holder.petIdTv.setText(data.get(position - 1).getPetUsername());
+            holder.petIdTv.setText(data.get(position - 1).getPetName());
             holder.textTv.setText(data.get(position - 1).getText());
             holder.dateTv.setText(data.get(position - 1).getDate());
             holder.senderPicture.setImageBitmap(data.get(position - 1).getSenderPhotoBitmap());
@@ -160,6 +156,13 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
                 public void onClick(View view) {
                     SharedPreferences sharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
                     if (sharedPreferences.contains("petUsername")) {
+                        postPhoto.setImageBitmap(null);
+                        textPost.setText("");
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        params.width = 0;
+                        params.height = 0;
+                        postPhoto.setLayoutParams(params);
+                        notifyDataSetChanged();
                         if (postPhotoBitmap != null) {
                             UploadPhoto uploadPhoto = new UploadPhoto(postPhotoBitmap, sharedPreferences.getString("petUsername", ""), PostListAdapter.this);
                             uploadPhoto.execute();

@@ -52,10 +52,9 @@ public class GetPosts extends AsyncTask<String, Integer, String> implements GetP
             JSONObject jsonResponse= jsonParser.getjObject();
             if(jsonResponse != null){
                 JSONArray jsonArray = jsonResponse.getJSONArray("posts");
-                Log.e("posts",jsonArray.toString());
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jo = jsonArray.getJSONObject(i);
-                    Post postToAdd = new Post(jo.getString("idPet"), jo.getString("text"), jo.getString("date"), jo.getString("photo"), jo.getString("photoProfile"));
+                    Post postToAdd = new Post(jo.getString("idPet"), jo.getString("name"), jo.getString("text"), jo.getString("date"), jo.getString("photo"), jo.getString("photoProfile"));
                     postArrayList.add(0,postToAdd);
                 }
             }

@@ -23,6 +23,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:background="@drawable/message_style_receiver"
             android:layout_marginRight="10dp">
             <TextView
@@ -40,9 +41,10 @@
                 android:id="@+id/message_text"/>
         </LinearLayout>
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/message_postOwner_picture"
+            android:layout_width="40dp"
+            android:layout_marginTop="2dp"
+            android:layout_height="40dp"
+            android:id="@+id/message_picture"
             android:layout_gravity="center_vertical"/>
     </LinearLayout>
     <ImageView

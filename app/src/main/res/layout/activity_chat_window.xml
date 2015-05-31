@@ -10,17 +10,19 @@
         android:background="#B4EA63"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginLeft="20dp"
+            android:id="@+id/chat_window_profilePic"
             android:layout_gravity="center_vertical"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Username"
+            android:id="@+id/chat_window_petLabel"
             android:textColor="#3B9C20"
             android:textStyle="bold"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:layout_marginLeft="20dp"
             android:layout_gravity="center" />
     </LinearLayout>
