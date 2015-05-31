@@ -10,15 +10,13 @@ $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
     "SELECT p.username, p.owner_username, p.name, p.type, p.race, p.birth_date, p.gender, ph.path
      FROM Friends f, Pet p, User u LEFT JOIN Photo ph on ph.idPhoto = u.idPhoto_profile
-     WHERE f.username_friend='$username' AND f.username=p.username AND u.username ='$username'";
-
+     WHERE f.username_friend='$username' AND f.username=p.username AND u.username =f.username";
 // ahora toca recorrer el query
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // output data of each row
     $retorno= array();
     while($row = $result->fetch_assoc()) {
-
        // Crear un diccionario de Post
         $arreglo = array(
             "username"=>$row['username'],
@@ -31,7 +29,6 @@ if ($result->num_rows > 0) {
             "path"=>$row['path']
             );
         array_push($retorno, $arreglo);
-
     }
     $json = array('friends'=>$retorno, "status"=>"1");
     echo json_encode($json);

@@ -71,6 +71,45 @@ class Photo extends Model{
         return $this;
     }
 
+    public function save()
+    {
+    //echo "<br> en model <br>";
+    $conn = DB::dbConnect();
+    $attributes = $this->getAttributes();
+    $names = "";
+    $values = "";
+
+    $numItems = count($attributes);
+    $i = 0;
+    if(is_array($attributes)){
+      foreach($attributes as $name => $value){
+        $value = $value != NULL ? "'$value'" : "NULL";
+
+        $names  .= $name;
+        $values .= $value;
+        if(++$i !== $numItems) {
+          $names  .= ', ';
+          $values .= ', ';
+        }
+      }
+    }
+
+    $mysql_query = "INSERT INTO " . $this->tableName() .
+                   "(" . $names . ") VALUES( " . $values . ")";
+    //echo "<br>" . $mysql_query . "<br>";
+    //$conn = DB::dbConnect();
+
+    if($conn->query($mysql_query) == TRUE){
+      $json_return= array('status' => '1', 'id' => $conn->insert_id);
+      //echo json_encode($json_return);
+      return $json_return;
+    }else{
+      $json_return= array('status' => '0');
+      //echo json_encode($json_return);
+      return $json_return;
+    }
+  }
+
 }
 
 ?>
