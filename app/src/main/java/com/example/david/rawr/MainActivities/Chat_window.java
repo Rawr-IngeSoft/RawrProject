@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -213,12 +214,20 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
     @Override
     public void getPhotoFinish(Bitmap bitmap) {
         if(senderBitmap == null){
-            senderBitmap = bitmap;
+            if(bitmap != null) {
+                senderBitmap = bitmap;
+            }else{
+                senderBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_profile_picture_female);
+            }
             Log.e(petUsername, sharedPreferences.getString("petPicture",""));
             GetPhoto getPhoto = new GetPhoto(sharedPreferences.getString("petPicture",""), petUsername, this);
             getPhoto.execute();
         }else {
-            receiverBitmap = bitmap;
+            if(bitmap != null) {
+                receiverBitmap = bitmap;
+            }else{
+                receiverBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_profile_picture_female);
+            }
             petPicture.setImageBitmap(RoundImage.getRoundedShape(receiverBitmap));
             messagesListAdapter = new MessagesListAdapter(this, messages, petUsername, senderBitmap, receiverBitmap);
             messagesList.setAdapter(messagesListAdapter);
