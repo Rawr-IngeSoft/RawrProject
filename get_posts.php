@@ -56,7 +56,7 @@ if ($result->num_rows > 0) {
        // Crear un diccionario de Post
         $arreglo = array('id'=>$row['idPost'], 'text'=>$row['text'],
         'date'=>$row['date'], 'idPet'=>$row['username'], 'photo'=>$row['path'],
-        'likes'=>$row['likes'], 'photoProfile'=>$pathProfile, 'name'=>$row['path']);
+        'likes'=>$row['likes'], 'photoProfile'=>$pathProfile, 'name'=>$row['name']);
         array_push($retorno, $arreglo);
 
     }
