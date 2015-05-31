@@ -16,7 +16,7 @@ $status= $json_array['status'];
 $sql="SELECT 1 FROM Request
       WHERE username_sender = '$sender' AND username_receiver = '$receiver'";
 $result = $conn->query($sql);
-if($result > 0){
+if($result->num_rows > 0){
 
   if($status == 'rejected'){
     $sql="UPDATE Request SET status='$status'
@@ -36,7 +36,7 @@ if($result > 0){
             VALUES ('$sender', '$receiver')";
       if($conn->query($sql) == TRUE){
          $sql="INSERT INTO Friends(username, username_friend)
-            VALUES ('$sender', '$receiver')";
+            VALUES ('$receiver', '$sender')";
           if($conn->query($sql) == TRUE){
 		 $json_return= array('status' => '1');
           }else{
