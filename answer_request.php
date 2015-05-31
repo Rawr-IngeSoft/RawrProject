@@ -3,7 +3,7 @@ include 'db_connect.php';
 // header para mostrar que se va a recbir un JSON
 header("Content-Type: application/json; charset=UTF-8");
 // Create connection to mysql database
-$conn = dbConnect();
+$conn = DB::dbConnect();
 
 $request_body = file_get_contents('php://input');
 

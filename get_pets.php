@@ -3,7 +3,7 @@ include 'db_connect.php';
 // header para mostrar que se va a recbir un JSON
 header("Content-Type: application/json; charset=UTF-8");
 // Create connection to mysql database
-$conn = dbConnect();
+$conn = DB::dbConnect();
 $username = $_GET['username']; // esto debería cambiarse por el id pet
 $sql =
     "SELECT p.username, p.owner_username, p.name, p.type, ph.path, p.birth_date, p.gender
@@ -17,7 +17,7 @@ if ($result->num_rows > 0) {
     // output data of each row
     $retorno= array();
     while($row = $result->fetch_assoc()) {
-    
+
        // Crear un diccionario de Post
         $arreglo = array(
             "username"=>$row['username'],
