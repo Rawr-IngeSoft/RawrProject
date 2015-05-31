@@ -22,7 +22,6 @@ class Post extends Model{
         $attributes = array(
           'username'  => $this->username,
           'text' => $this->text,
-          'date' => $this->date,
           'idPhoto' => $this->idPhoto,
           'type' => $this->type,
           'status' => $this->status,
