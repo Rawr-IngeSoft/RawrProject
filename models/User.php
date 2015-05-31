@@ -47,13 +47,15 @@ class User extends Model{
                        "(" . $names . ") VALUES( " . $values . ")";
 
         if($conn->query($mysql_query) == TRUE){
-          if(parent::save() === 0){
+	  $json_returned = parent::save();
+          if($json_returned['status'] === 0){
             //roll back si sale mal
             $conn->query("DELETE FROM User WHERE username = '$this->username'");
           }
+          return $json_returned;
         }else{
           $json_return= array('status' => '0');
-          echo json_encode($json_return);
+          return $json_return;
         }
 
     }
