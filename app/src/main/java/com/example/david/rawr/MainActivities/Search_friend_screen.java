@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -72,7 +73,7 @@ public class Search_friend_screen extends Activity implements GetPhotoResponse {
                             searchedFriendList = sqLiteHelper.getSearchedFriends();
                             downloadPhotos();
                         }
-                    }, 1000);
+                    }, 2000); // Este tiempo depende de la velocidad del internet
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }

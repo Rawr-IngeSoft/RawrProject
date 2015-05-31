@@ -2,11 +2,13 @@ package com.example.david.rawr.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Tasks.GetPhoto;
+import com.example.david.rawr.otherClasses.RoundImage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,8 +69,15 @@ public class SearchFriendListAdapter  extends BaseAdapter{
         } else {
             holder = (ViewHolder) view.getTag();
         }
+        Button sendRequest = (Button) view.findViewById(R.id.search_friend_sendRequest_button);
+        sendRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO send request
+            }
+        });
         holder.petUsername.setText(searchedFriendList.get(i).first);
-        holder.petPicture.setImageBitmap(friends.get(searchedFriendList.get(i).first));
-        return null;
+        holder.petPicture.setImageBitmap(RoundImage.getRoundedShape(friends.get(searchedFriendList.get(i).first)));
+        return view;
     }
 }
