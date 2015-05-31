@@ -4,76 +4,64 @@ package com.example.david.rawr.Models;
  * Created by david on 21/05/2015.
  */
 public class FriendRequest {
-    private String sender, animal, animalType, gender, birthday, ownerName, ownerLastName, petName;
+    private String petUsername, petType, petRace, petGender, petBirthday, ownerName, ownerLastName, petName, ownerUsername;
+    private String petPicture, ownerPicture;
 
-    public FriendRequest(String sender, String petName, String animal, String animalType, String gender, String birthday, String ownerName, String ownerLastName) {
-        this.sender = sender;
-        this.animal = animal;
-        this.animalType = animalType;
-        this.gender = gender;
-        this.birthday = birthday;
+    public FriendRequest(String petUsername, String petType, String petRace, String petGender, String petBirthday, String ownerName, String ownerLastName, String petName, String ownerUsername, String petPicture, String ownerPicture) {
+        this.petUsername = petUsername;
+        this.petType = petType;
+        this.petRace = petRace;
+        this.petGender = petGender;
+        this.petBirthday = petBirthday;
         this.ownerName = ownerName;
         this.ownerLastName = ownerLastName;
         this.petName = petName;
+        this.ownerUsername = ownerUsername;
+        this.petPicture = petPicture;
+        this.ownerPicture = ownerPicture;
     }
 
-    public String getPetName() {
-        return petName;
+    public String getPetUsername() {
+        return petUsername;
     }
 
-    public String getSender() {
-        return sender;
+    public String getPetType() {
+        return petType;
     }
 
-    public void setSender(String sender) {
-        this.sender = sender;
+    public String getPetRace() {
+        return petRace;
     }
 
-    public String getAnimal() {
-        return animal;
+    public String getPetGender() {
+        return petGender;
     }
 
-    public void setAnimal(String animal) {
-        this.animal = animal;
-    }
-
-    public String getAnimalType() {
-        return animalType;
-    }
-
-    public void setAnimalType(String animalType) {
-        this.animalType = animalType;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public String getPetBirthday() {
+        return petBirthday;
     }
 
     public String getOwnerName() {
         return ownerName;
     }
 
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
-
     public String getOwnerLastName() {
         return ownerLastName;
     }
 
-    public void setOwnerLastName(String ownerLastName) {
-        this.ownerLastName = ownerLastName;
+    public String getPetName() {
+        return petName;
+    }
+
+    public String getOwnerUsername() {
+        return ownerUsername;
+    }
+
+    public String getPetPicture() {
+        return petPicture;
+    }
+
+    public String getOwnerPicture() {
+        return ownerPicture;
     }
 }

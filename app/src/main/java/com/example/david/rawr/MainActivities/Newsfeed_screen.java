@@ -110,6 +110,11 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         dList = (ListView) findViewById(R.id.newsfeed_friends_list);
         dList.setSelector(android.R.color.holo_blue_dark);
 
+        // Unread friend requests
+        int cantity = sqLiteHelper.getFriendRequests().size();
+        TextView newFriendRequests = (TextView) findViewById(R.id.newsfeed_new_friend_requests);
+        newFriendRequests.setText(String.valueOf(cantity));
+
         // Getting friends
         friendsList = sqLiteHelper.getFriends();
 
@@ -252,7 +257,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                     }
                 });
             }
-        }, 2000, 2000);
+        }, 2000, 10000);
         // Refresh friend list
         friendsConnectedTimer = new Timer();
         friendsConnectedTimer.scheduleAtFixedRate(new TimerTask() {
@@ -301,15 +306,12 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     public void getPostsFinish(ArrayList<Post> output) {
         postsList = output;
         Timer timer = new Timer();
-        findViewById(R.id.newsfeed_progress_animation).setVisibility(View.VISIBLE);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 Newsfeed_screen.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        findViewById(R.id.newsfeed_progress_animation).setVisibility(View.INVISIBLE);
-
                         postListAdapter = new PostListAdapter(Newsfeed_screen.this, postsList);
                         postList.setAdapter(postListAdapter);
                     }
@@ -326,7 +328,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             case R.id.newsfeed_imageView_localization:
                 intent = new Intent(this, Friend_requests_screen.class);
                 startActivity(intent);
-                this.finish();
                 break;
             case R.id.newsfeed_imageView_profile:
                 intent = new Intent(this, Owner_Profile_screen.class);

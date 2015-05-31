@@ -1,11 +1,11 @@
 package com.example.david.rawr.MainActivities;
 
-import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 import com.example.david.rawr.Adapters.FriendsRequestAdapter;
 import com.example.david.rawr.Interfaces.GetFriendRequestsResponse;
@@ -16,20 +16,20 @@ import com.example.david.rawr.SQLite.SQLiteHelper;
 import java.util.ArrayList;
 
 
-public class Friend_requests_screen extends Activity implements GetFriendRequestsResponse {
+public class Friend_requests_screen extends FragmentActivity implements GetFriendRequestsResponse {
 
-    FriendsRequestAdapter friendsRequestAdapter;
+    FriendsRequestAdapter friendRequestAdapter;
     SQLiteHelper SQLiteHelper;
-    ArrayList<FriendRequest> friendRequests;
+    ViewPager friendRequestViewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_requests_screen);
         SQLiteHelper = new SQLiteHelper(this);
-        ListView requests = (ListView) findViewById(R.id.friend_requests_list);
-        friendRequests = SQLiteHelper.getFriendRequests();
-        friendsRequestAdapter = new FriendsRequestAdapter(friendRequests, this);
-        requests.setAdapter(friendsRequestAdapter);
+        friendRequestViewPager = (ViewPager) findViewById(R.id.friend_request_viewPager);
+        FragmentManager fm = getSupportFragmentManager();
+        friendRequestAdapter = new FriendsRequestAdapter(fm, this);
+        friendRequestViewPager.setAdapter(friendRequestAdapter);
     }
 
 

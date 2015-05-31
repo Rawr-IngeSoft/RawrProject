@@ -24,11 +24,14 @@ import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.PetChooseViewPagerAdapter;
 import com.example.david.rawr.IRemoteService;
+import com.example.david.rawr.Interfaces.GetFriendRequestsResponse;
 import com.example.david.rawr.Interfaces.GetFriendsResponse;
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
 import com.example.david.rawr.Models.Friend;
+import com.example.david.rawr.Models.FriendRequest;
 import com.example.david.rawr.R;
 import com.example.david.rawr.SQLite.SQLiteHelper;
+import com.example.david.rawr.Tasks.GetFriendRequests;
 import com.example.david.rawr.Tasks.GetFriends;
 import com.example.david.rawr.Tasks.GetPhoto;
 import com.example.david.rawr.otherClasses.RoundImage;
@@ -39,7 +42,7 @@ import java.util.List;
 
 
 // REQ-029
-public class Owner_Profile_screen extends FragmentActivity implements GetPhotoResponse, View.OnLongClickListener,GetFriendsResponse{
+public class Owner_Profile_screen extends FragmentActivity implements GetPhotoResponse, View.OnLongClickListener,GetFriendsResponse, GetFriendRequestsResponse{
 
     ImageView photo;
     TextView birthdayText, nameText, addressText, lastNameText;
@@ -169,7 +172,8 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         // Gettings friends of new pet
         GetFriends getFriends = new GetFriends(petUsername, this);
         getFriends.execute();
-
+        GetFriendRequests getFriendRequests = new GetFriendRequests(petUsername, this);
+        getFriendRequests.execute();
     }
 
     public void refreshCreatedPetPicture(Uri targetUri, ImageView petPicture){
@@ -196,11 +200,21 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         Intent intent = new Intent(this, Newsfeed_screen.class);
         startActivity(intent);
         this.finish();
+
     }
 
     @Override
     protected void onDestroy() {
         unbindService(mConnection);
         super.onDestroy();
+    }
+
+    @Override
+    public void getRequestsFinish(ArrayList<FriendRequest> output) {
+        SQLiteHelper sqLiteHelper = new SQLiteHelper(this);
+        sqLiteHelper.clearFriendRequests();
+        for(FriendRequest friendRequest: output){
+            sqLiteHelper.addFriendRequest(friendRequest);
+        }
     }
 }

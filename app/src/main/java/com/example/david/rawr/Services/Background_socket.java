@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.MainActivities.Chat_window;
@@ -39,7 +40,7 @@ import java.util.List;
 public  class Background_socket extends Service {
 
     Socket mySocket = null;
-    Emitter.Listener startSession_listener, chat_message_listener, notification_listener;
+    Emitter.Listener startSession_listener, chat_message_listener, notification_listener, hint_listener;
     String petUsername;
     ArrayList<String> friendsList;
     NotificationManager notificationManager;
@@ -89,6 +90,17 @@ public  class Background_socket extends Service {
                 data.put("sender", sender);
                 data.put("receiver",receiver);
                 mySocket.emit("notification", data);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void searchFriend(String hint) throws RemoteException {
+            JSONObject data = new JSONObject();
+            try {
+                data.put("hint", hint);
+                mySocket.emit("hint", data);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -172,12 +184,21 @@ public  class Background_socket extends Service {
                     }*/
                 }
             };
+
+            hint_listener = new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    JSONObject data = (JSONObject)args[0];
+                    Log.e("hint", data.toString());
+                }
+            };
             petUsername=sharedPreferences.getString("petUsername", "");
             data.put("username", petUsername);
             friendsList= new ArrayList();
             mySocket.on("chat_message", chat_message_listener);
             mySocket.on("response_start_session", startSession_listener);
-            mySocket.on("notification",notification_listener);
+            mySocket.on("notification", notification_listener);
+            mySocket.on("hint", hint_listener);
             mySocket.connect();
             mySocket.emit("start_session", data);
         } catch (URISyntaxException e) {
@@ -202,8 +223,10 @@ public  class Background_socket extends Service {
     public void onDestroy() {
         super.onDestroy();
         mySocket.disconnect();
-        mySocket.off("response_start_session",startSession_listener);
+        mySocket.off("response_start_session", startSession_listener);
         mySocket.off("chat_message", chat_message_listener);
+        mySocket.off("notification", notification_listener);
+        mySocket.off("hint",hint_listener);
         mySocket = null;
     }
 }

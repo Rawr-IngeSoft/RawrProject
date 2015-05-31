@@ -83,15 +83,19 @@
             android:divider="@android:color/transparent"
             android:background="#fff"/>
         </android.support.v4.widget.DrawerLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
-        <ProgressBar
+        android:layout_height="match_parent">
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:id="@+id/newsfeed_progress_animation"
-            android:visibility="invisible"/>
+            android:id="@+id/newsfeed_new_friend_requests"
+            android:textColor="#ffff0000"
+            android:textSize="20dp"
+            android:layout_marginStart="47dp"
+            android:layout_marginTop="92dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 </RelativeLayout>

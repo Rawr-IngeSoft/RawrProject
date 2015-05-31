@@ -76,26 +76,15 @@ public class MessagesListAdapter extends BaseAdapter {
         }
         holder.msgTVMe.setText(data.get(position).getMessage());
         holder.dateTVMe.setText(data.get(position).getDate());
-        if (viewType == 1) {
-            if(position > 0) {
-                if (data.get(position - 1).getSender().compareTo(data.get(position).getSender()) != 0)
-                    holder.msgOwnerPictureMe.setImageBitmap(senderBitmap);
-            }else{
-                holder.msgOwnerPictureMe.setImageBitmap(senderBitmap);
-            }
-
-        }else {
-            if(position > 0) {
-                if (data.get(position - 1).getSender().compareTo(data.get(position).getSender()) != 0)
-                    holder.msgOwnerPictureMe.setImageBitmap(receiverBitmap);
-            }else{
-                holder.msgOwnerPictureMe.setImageBitmap(receiverBitmap);
-            }
+        if (viewType == 1){
+            holder.msgOwnerPictureMe.setImageBitmap(senderBitmap);
+        }else{
+            holder.msgOwnerPictureMe.setImageBitmap(receiverBitmap);
         }
-        if (!data.get(position).isVisible()) {
-            holder.msgOwnerPictureMe.setVisibility(View.INVISIBLE);
-        } else {
+        if (data.get(position).isVisible()) {
             holder.msgOwnerPictureMe.setVisibility(View.VISIBLE);
+        } else {
+            holder.msgOwnerPictureMe.setVisibility(View.INVISIBLE);
         }
         return convertView;
     }

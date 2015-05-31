@@ -129,6 +129,7 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
                         } else {
                             messages = SQLiteHelper.getMessagesOf(receiver);
                         }
+                        checkSenderVisibility();
                         messagesListAdapter = new MessagesListAdapter(Chat_window.this, messages, petUsername, senderBitmap,receiverBitmap);
                         messagesList.setAdapter(messagesListAdapter);
                     }
@@ -169,12 +170,13 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
 
         for (int i = 0; i < messages.size(); i++){
             if(i > 0){
-                Log.e(messages.get(i).getSender(),messages.get(i-1).getSender() );
                 if(messages.get(i).getSender().compareTo(messages.get(i-1).getSender()) == 0){
                     messages.get(i).setVisible(false);
                 }else{
                     messages.get(i).setVisible(true);
                 }
+            }else{
+                messages.get(i).setVisible(true);
             }
         }
     }

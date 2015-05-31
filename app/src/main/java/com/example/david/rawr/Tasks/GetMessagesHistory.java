@@ -51,7 +51,6 @@ public class GetMessagesHistory extends AsyncTask<String, String, String> {
             JSONObject jsonResponse= jsonParser.getjObject();
             if(jsonResponse != null){
                 if(jsonResponse.getString("status").compareTo("1") == 0) {
-                    Log.e("messages", jsonResponse.toString());
                     JSONArray jsonArray = jsonResponse.getJSONArray("messages");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jo = jsonArray.getJSONObject(i);

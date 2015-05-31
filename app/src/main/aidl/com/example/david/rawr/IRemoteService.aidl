@@ -9,4 +9,5 @@ interface IRemoteService {
     void sendMessage(String sender, String reciever, String msg);
     void changePet(String petUsername);
     void sendFriendRequest(String sender, String receiver);
+    void searchFriend(String hint);
 }

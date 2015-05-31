@@ -1,6 +1,7 @@
 package com.example.david.rawr.Tasks;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.david.rawr.Interfaces.GetFriendRequestsResponse;
 import com.example.david.rawr.Interfaces.GetPostsResponse;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  */
 public class GetFriendRequests extends AsyncTask<String, Integer, String> {
     String idPet;
-    ArrayList<FriendRequest> friendRequests;
+    static ArrayList<FriendRequest> friendRequests;
     GetFriendRequestsResponse getFriendRequestsResponse;
     private static String url_get_friendRequests = "http://178.62.233.249/rawr/get_requests.php";
     public GetFriendRequests(String idPet, GetFriendRequestsResponse getFriendRequestsResponse) {
@@ -50,8 +51,8 @@ public class GetFriendRequests extends AsyncTask<String, Integer, String> {
                 JSONArray jsonArray = jsonResponse.getJSONArray("requests");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jo = jsonArray.getJSONObject(i);
-                    FriendRequest requestToAdd = new FriendRequest(jo.getString("username_sender"), jo.getString("name"), jo.getString("type"), jo.getString("race"),jo.getString("gender"),jo.getString("birth_day"), jo.getString("ownerName"),jo.getString("lastname"));
-                    friendRequests.add(requestToAdd);
+                    if(jo.getString("status").compareTo("accepted") != 0)
+                        friendRequests.add(new FriendRequest(jo.getString("username_sender"), jo.getString("type"), jo.getString("race"), jo.getString("gender"), jo.getString("birth_date"), jo.getString("ownerName"), jo.getString("lastname"), jo.getString("name"), jo.getString("owner_username"), jo.getString("petPicture"), jo.getString("ownerPicture")));
                 }
             }
         } catch (UnsupportedEncodingException e) {
