@@ -96,7 +96,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         profile.setOnClickListener(this);
 
         notifications = (ImageView)findViewById(R.id.newsfeed_imageView_notifications);
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_notifications);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_location);
         notifications.setImageBitmap(bitmap);
 
         postList = (ListView)findViewById(R.id.newsfeed_list);

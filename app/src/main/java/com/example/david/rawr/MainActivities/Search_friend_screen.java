@@ -65,6 +65,7 @@ public class Search_friend_screen extends Activity implements GetPhotoResponse {
                 try {
                     Log.e("status", "searching");
                     sqLiteHelper.clearSearchedFriends();
+                    friendsList = new HashMap<String, Bitmap>();
                     service.searchFriend(hint.getText().toString());
                     Timer timer = new Timer();
                     timer.schedule(new TimerTask() {
@@ -143,10 +144,14 @@ public class Search_friend_screen extends Activity implements GetPhotoResponse {
     private void downloadPhotos(){
         listPosition = 0;
         for ( int i = 0; i < searchedFriendList.size(); i++){
-            Log.e( searchedFriendList.get(i).first, searchedFriendList.get(i).second);
-            GetPhoto getPhoto = new GetPhoto(searchedFriendList.get(i).second, searchedFriendList.get(i).first, this);
-            getPhoto.execute();
-            while(getPhoto.getStatus() != AsyncTask.Status.FINISHED);
+            if(searchedFriendList.get(i).second.compareTo("null") != 0) {
+                GetPhoto getPhoto = new GetPhoto(searchedFriendList.get(i).second, searchedFriendList.get(i).first, this);
+                getPhoto.execute();
+                while (getPhoto.getStatus() != AsyncTask.Status.FINISHED) ;
+            }else{
+                friendsList.put(searchedFriendList.get(listPosition).first, BitmapFactory.decodeResource(getResources(), R.drawable.default_profile_picture_female));
+                listPosition++;
+            }
         }
         searchFriendListAdapter = new SearchFriendListAdapter(Search_friend_screen.this, friendsList, searchedFriendList);
         runOnUiThread(new Runnable() {
