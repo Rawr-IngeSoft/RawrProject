@@ -75,7 +75,7 @@ public class ChoosePetFragment extends android.support.v4.app.Fragment implement
         if (bitmap != null) {
             petPicture.setImageBitmap(RoundImage.getRoundedShape(bitmap));
         }else{
-            //petPicture.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profile_picture_female)));
+            petPicture.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profile_picture_female)));
         }
     }
 

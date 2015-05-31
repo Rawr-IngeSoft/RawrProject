@@ -5,14 +5,19 @@ package com.example.david.rawr.Models;
  */
 public class Friend implements Comparable{
 
-    private String petUsername, petName;
+    private String petUsername, petName, profilePicture;
     private boolean connected = false;
     private int priority = 0;
     public Friend(){};
 
-    public Friend(String petUsername, String petName) {
+    public Friend(String petUsername, String petName, String profilePicture) {
         this.petUsername = petUsername;
         this.petName = petName;
+        this.profilePicture = profilePicture;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
     }
 
     public String getPetUsername() {

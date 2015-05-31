@@ -3,6 +3,8 @@ package com.example.david.rawr.Tasks;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.UploadPhotoResponse;
 
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 public class UploadPhoto extends AsyncTask<String, Integer, String> {
 
     Bitmap bitmap;
-    String username, pictureUri;
+    String username, pictureUri, pictureId;
     UploadPhotoResponse uploadPhotoResponse;
     private static String url_upload_photo = "http://178.62.233.249/rawr/image_upload.php";
 
@@ -67,8 +69,10 @@ public class UploadPhoto extends AsyncTask<String, Integer, String> {
             JsonParser jsonParser = new JsonParser(response.getEntity().getContent());
 
             jsonResponse= jsonParser.getjObject();
+            Log.e("uploadImage", jsonResponse.toString());
             status = jsonResponse.getString("status");
             pictureUri = jsonResponse.getString("path");
+            pictureId = jsonResponse.getString("id");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -85,6 +89,7 @@ public class UploadPhoto extends AsyncTask<String, Integer, String> {
         ArrayList<String> response = new ArrayList<>();
         response.add(status);
         response.add(pictureUri);
+        response.add(pictureId);
         uploadPhotoResponse.uploadFinish(response);
     }
 }

@@ -65,6 +65,7 @@
         <activity
             android:name=".MainActivities.Newsfeed_screen"
             android:label="@string/title_activity_newsfeed_window"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -94,7 +95,7 @@
         </activity>
 
         <service
-            android:name=".Services.Chat_service"
+            android:name=".Services.Background_socket"
             android:exported="true"
             android:process=":rawr_chat" >
             <intent-filter>

@@ -1,6 +1,5 @@
 package com.example.david.rawr.MainActivities;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -8,39 +7,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.MessagesListAdapter;
+import com.example.david.rawr.Adapters.PostListAdapter;
 import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Models.Message;
 import com.example.david.rawr.SQLite.SQLiteHelper;
-import com.example.david.rawr.Services.Chat_service;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Chat_window extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener{
@@ -112,6 +103,25 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
             connected_friends_intent.setAction("service.Chat");
             this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
         }
+        Timer timer = new Timer();
+        findViewById(R.id.newsfeed_progress_animation).setVisibility(View.VISIBLE);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Chat_window.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (petUsername.compareTo(receiver) == 0) {
+                            messages = SQLiteHelper.getMyMessages(petUsername);
+                        } else {
+                            messages = SQLiteHelper.getMessagesOf(receiver);
+                        }
+                        messagesListAdapter = new MessagesListAdapter(Chat_window.this, messages, petUsername);
+                        messagesList.setAdapter(messagesListAdapter);
+                    }
+                });
+            }
+        }, 1000);
     }
 
     @Override

@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -25,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.PostListAdapter;
@@ -39,6 +42,7 @@ import com.example.david.rawr.Tasks.GetPosts;
 import com.example.david.rawr.Models.Post;
 import com.example.david.rawr.otherClasses.RoundImage;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -61,7 +65,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     private ArrayList<Post> postsList = new ArrayList<>();
     private RelativeLayout buttons_container;
     private float  notificationsX, notificationsY,parentX, parentY, profileX, profileY, searchX, searchY, localizationX, localizationY;
-    private Timer friendsConnectedTimer;
+    private Timer friendsConnectedTimer,postTimer;
     int x_profile_gap = 180, y_profile_gap = 100, x_search_gap = 160, y_search_gap = 20, x_notification_gap = 60, y_notification_gap = 180, x_localization_gap = 40, y_localization_gap = 160;
     private  NotificationManager notificationManager;
     // DB Manager
@@ -122,8 +126,10 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
         //Show friendlist
 
-        if(sharedPreferences.contains("petUsername"))
-            friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", "")));
+        if(sharedPreferences.contains("petUsername")) {
+            friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", ""), sharedPreferences.getString("petPicture", "")));
+            sqLiteHelper.addFriend(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", ""), sharedPreferences.getString("petPicture","")));
+        }
         friends_connected_row_adapter = new Friends_connected_row_Adapter(this, friendsList);
         dList.setAdapter(friends_connected_row_adapter);
 
@@ -236,6 +242,21 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
         }
 
+        // Refresf post list
+        final GetPosts getPosts = new GetPosts(sharedPreferences.getString("petUsername",""),this);
+        postTimer = new Timer();
+        postTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Newsfeed_screen.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getPosts.getStatus() == AsyncTask.Status.FINISHED)
+                            getPosts.execute();
+                    }
+                });
+            }
+        }, 2000, 2000);
         // Refresh friend list
         friendsConnectedTimer = new Timer();
         friendsConnectedTimer.scheduleAtFixedRate(new TimerTask() {
@@ -276,6 +297,11 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        postListAdapter.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void getPostsFinish(ArrayList<Post> output) {
         postsList = output;
         Timer timer = new Timer();
@@ -287,12 +313,13 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                     @Override
                     public void run() {
                         findViewById(R.id.newsfeed_progress_animation).setVisibility(View.INVISIBLE);
+
                         postListAdapter = new PostListAdapter(Newsfeed_screen.this, postsList);
                         postList.setAdapter(postListAdapter);
                     }
                 });
             }
-        }, 1000);
+        }, 2000);
     }
 
     @Override

@@ -22,7 +22,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 
     String sqlCreatePET = "CREATE TABLE Pet (petName TEXT, petUsername TEXT PRIMARY KEY, petType TEXT, petGender TEXT, selected TEXT,path TEXT)";
-    String sqlCreateFriend ="CREATE TABLE Friend (petName TEXT, petUsername TEXT PRIMARY KEY)";
+    String sqlCreateFriend ="CREATE TABLE Friend (petName TEXT, petUsername TEXT PRIMARY KEY, profilePicture TEXT)";
     String sqlCreateMessagesHistory = "CREATE TABLE Message (message TEXT, sender TEXT, receiver TEXT, status TEXT, date TEXT, pictureUri TEXT)";
     String sqlCreateFriendRequests = "CREATE TABLE FriendRequest (sender TEXT)";
 
@@ -76,6 +76,19 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return messages;
     }
 
+    public String getProfilePicturePath(String sender){
+        String path = "null";
+        String query = "select profilePicture from Friend where petUsername = '" + sender;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            do{
+                path = cursor.getString(0);
+            }while (cursor.moveToNext());
+        }
+        return path;
+    }
+
     public int getUnreadMessagesOf(String petUsername){
         String query = "select * from Message where sender = '" + petUsername + "' and status = 'unread'" ;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -97,7 +110,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("receiver", message.getReceiver());
         values.put("status", message.getStatus());
         values.put("date", message.getDate());
-        values.put("pictureUri", message.getPictureUri());
         db.insert("Message", null,values );
         db.close();
     }
@@ -128,6 +140,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("petName",friend.getPetName());
         values.put("petUsername",friend.getPetUsername());
+        values.put("profilePicture",friend.getProfilePicture());
         db.insert("Friend",null,values);
         db.close();
     }
@@ -225,6 +238,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             editor.putString("petName", pet.getPetName());
             editor.putString("petType",pet.getPetType());
             editor.putString("petGender",pet.getPetGender());
+            editor.putString("petPicture", pet.getPetPictureUri());
             editor.commit();
         }
     }

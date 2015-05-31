@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.david.rawr.R;
-import com.example.david.rawr.Services.Chat_service;
+import com.example.david.rawr.Services.Background_socket;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,7 +21,7 @@ public class Welcome_screen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
-        Intent intent = new Intent(this, Chat_service.class);
+        Intent intent = new Intent(this, Background_socket.class);
         startService(intent);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
