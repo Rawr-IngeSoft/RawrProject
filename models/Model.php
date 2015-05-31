@@ -50,7 +50,7 @@ class Model {
     $mysql_query = "INSERT INTO " . $this->tableName() .
                    "(" . $names . ") VALUES( " . $values . ")";
     //echo "<br>" . $mysql_query . "<br>";
-    $conn = DB::dbConnect();
+    //$conn = DB::dbConnect();
 
     if($conn->query($mysql_query) == TRUE){
       $json_return= array('status' => '1');
