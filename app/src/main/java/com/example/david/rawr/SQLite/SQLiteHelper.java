@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.example.david.rawr.Models.Friend;
@@ -24,7 +25,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     String sqlCreatePET = "CREATE TABLE Pet (petName TEXT, petUsername TEXT PRIMARY KEY, petType TEXT, petGender TEXT, selected TEXT,path TEXT)";
     String sqlCreateFriend ="CREATE TABLE Friend (petName TEXT, petUsername TEXT PRIMARY KEY, profilePicture TEXT)";
     String sqlCreateMessagesHistory = "CREATE TABLE Message (message TEXT, sender TEXT, receiver TEXT, status TEXT, date TEXT, pictureUri TEXT)";
-    String sqlCreateFriendRequests = "CREATE TABLE FriendRequest (sender TEXT)";
+    String sqlCreateFriendRequests = "CREATE TABLE FriendRequest (sender TEXT, name TEXT, type TEXT, race TEXT, gender TEXT, birth_date TEXT, ownerName TEXT, lastname TEXT)";
 
     public SQLiteHelper(Context context) {
         super(context, "PetDB", null, 1);
@@ -42,7 +43,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
-
 
     public ArrayList<Message> getMessagesOf(String friend){
         String query = "select * from Message where sender = '" + friend + "' or " + "receiver = '" + friend + "'" ;
@@ -76,9 +76,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return messages;
     }
 
-    public String getProfilePicturePath(String sender){
+    public String getFriendPhotoPath(String sender){
         String path = "null";
-        String query = "select profilePicture from Friend where petUsername = '" + sender;
+        String query = "select profilePicture from Friend where petUsername = '" + sender + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
@@ -118,10 +118,20 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("sender", friendRequest.getSender());
+        values.put("petName",friendRequest.getPetName());
+        values.put("type",friendRequest.getAnimal());
+        values.put("race", friendRequest.getAnimalType());
+        values.put("gender",friendRequest.getBirthday());
+        values.put("birth_day", friendRequest.getBirthday());
+        values.put("ownerName", friendRequest.getOwnerName());
+        values.put("lastname", friendRequest.getOwnerLastName());
         db.insert("FriendRequest", null, values);
         db.close();
     }
 
+    public ArrayList<FriendRequest> getFriendRequest(){
+        return null;
+    }
     public void addPet(Pet pet){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -153,7 +163,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         FriendRequest friendRequest;
         if(cursor.moveToFirst()){
             do{
-                friendRequest = new FriendRequest(cursor.getString(0));
+                friendRequest = new FriendRequest(cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7));
                 friendRequests.add(friendRequest);
             }while (cursor.moveToNext());
         }

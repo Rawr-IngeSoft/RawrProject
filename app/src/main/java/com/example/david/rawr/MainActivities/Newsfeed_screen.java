@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -27,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.PostListAdapter;
@@ -42,7 +40,6 @@ import com.example.david.rawr.Tasks.GetPosts;
 import com.example.david.rawr.Models.Post;
 import com.example.david.rawr.otherClasses.RoundImage;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -83,7 +80,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         setContentView(R.layout.activity_newsfeed_screen);
 
         localization = (ImageView)findViewById(R.id.newsfeed_imageView_localization);
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_location);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_friend_request);
         localization.setImageBitmap(bitmap);
         // TODO change click event
         localization.setOnClickListener(this);
@@ -127,7 +124,6 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         //Show friendlist
 
         if(sharedPreferences.contains("petUsername")) {
-            friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", ""), sharedPreferences.getString("petPicture", "")));
             sqLiteHelper.addFriend(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", ""), sharedPreferences.getString("petPicture","")));
         }
         friends_connected_row_adapter = new Friends_connected_row_Adapter(this, friendsList);

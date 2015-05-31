@@ -1,5 +1,6 @@
 package com.example.david.rawr.MainActivities;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.david.rawr.Adapters.FriendsRequestAdapter;
+import com.example.david.rawr.Interfaces.GetFriendRequestsResponse;
 import com.example.david.rawr.Models.FriendRequest;
 import com.example.david.rawr.R;
 import com.example.david.rawr.SQLite.SQLiteHelper;
@@ -14,7 +16,7 @@ import com.example.david.rawr.SQLite.SQLiteHelper;
 import java.util.ArrayList;
 
 
-public class Friend_requests_screen extends ActionBarActivity {
+public class Friend_requests_screen extends Activity implements GetFriendRequestsResponse {
 
     FriendsRequestAdapter friendsRequestAdapter;
     SQLiteHelper SQLiteHelper;
@@ -28,7 +30,6 @@ public class Friend_requests_screen extends ActionBarActivity {
         friendRequests = SQLiteHelper.getFriendRequests();
         friendsRequestAdapter = new FriendsRequestAdapter(friendRequests, this);
         requests.setAdapter(friendsRequestAdapter);
-
     }
 
 
@@ -52,5 +53,10 @@ public class Friend_requests_screen extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void getRequestsFinish(ArrayList<FriendRequest> output) {
+
     }
 }

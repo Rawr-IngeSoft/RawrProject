@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -18,13 +19,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.MessagesListAdapter;
 import com.example.david.rawr.Adapters.PostListAdapter;
 import com.example.david.rawr.IRemoteService;
+import com.example.david.rawr.Interfaces.GetPhotoResponse;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Models.Message;
 import com.example.david.rawr.SQLite.SQLiteHelper;
+import com.example.david.rawr.Tasks.GetPhoto;
+import com.example.david.rawr.otherClasses.RoundImage;
 
 
 import java.util.ArrayList;
@@ -34,7 +39,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Chat_window extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class Chat_window extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener, GetPhotoResponse{
 
     String receiver, petUsername;
     SharedPreferences sharedPreferences;
@@ -43,6 +48,9 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
     String pictureUri;
     ListView messagesList;
     SQLiteHelper SQLiteHelper;
+    ImageView petPicture;
+    Bitmap senderBitmap = null,receiverBitmap = null;
+    com.example.david.rawr.SQLite.SQLiteHelper sqLiteHelper;
     // Background service connection declaration
     ServiceConnection mConnection;
     protected IRemoteService service;
@@ -69,12 +77,18 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
             messages = SQLiteHelper.getMessagesOf(receiver);
         }
         checkSenderVisibility();
+        TextView petLabel = (TextView)findViewById(R.id.chat_window_petLabel);
+        petPicture = (ImageView)findViewById(R.id.chat_window_profilePic);
+        petLabel.setText(petUsername);;
         send_button = (ImageView) findViewById(R.id.chat_window_send_button);
         send_button.setOnClickListener(this);
         message = (EditText) findViewById(R.id.chat_window_message);
         messagesList = (ListView) findViewById(R.id.chat_window_messages_list);
-        messagesListAdapter = new MessagesListAdapter(this, messages, petUsername);
-        messagesList.setAdapter(messagesListAdapter);
+
+        // Get friend photo
+        sqLiteHelper = new SQLiteHelper(this);
+        GetPhoto getPhoto = new GetPhoto(sqLiteHelper.getFriendPhotoPath(receiver), receiver, this);
+        getPhoto.execute();
         mConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -104,7 +118,6 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
             this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
         }
         Timer timer = new Timer();
-        findViewById(R.id.newsfeed_progress_animation).setVisibility(View.VISIBLE);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -116,7 +129,7 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
                         } else {
                             messages = SQLiteHelper.getMessagesOf(receiver);
                         }
-                        messagesListAdapter = new MessagesListAdapter(Chat_window.this, messages, petUsername);
+                        messagesListAdapter = new MessagesListAdapter(Chat_window.this, messages, petUsername, senderBitmap,receiverBitmap);
                         messagesList.setAdapter(messagesListAdapter);
                     }
                 });
@@ -193,5 +206,20 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
             dateTV.setText(messages.get(position).getDate());
         }
 
+    }
+
+    @Override
+    public void getPhotoFinish(Bitmap bitmap) {
+        if(senderBitmap == null){
+            senderBitmap = bitmap;
+            Log.e(petUsername, sharedPreferences.getString("petPicture",""));
+            GetPhoto getPhoto = new GetPhoto(sharedPreferences.getString("petPicture",""), petUsername, this);
+            getPhoto.execute();
+        }else {
+            receiverBitmap = bitmap;
+            petPicture.setImageBitmap(RoundImage.getRoundedShape(receiverBitmap));
+            messagesListAdapter = new MessagesListAdapter(this, messages, petUsername, senderBitmap, receiverBitmap);
+            messagesList.setAdapter(messagesListAdapter);
+        }
     }
 }

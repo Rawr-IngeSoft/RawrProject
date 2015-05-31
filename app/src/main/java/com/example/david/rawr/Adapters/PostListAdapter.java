@@ -149,7 +149,7 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
             holder.petIdTv.setTypeface(type);
             holder.textTv.setTypeface(type);
             holder.dateTv.setTypeface(type);
-            holder.petIdTv.setText(data.get(position - 1).getPetUsername());
+            holder.petIdTv.setText(data.get(position - 1).getPetName());
             holder.textTv.setText(data.get(position - 1).getText());
             holder.dateTv.setText(data.get(position - 1).getDate());
             holder.senderPicture.setImageBitmap(data.get(position - 1).getSenderPhotoBitmap());

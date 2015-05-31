@@ -4,10 +4,21 @@ package com.example.david.rawr.Models;
  * Created by david on 21/05/2015.
  */
 public class FriendRequest {
-    private String sender, animal, animalType, gender, birthday, ownerName, ownerLastName;
+    private String sender, animal, animalType, gender, birthday, ownerName, ownerLastName, petName;
 
-    public FriendRequest(String sender) {
+    public FriendRequest(String sender, String petName, String animal, String animalType, String gender, String birthday, String ownerName, String ownerLastName) {
         this.sender = sender;
+        this.animal = animal;
+        this.animalType = animalType;
+        this.gender = gender;
+        this.birthday = birthday;
+        this.ownerName = ownerName;
+        this.ownerLastName = ownerLastName;
+        this.petName = petName;
+    }
+
+    public String getPetName() {
+        return petName;
     }
 
     public String getSender() {
