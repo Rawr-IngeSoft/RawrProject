@@ -13,7 +13,7 @@ $sql =
      FROM Request r, Pet p, Owner o
      WHERE r.username_receiver = '$username' AND
      p.username = r.username_sender AND  o.username = p.owner_username";
-echo $username;
+//echo $username;
 
 // ahora toca recorrer el query
 $result = $conn->query($sql);

@@ -30,6 +30,7 @@
     fwrite($file, $binary);
 
     fclose($file);
+
     $filename= $filename . '.' . $extension;
     $data = array(
         "username" => $username,
@@ -38,6 +39,8 @@
 
     $model = new Photo();
     $model->setAttributes($data);
-    $model->save();
+    $return = $model->save();
+    $return['path'] = $model->getPath();
+    echo json_encode($return);
 
 ?>

@@ -16,7 +16,7 @@ $json_array = json_decode($request_body, true);
 
 $model = new Post();
 $model->setAttributes($json_array);
-$model->save();
-
+$return = $model->save();
+echo json_encode($return);
 
 ?>
