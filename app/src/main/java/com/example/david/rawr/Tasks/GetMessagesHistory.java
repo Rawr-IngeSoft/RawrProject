@@ -1,6 +1,7 @@
 package com.example.david.rawr.Tasks;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.david.rawr.Interfaces.GetMessagesHistoryResponse;
 import com.example.david.rawr.Interfaces.GetPostsResponse;
@@ -50,10 +51,11 @@ public class GetMessagesHistory extends AsyncTask<String, String, String> {
             JSONObject jsonResponse= jsonParser.getjObject();
             if(jsonResponse != null){
                 if(jsonResponse.getString("status").compareTo("1") == 0) {
+                    Log.e("messages", jsonResponse.toString());
                     JSONArray jsonArray = jsonResponse.getJSONArray("messages");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jo = jsonArray.getJSONObject(i);
-                        Message msgtToAdd = new Message(jo.getString("text"), jo.getString("sender"), jo.getString("receiver"), jo.getString("status"), jo.getString("date"));
+                        Message msgtToAdd = new Message(jo.getString("text"), jo.getString("sender"), jo.getString("receiver"), jo.getString("status"), jo.getString("date"), "553ef2e678b0f.jpg");
                         messagestArrayList.add(msgtToAdd);
                     }
                 }

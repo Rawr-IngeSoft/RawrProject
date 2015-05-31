@@ -10,14 +10,20 @@ public class Message {
     private String message;
     private String date;
     private String status;
+    private String pictureUri;
     private boolean visible = true;
 
-    public Message(String message, String sender, String receiver, String status, String date) {
+    public Message(String message, String sender, String receiver, String status, String date, String pictureUri) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
         this.status = status;
         this.date = date;
+        this.pictureUri = pictureUri;
+    }
+
+    public String getPictureUri() {
+        return pictureUri;
     }
 
     public String getMessage() {

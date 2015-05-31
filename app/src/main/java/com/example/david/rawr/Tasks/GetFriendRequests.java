@@ -1,11 +1,10 @@
 package com.example.david.rawr.Tasks;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.example.david.rawr.Interfaces.GetPhotoResponse;
+import com.example.david.rawr.Interfaces.GetFriendRequestsResponse;
 import com.example.david.rawr.Interfaces.GetPostsResponse;
+import com.example.david.rawr.Models.FriendRequest;
 import com.example.david.rawr.Models.Post;
 
 import org.apache.http.HttpResponse;
@@ -20,29 +19,26 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
- * Created by Estudiante on 24/04/2015.
+ * Created by david on 21/05/2015.
  */
-public class GetPosts extends AsyncTask<String, Integer, String> implements GetPhotoResponse{
-
+public class GetFriendRequests extends AsyncTask<String, Integer, String> {
     String idPet;
-    ArrayList<Post> postArrayList;
-    GetPostsResponse getPostsResponse;
-    private static String url_get_posts = "http://178.62.233.249/rawr/get_posts.php";
-    public GetPosts(String idPet, GetPostsResponse getPostsResponse) {
+    ArrayList<FriendRequest> friendRequests;
+    GetFriendRequestsResponse getFriendRequestsResponse;
+    private static String url_get_friendRequests = "http://178.62.233.249/rawr/get_requests.php";
+    public GetFriendRequests(String idPet, GetFriendRequestsResponse getFriendRequestsResponse) {
         this.idPet = idPet;
-        this.getPostsResponse = getPostsResponse;
-        postArrayList = new ArrayList<>();
+        this.getFriendRequestsResponse = getFriendRequestsResponse;
+        friendRequests = new ArrayList<>();
     }
 
     @Override
     protected String doInBackground(String... params) {
 
         HttpClient client = new DefaultHttpClient();
-        String query = url_get_posts+"?username="+idPet;
+        String query = url_get_friendRequests+"?username="+idPet;
         HttpGet get = new HttpGet(query);
 
 
@@ -51,12 +47,11 @@ public class GetPosts extends AsyncTask<String, Integer, String> implements GetP
             JsonParser jsonParser = new JsonParser(response.getEntity().getContent());
             JSONObject jsonResponse= jsonParser.getjObject();
             if(jsonResponse != null){
-                JSONArray jsonArray = jsonResponse.getJSONArray("posts");
-                Log.e("posts",jsonArray.toString());
+                JSONArray jsonArray = jsonResponse.getJSONArray("requests");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jo = jsonArray.getJSONObject(i);
-                    Post postToAdd = new Post(jo.getString("idPet"), jo.getString("text"), jo.getString("date"), jo.getString("photo"), jo.getString("photoProfile"));
-                    postArrayList.add(0,postToAdd);
+                    FriendRequest requestToAdd = new FriendRequest(jo.getString("username_sender"));
+                    friendRequests.add(requestToAdd);
                 }
             }
         } catch (UnsupportedEncodingException e) {
@@ -72,11 +67,6 @@ public class GetPosts extends AsyncTask<String, Integer, String> implements GetP
     }
 
     protected void onPostExecute(String responseValue) {
-        getPostsResponse.getPostsFinish(postArrayList);
-    }
-
-    @Override
-    public void getPhotoFinish(Bitmap bitmap) {
-
+        getFriendRequestsResponse.getRequestsFinish(friendRequests);
     }
 }

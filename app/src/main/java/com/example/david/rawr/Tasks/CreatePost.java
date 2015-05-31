@@ -3,10 +3,12 @@ package com.example.david.rawr.Tasks;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.david.rawr.Interfaces.CreatePetResponse;
-import com.example.david.rawr.SQLite.SQLiteHelper;
+import com.example.david.rawr.Interfaces.CreatePostResponse;
 import com.example.david.rawr.Models.Pet;
+import com.example.david.rawr.SQLite.SQLiteHelper;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -21,27 +23,24 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Created by David on 15/04/2015.
+ * Created by david on 30/05/2015.
  */
-// REQ-014
-public class CreatePet extends AsyncTask<String, Integer, String> {
+public class CreatePost extends AsyncTask<String, Integer, String> {
 
     private final String username;
-    private final String petName;
-    private final String petType;
-    private final String owner;
-    private final String petGender;
-    private static String url_create_pet = "http://178.62.233.249/rawr/create_pet.php";
-    private CreatePetResponse createPetResponse;
+    private final String text;
+    private final String postType;
+    private final String idPhoto;
+    private static String url_create_post = "http://178.62.233.249/rawr/create_post.php";
+    private CreatePostResponse createPostResponse;
     private Context context;
-    public CreatePet(String username, String petName, String petType, String owner, String petGender, CreatePetResponse createPetResponse, Context context) {
+    public CreatePost(String username, String postType, String idPhoto, String text,CreatePostResponse createPostResponse, Context context) {
         this.username = username;
-        this.petName = petName;
-        this.petType = petType;
-        this.owner = owner;
-        this.createPetResponse = createPetResponse;
+        this.text = text;
+        this.postType = postType;
+        this.idPhoto = idPhoto;
+        this.createPostResponse = createPostResponse;
         this.context = context;
-        this.petGender = petGender;
     }
 
     protected String doInBackground(String... args) {
@@ -50,12 +49,12 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
             // Building Parameters
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("username", this.username);
-            jsonObject.put("name", this.petName);
-            jsonObject.put("type", this.petType);
-            jsonObject.put("owner_username", this.owner);
-            jsonObject.put("gender", this.petGender);
+            jsonObject.put("text", this.text);
+            jsonObject.put("type", this.postType);
+            if(idPhoto.compareTo("null") != 0)
+                jsonObject.put("idPhoto", idPhoto);
             HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(url_create_pet);
+            HttpPost post = new HttpPost(url_create_post);
             post.setHeader("Accept", "application/json");
             post.setHeader("Content-type", "application/json");
 
@@ -84,21 +83,7 @@ public class CreatePet extends AsyncTask<String, Integer, String> {
      * *
      */
     protected void onPostExecute(String responseValue) {
-        if (responseValue.compareTo("1") == 0){
-            // Focus actual pet
-            SharedPreferences sharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor =  sharedPreferences.edit();
-            editor.putString("petName", petName);
-            editor.putString("petUsername", username);
-            editor.putString("petType", petType);
-            editor.putString("petGender", petGender);
-            editor.commit();
-
-            // Save pet in sqlite
-            SQLiteHelper SQLiteHelper = new SQLiteHelper(context);
-            SQLiteHelper.addPet(new Pet(username,petName,petType,"","", petGender));
-        }
-        createPetResponse.createPetFinish(responseValue);
+        createPostResponse.createPostFinish(responseValue);
     }
 
 }

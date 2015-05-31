@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.david.rawr.Models.Friend;
 import com.example.david.rawr.R;
+import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.otherClasses.RoundImage;
 
 import java.util.ArrayList;
@@ -28,11 +29,13 @@ public class Friends_connected_row_Adapter extends BaseAdapter {
     Context context;
     ArrayList<Friend> friends;
     private static LayoutInflater inflater;
+    com.example.david.rawr.SQLite.SQLiteHelper SQLiteHelper;
 
     public Friends_connected_row_Adapter(Context context, ArrayList<Friend> friends) {
         this.friends = friends;
         this.context = context;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        SQLiteHelper = new SQLiteHelper(context);
     }
 
     @Override
@@ -57,6 +60,7 @@ public class Friends_connected_row_Adapter extends BaseAdapter {
             TextView petName = (TextView)convertView.findViewById(R.id.friends_connected_row_petName);
             ImageView picture = (ImageView)convertView.findViewById(R.id.friends_connected_row_picture);
             LinearLayout container = (LinearLayout)convertView.findViewById(R.id.friends_connected_row_container);
+            TextView unreadMessages = (TextView)convertView.findViewById(R.id.friends_connected_row_unreadMessages);
             petName.setText(friends.get(position).getPetName());
             Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_profilepicture_male);
             picture.setImageBitmap(RoundImage.getRoundedShape(bitmap));
@@ -64,6 +68,13 @@ public class Friends_connected_row_Adapter extends BaseAdapter {
                 container.setBackgroundColor(Color.parseColor("#c6f274"));
             }else{
                 container.setBackgroundColor(Color.parseColor("#c5e0d2"));
+            }
+            int cantity = SQLiteHelper.getUnreadMessagesOf(friends.get(position).getPetUsername());
+            if(cantity > 0){
+                unreadMessages.setVisibility(View.VISIBLE);
+                unreadMessages.setText(String.valueOf(cantity));
+            }else{
+                unreadMessages.setVisibility(View.INVISIBLE);
             }
         }
         return convertView;

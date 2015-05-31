@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
 import com.example.david.rawr.R;
@@ -25,6 +27,7 @@ public class GetPhoto extends AsyncTask<String, Integer, Bitmap> {
         this.getPhotoResponse = getPhotoResponse;
     }
 
+
     @Override
     protected Bitmap doInBackground(String... params) {
         InputStream in;
@@ -41,7 +44,6 @@ public class GetPhoto extends AsyncTask<String, Integer, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap responseValue) {
-        if(getPhotoResponse != null)
             getPhotoResponse.getPhotoFinish(responseValue);
     }
 }

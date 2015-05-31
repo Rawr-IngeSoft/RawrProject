@@ -6,7 +6,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/friends_connected_row_container"
-            android:background="#b3c9b3">
+            android:background="#b3c9b3"
+            android:orientation="horizontal">
         <ImageView
             android:layout_marginLeft="30dp"
             android:layout_gravity="center_vertical"
@@ -22,5 +23,12 @@
             android:typeface="monospace"
             android:textSize="20dp"
             android:layout_gravity="center_vertical"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/friends_connected_row_unreadMessages"
+            android:layout_gravity="center_vertical"
+            android:textColor="#CC0000"
+            android:layout_marginBottom="5dp"/>
         </LinearLayout>
 </LinearLayout>

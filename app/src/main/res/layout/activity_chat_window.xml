@@ -1,39 +1,83 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
+    android:background="#e3f1df"
     android:orientation="vertical"
     tools:context="com.example.david.rawr.MainActivities.Chat_window">
     <LinearLayout
         android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#B4EA63"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:textColor="#3B9C20"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#3B9C20"
+        android:layout_marginBottom="10dp"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginBottom="20dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:layout_weight=".1"
         >
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:divider="@null"
+            android:scrollbars = "none"
             android:dividerHeight="0dp"
+            android:background="#e3f1df"
             android:id="@+id/chat_window_messages_list">
         </ListView>
     </LinearLayout>
-    <EditText android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#3b9c20"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/chat_window_message"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Send"
-        android:id="@+id/chat_window_send_button"
-        android:background="@drawable/button_style_inside"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="40dp"/>
-    />
+        android:background="#ffffff"
+        android:orientation="horizontal">
+        <EditText android:layout_width="fill_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:hint="Write a message"
+            android:textColorHint="#3b9c20"
+            android:background="#ffffff"
+            android:id="@+id/chat_window_message"/>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="20dp"
+            android:layout_weight="7"
+            android:id="@+id/chat_window_send_button"
+            android:background="@drawable/post_comment_button"/>
+    </LinearLayout>
 
 </LinearLayout>

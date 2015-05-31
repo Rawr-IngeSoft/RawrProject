@@ -11,13 +11,12 @@ import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.MainActivities.Chat_window;
-import com.example.david.rawr.Models.Pet;
-import com.example.david.rawr.R;
 import com.example.david.rawr.Models.Message;
+import com.example.david.rawr.R;
+import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
@@ -28,6 +27,7 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,10 +35,10 @@ import java.util.List;
  * Created by david on 09/05/2015.
  */
 
-public  class Chat_service extends Service {
+public  class Background_socket extends Service {
 
     Socket mySocket = null;
-    Emitter.Listener startSession_listener, chat_message_listener;
+    Emitter.Listener startSession_listener, chat_message_listener, notification_listener;
     String petUsername;
     ArrayList<String> friendsList;
     NotificationManager notificationManager;
@@ -46,6 +46,7 @@ public  class Chat_service extends Service {
     HashMap<String,String> notifications;
     NotificationCompat.InboxStyle inboxStyle;
     SharedPreferences sharedPreferences;
+    SQLiteHelper sqLiteHelper;
 
     IRemoteService.Stub myBinder = new IRemoteService.Stub() {
         @Override
@@ -56,10 +57,13 @@ public  class Chat_service extends Service {
         @Override
         public void sendMessage(String sender, String receiver, String msg) throws RemoteException {
             JSONObject data = new JSONObject();
+            Calendar c = Calendar.getInstance();
+            String date = c.get(Calendar.DAY_OF_MONTH) + "- " + c.get(Calendar.MONTH) + c.get(Calendar.HOUR)+":"+c.get(Calendar.MINUTE);
             try {
                 data.put("sender", sender);
                 data.put("receiver", receiver);
                 data.put("message", msg);
+                data.put("date",date);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -77,12 +81,25 @@ public  class Chat_service extends Service {
             }
         }
 
+        @Override
+        public void sendFriendRequest(String sender, String receiver) throws RemoteException {
+            JSONObject data = new JSONObject();
+            try {
+                data.put("sender", sender);
+                data.put("receiver",receiver);
+                mySocket.emit("notification", data);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     };
 
     // Binder for communication
     @Override
     public void onCreate() {
         super.onCreate();
+        sqLiteHelper = new SQLiteHelper(this);
     }
 
     @Override
@@ -92,7 +109,7 @@ public  class Chat_service extends Service {
             notificationManager = (NotificationManager)
                     getSystemService(NOTIFICATION_SERVICE);
             inboxStyle = new NotificationCompat.InboxStyle();
-            notificationBuilder = new NotificationCompat.Builder(Chat_service.this)
+            notificationBuilder = new NotificationCompat.Builder(Background_socket.this)
                     .setSmallIcon(R.drawable.logo_icon)
                     .setAutoCancel(true)
                     .setDefaults(Notification.DEFAULT_VIBRATE)
@@ -124,27 +141,36 @@ public  class Chat_service extends Service {
                 public void call(Object... args) {
                     try {
                         JSONObject data = (JSONObject)args[0];
+                        // Deploy notification
                         inboxStyle.addLine(data.getString("message"));
-                        Intent intentNotification = new Intent(Chat_service.this, Chat_window.class);
+                        Intent intentNotification = new Intent(Background_socket.this, Chat_window.class);
                         intentNotification.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        PendingIntent pendingIntent = PendingIntent.getActivity(Chat_service.this,0, intentNotification,0);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(Background_socket.this,0, intentNotification,0);
                         notificationBuilder.setContentTitle(data.getString("sender"));
                         notificationBuilder.setContentIntent(pendingIntent);
                         notificationBuilder.setStyle(inboxStyle);
-                        notificationManager.notify(0,notificationBuilder.build());
+                        notificationManager.notify(0, notificationBuilder.build());
                         sharedPreferences.edit().putString("receiver",data.getString("sender") ).commit();
                         // TODO write in sqlite
+                        String senderPofilePic = sqLiteHelper.getProfilePicturePath((String)data.get("sender"));
+                        sqLiteHelper.addMessage(new Message((String)data.getString("message"), (String)data.getString("sender"), (String)data.getString("receiver"), "unread",(String)data.getString("date"),senderPofilePic ));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             };
+            notification_listener = new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
 
+                }
+            };
             petUsername=sharedPreferences.getString("petUsername", "");
             data.put("username", petUsername);
             friendsList= new ArrayList();
             mySocket.on("chat_message", chat_message_listener);
             mySocket.on("response_start_session", startSession_listener);
+            mySocket.on("notification",notification_listener);
             mySocket.connect();
             mySocket.emit("start_session", data);
         } catch (URISyntaxException e) {

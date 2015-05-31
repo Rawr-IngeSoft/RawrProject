@@ -64,7 +64,7 @@ public class ValidateUser extends AsyncTask<String, Integer, String> {
             response = client.execute(post);
             JsonParser jsonParser = new JsonParser(response.getEntity().getContent());
 
-            jsonResponse= jsonParser.getjObject();
+            jsonResponse = jsonParser.getjObject();
             status = jsonResponse.getString("status");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

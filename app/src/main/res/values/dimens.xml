@@ -27,4 +27,8 @@
     <dimen name="size_petFriends_name_text">20dp</dimen>
     <dimen name="size_comment_picture">40dp</dimen>
     <dimen name="sign_up_add_photo_imageView_heigth">400dp</dimen>
+    <dimen name="post_profile_picture">50dp</dimen>
+    <dimen name="post_postPicture_height">200dp</dimen>
+    <dimen name="post_button_size">20dp</dimen>
+    <dimen name="post_plus_button_size">15dp</dimen>
 </resources>

@@ -2,21 +2,19 @@ package com.example.david.rawr.MainActivities;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -29,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.david.rawr.Adapters.Friends_connected_row_Adapter;
 import com.example.david.rawr.Adapters.PostListAdapter;
@@ -38,19 +37,17 @@ import com.example.david.rawr.Interfaces.GetPostsResponse;
 import com.example.david.rawr.Models.Friend;
 import com.example.david.rawr.R;
 import com.example.david.rawr.SQLite.SQLiteHelper;
-import com.example.david.rawr.Services.Chat_service;
 import com.example.david.rawr.Tasks.GetPhoto;
 import com.example.david.rawr.Tasks.GetPosts;
 import com.example.david.rawr.Models.Post;
 import com.example.david.rawr.otherClasses.RoundImage;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
 
 public class Newsfeed_screen extends Activity implements GetPostsResponse, View.OnClickListener, GetPhotoResponse {
@@ -60,13 +57,16 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     private SharedPreferences sharedPreferences;
     private String username = "";
     private Friends_connected_row_Adapter friends_connected_row_adapter;
+    private PostListAdapter postListAdapter;
     private DrawerLayout dLayout;
     private ListView dList;
     private boolean buttonsVisible = true;
     private ArrayList<Friend> friendsList = new ArrayList<>();
+    private ArrayList<Post> postsList = new ArrayList<>();
     private RelativeLayout buttons_container;
     private float  notificationsX, notificationsY,parentX, parentY, profileX, profileY, searchX, searchY, localizationX, localizationY;
-    private Timer friendsConnectedTimer;
+    private Timer friendsConnectedTimer,postTimer;
+    int x_profile_gap = 180, y_profile_gap = 100, x_search_gap = 160, y_search_gap = 20, x_notification_gap = 60, y_notification_gap = 180, x_localization_gap = 40, y_localization_gap = 160;
     private  NotificationManager notificationManager;
     // DB Manager
     SQLiteHelper  sqLiteHelper = new SQLiteHelper(this);
@@ -85,7 +85,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         localization = (ImageView)findViewById(R.id.newsfeed_imageView_localization);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_location);
         localization.setImageBitmap(bitmap);
-
+        // TODO change click event
+        localization.setOnClickListener(this);
         search = (ImageView)findViewById(R.id.newsfeed_imageView_search);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.button_search);
         search.setImageBitmap(bitmap);
@@ -117,19 +118,27 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
         // Getting posts
         if(sharedPreferences.contains("petUsername")) {
-            friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", "")));
+            Log.e("getting posts", sharedPreferences.getString("petUsername",""));
             GetPosts getPosts = new GetPosts(sharedPreferences.getString("petUsername", ""), this);
             getPosts.execute();
+
         }
 
         //Show friendlist
 
+        if(sharedPreferences.contains("petUsername")) {
+            friendsList.add(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", ""), sharedPreferences.getString("petPicture", "")));
+            sqLiteHelper.addFriend(new Friend(sharedPreferences.getString("petUsername", ""), sharedPreferences.getString("petName", ""), sharedPreferences.getString("petPicture","")));
+        }
         friends_connected_row_adapter = new Friends_connected_row_Adapter(this, friendsList);
         dList.setAdapter(friends_connected_row_adapter);
 
+
+
         // Persistence services
-        if(sharedPreferences.contains("pictureUri") && sharedPreferences.contains("petUsername")){
-            GetPhoto getPhoto = new GetPhoto(sharedPreferences.getString("pictureUri", ""), sharedPreferences.getString("petusername",""), this);
+        if(sharedPreferences.contains("petPicture") && sharedPreferences.contains("petUsername")){
+            Log.e("getting newsfeed photo", sharedPreferences.getString("petPicture",""));
+            GetPhoto getPhoto = new GetPhoto(sharedPreferences.getString("petPicture", ""), sharedPreferences.getString("petUsername",""), this);
             getPhoto.execute();
         }else{
             Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.default_profilepicture_male);
@@ -233,6 +242,21 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
         }
 
+        // Refresf post list
+        final GetPosts getPosts = new GetPosts(sharedPreferences.getString("petUsername",""),this);
+        postTimer = new Timer();
+        postTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Newsfeed_screen.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getPosts.getStatus() == AsyncTask.Status.FINISHED)
+                            getPosts.execute();
+                    }
+                });
+            }
+        }, 2000, 2000);
         // Refresh friend list
         friendsConnectedTimer = new Timer();
         friendsConnectedTimer.scheduleAtFixedRate(new TimerTask() {
@@ -273,8 +297,29 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        postListAdapter.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void getPostsFinish(ArrayList<Post> output) {
-        postList.setAdapter(new PostListAdapter(this,output));
+        postsList = output;
+        Timer timer = new Timer();
+        findViewById(R.id.newsfeed_progress_animation).setVisibility(View.VISIBLE);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Newsfeed_screen.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        findViewById(R.id.newsfeed_progress_animation).setVisibility(View.INVISIBLE);
+
+                        postListAdapter = new PostListAdapter(Newsfeed_screen.this, postsList);
+                        postList.setAdapter(postListAdapter);
+                    }
+                });
+            }
+        }, 2000);
     }
 
     @Override
@@ -282,6 +327,11 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
         Intent intent;
         switch(v.getId()){
+            case R.id.newsfeed_imageView_localization:
+                intent = new Intent(this, Friend_requests_screen.class);
+                startActivity(intent);
+                this.finish();
+                break;
             case R.id.newsfeed_imageView_profile:
                 intent = new Intent(this, Owner_Profile_screen.class);
                 startActivity(intent);
@@ -292,15 +342,15 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                 TranslateAnimation animation_notification, animation_profile, animation_search, animation_localization;
                 if (buttonsVisible == true){
                     buttonsVisible = false;
-                    animation_profile = new TranslateAnimation(0, -parentX+notificationsX-90, 0, -parentY+notificationsY-30);
-                    animation_search = new TranslateAnimation(0, -parentX+profileX-90, 0, -parentY+profileY+20);
-                    animation_notification = new TranslateAnimation(0, -parentX+searchX-40, 0, -parentY+searchY-80);
-                    animation_localization = new TranslateAnimation(0, -parentX+localizationX+40, 0, -parentY+localizationY-90);
+                    animation_profile = new TranslateAnimation(0, -parentX+notificationsX-x_profile_gap, 0, -parentY+notificationsY-y_profile_gap);
+                    animation_search = new TranslateAnimation(0, -parentX+profileX-x_search_gap, 0, -parentY+profileY+y_search_gap);
+                    animation_notification = new TranslateAnimation(0, -parentX+searchX-x_notification_gap, 0, -parentY+searchY-y_notification_gap);
+                    animation_localization = new TranslateAnimation(0, -parentX+localizationX+x_localization_gap, 0, -parentY+localizationY-y_localization_gap);
                 }else {
-                    animation_profile = new TranslateAnimation( 0, parentX-notificationsX+90, 0,  parentY-notificationsY+30);
-                    animation_search = new TranslateAnimation( 0, parentX-profileX+90, 0,  parentY-profileY-20);
-                    animation_notification = new TranslateAnimation( 0, parentX-searchX+40, 0,  parentY-searchY+80);
-                    animation_localization = new TranslateAnimation(0, parentX-localizationX-40, 0, parentY-localizationY+90);
+                    animation_profile = new TranslateAnimation( 0, parentX-notificationsX+x_profile_gap, 0,  parentY-notificationsY+y_profile_gap);
+                    animation_search = new TranslateAnimation( 0, parentX-profileX+x_search_gap, 0,  parentY-profileY-y_search_gap);
+                    animation_notification = new TranslateAnimation( 0, parentX-searchX+x_notification_gap, 0,  parentY-searchY+y_notification_gap);
+                    animation_localization = new TranslateAnimation(0, parentX-localizationX-x_localization_gap, 0, parentY-localizationY+y_localization_gap);
                     buttonsVisible = true;
                 }
                 animation_notification.setDuration(500);
@@ -319,11 +369,11 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                         localization.clearAnimation();
                         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) localization.getLayoutParams();
                         if (buttonsVisible == false) {
-                            params.topMargin += (-parentY + localizationY-90);
-                            params.leftMargin += (-parentX + localizationX+40);
+                            params.topMargin += (-parentY + localizationY-y_localization_gap);
+                            params.leftMargin += (-parentX + localizationX+x_localization_gap);
                         } else {
-                            params.topMargin += (parentY - localizationY+90);
-                            params.leftMargin += (parentX - localizationX-40);
+                            params.topMargin += (parentY - localizationY+y_localization_gap);
+                            params.leftMargin += (parentX - localizationX-x_localization_gap);
                         }
                         localization.setLayoutParams(params);
                     }
@@ -344,11 +394,11 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                         notifications.clearAnimation();
                         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) notifications.getLayoutParams();
                         if (buttonsVisible == false) {
-                            params.topMargin += (-parentY + searchY-80);
-                            params.leftMargin += (-parentX + searchX - 40);
+                            params.topMargin += (-parentY + searchY-y_notification_gap);
+                            params.leftMargin += (-parentX + searchX - x_notification_gap);
                         } else {
-                            params.topMargin += (parentY - searchY+80);
-                            params.leftMargin += (parentX - searchX + 40);
+                            params.topMargin += (parentY - searchY+y_notification_gap);
+                            params.leftMargin += (parentX - searchX + x_notification_gap);
                         }
                         notifications.setLayoutParams(params);
                     }
@@ -369,11 +419,11 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                         search.clearAnimation();
                         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) search.getLayoutParams();
                         if (buttonsVisible == false) {
-                            params.topMargin += (-parentY + profileY+20);
-                            params.leftMargin += (-parentX + profileX - 90);
+                            params.topMargin += (-parentY + profileY+y_search_gap);
+                            params.leftMargin += (-parentX + profileX - x_search_gap);
                         } else {
-                            params.topMargin += (parentY - profileY-20);
-                            params.leftMargin += (parentX - profileX + 90);
+                            params.topMargin += (parentY - profileY-y_search_gap);
+                            params.leftMargin += (parentX - profileX + x_search_gap);
                         }
                         search.setLayoutParams(params);
                     }
@@ -394,11 +444,11 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                         profile.clearAnimation();
                         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) profile.getLayoutParams();
                         if (buttonsVisible == false) {
-                            params.topMargin += (-parentY + notificationsY - 30);
-                            params.leftMargin += (-parentX + notificationsX - 90);
+                            params.topMargin += (-parentY + notificationsY - y_profile_gap);
+                            params.leftMargin += (-parentX + notificationsX - x_profile_gap);
                         } else {
-                            params.topMargin += (parentY - notificationsY + 30);
-                            params.leftMargin += (parentX - notificationsX + 90);
+                            params.topMargin += (parentY - notificationsY + y_profile_gap);
+                            params.leftMargin += (parentX - notificationsX + x_profile_gap);
                         }
                         profile.setLayoutParams(params);
                     }
