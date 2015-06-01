@@ -48,6 +48,7 @@ public class GetFriends extends AsyncTask<String, Integer, String> {
             JSONObject jsonResponse= jsonParser.getjObject();
             if(jsonResponse != null){
                 JSONArray jsonArray = jsonResponse.getJSONArray("friends");
+                Log.e("friends", jsonArray.toString());
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jo = jsonArray.getJSONObject(i);
                     Friend friendToAdd = new Friend(jo.getString("username"), jo.getString("name"), jo.getString("path"));

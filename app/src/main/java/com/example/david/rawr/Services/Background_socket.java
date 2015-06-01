@@ -7,11 +7,13 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.util.Pair;
 
 import com.example.david.rawr.IRemoteService;
 import com.example.david.rawr.MainActivities.Chat_window;
@@ -99,6 +101,7 @@ public  class Background_socket extends Service {
         public void searchFriend(String hint) throws RemoteException {
             JSONObject data = new JSONObject();
             try {
+                Log.e("searching", hint);
                 data.put("hint", hint);
                 mySocket.emit("hint", data);
             } catch (JSONException e) {
@@ -155,14 +158,17 @@ public  class Background_socket extends Service {
                     try {
                         JSONObject data = (JSONObject)args[0];
                         // Deploy notification
-                        inboxStyle.addLine(data.getString("message"));
-                        Intent intentNotification = new Intent(Background_socket.this, Chat_window.class);
-                        intentNotification.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        PendingIntent pendingIntent = PendingIntent.getActivity(Background_socket.this,0, intentNotification,0);
-                        notificationBuilder.setContentTitle(data.getString("sender"));
-                        notificationBuilder.setContentIntent(pendingIntent);
-                        notificationBuilder.setStyle(inboxStyle);
-                        notificationManager.notify(0, notificationBuilder.build());
+                        if (data.getString("sender").compareTo(petUsername) != 0) {
+                            inboxStyle.addLine(data.getString("message"));
+                            Log.e("msg", data.getString("message"));
+                            Intent intentNotification = new Intent(Background_socket.this, Chat_window.class);
+                            intentNotification.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            PendingIntent pendingIntent = PendingIntent.getActivity(Background_socket.this, 0, intentNotification, 0);
+                            notificationBuilder.setContentTitle(data.getString("sender"));
+                            notificationBuilder.setContentIntent(pendingIntent);
+                            notificationBuilder.setStyle(inboxStyle);
+                            notificationManager.notify(0, notificationBuilder.build());
+                        }
                         sharedPreferences.edit().putString("receiver",data.getString("sender") ).commit();
                         // write in sqlite
                         String senderPofilePic = sqLiteHelper.getFriendPhotoPath((String)data.get("sender"));
@@ -188,8 +194,18 @@ public  class Background_socket extends Service {
             hint_listener = new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    JSONObject data = (JSONObject)args[0];
-                    Log.e("hint", data.toString());
+                    JSONObject aux = (JSONObject)args[0];
+                    try {
+                        JSONArray data = aux.getJSONArray("result");
+                        Log.e("hintarray", data.toString());
+                        JSONObject jo;
+                        for(int i = 0; i < data.length(); i++){
+                                jo = data.getJSONObject(i);
+                                sqLiteHelper.addSearchedFriend(jo.getString("username"), jo.getString("path"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             };
             petUsername=sharedPreferences.getString("petUsername", "");

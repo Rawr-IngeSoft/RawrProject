@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.util.Pair;
 
 import com.example.david.rawr.Models.Friend;
 import com.example.david.rawr.Models.FriendRequest;
@@ -26,6 +27,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     String sqlCreateFriend ="CREATE TABLE Friend (petName TEXT, petUsername TEXT PRIMARY KEY, profilePicture TEXT)";
     String sqlCreateMessagesHistory = "CREATE TABLE Message (message TEXT, sender TEXT, receiver TEXT, status TEXT, date TEXT, pictureUri TEXT)";
     String sqlCreateFriendRequests = "CREATE TABLE FriendRequest (petUsername TEXT, petType TEXT, petRace TEXT, petGender TEXT, petBirthday TEXT, ownerName TEXT, ownerLastname TEXT, petName TEXT, ownerUsername TEXT, petPicture TEXT, ownerPicture TEXT)";
+    String sqlCreateSearchedFriend = "CREATE TABLE SearchedFriend (username TEXT PRIMARY KEY, path TEXT)";
 
     public SQLiteHelper(Context context) {
         super(context, "PetDB", null, 1);
@@ -37,6 +39,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(sqlCreateFriend);
         db.execSQL(sqlCreateMessagesHistory);
         db.execSQL(sqlCreateFriendRequests);
+        db.execSQL(sqlCreateSearchedFriend);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 message = new Message(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
-                messages.add(message);
+                messages.add(messages.size(),message);
             }while (cursor.moveToNext());
         }
         db.close();
@@ -69,7 +72,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 message = new Message(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
-                messages.add(message);
+                messages.add(messages.size(),message);
             }while (cursor.moveToNext());
         }
         db.close();
@@ -160,6 +163,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void addSearchedFriend(String username, String path){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("username",username);
+        values.put("path",path);
+        db.insert("SearchedFriend",null,values);
+        db.close();
+    }
     public void addFriend(Friend friend){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -209,6 +220,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return pets;
     }
 
+    public ArrayList<Pair<String,String>> getSearchedFriends(){
+        String query = "select * from SearchedFriend";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<Pair<String,String>> searchedFriendList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do{
+                searchedFriendList.add(new Pair<>(cursor.getString(0), cursor.getString(1)));
+            }while (cursor.moveToNext());
+        }
+        return searchedFriendList;
+    }
     public Pet getPet(String petUsername){
         String query = "select * from Pet where petUsername="+"'"+petUsername+"'";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -269,6 +292,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(query);
         query = "delete from Message";
         db.execSQL(query);
+        query = "delete from SearchedFriend";
+        db.execSQL(query);
         db.close();
     }
 
@@ -288,5 +313,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
+    public void clearSearchedFriends(){
+        String query;
+        SQLiteDatabase db = this.getWritableDatabase();
+        query = "delete from SearchedFriend";
+        db.execSQL(query);
+        db.close();
+    }
 }

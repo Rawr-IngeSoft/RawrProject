@@ -50,7 +50,6 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
     Uri postPhotoUri = null;
     Bitmap postPhotoBitmap = null;
     EditText textPost;
-    RelativeLayout progressAnimation;
     private static LayoutInflater inflater;
 
     public PostListAdapter(Context context, ArrayList<Post> data) {
@@ -157,7 +156,6 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
                     SharedPreferences sharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
                     if (sharedPreferences.contains("petUsername")) {
                         postPhoto.setImageBitmap(null);
-                        textPost.setText("");
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         params.width = 0;
                         params.height = 0;
@@ -172,6 +170,7 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
                                 createPost.execute();
                             }
                         }
+                        textPost.setText("");
                     }else{
                         Toast.makeText(context, "First... Create you pet", Toast.LENGTH_LONG).show();
                     }

@@ -99,7 +99,7 @@ public class FriendRequest_fragment extends Fragment implements GetPhotoResponse
         declineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AnswerRequest answerRequest = new AnswerRequest(petUsername, myUsername, "decline");
+                AnswerRequest answerRequest = new AnswerRequest(petUsername, myUsername, "rejected");
                 answerRequest.execute();
                 sqLiteHelper.answerRequest(petUsername);
             }
