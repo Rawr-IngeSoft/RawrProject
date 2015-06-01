@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /*
 @Requirements REQ-024
  */
-public class Friend_requests_screen extends FragmentActivity implements GetFriendRequestsResponse {
+public class friend_requests_screen extends FragmentActivity implements GetFriendRequestsResponse {
 
     FriendsRequestAdapter friendRequestAdapter;
     ViewPager friendRequestViewPager; // Adaptador para los friend requests

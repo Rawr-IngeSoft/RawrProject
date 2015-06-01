@@ -27,8 +27,14 @@
                 android:orientation="vertical"
                 android:layout_width="@dimen/tamano_logo_ancho"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
+                android:layout_gravity="center_horizontal">
 
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/signup_tittle"/>
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

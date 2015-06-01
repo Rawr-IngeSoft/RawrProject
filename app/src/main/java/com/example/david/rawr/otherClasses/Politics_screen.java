@@ -1,5 +1,6 @@
 package com.example.david.rawr.otherClasses;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,7 +9,7 @@ import android.view.MenuItem;
 import com.example.david.rawr.R;
 
 
-public class Politics_screen extends ActionBarActivity {
+public class Politics_screen extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

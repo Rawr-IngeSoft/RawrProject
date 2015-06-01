@@ -101,7 +101,7 @@
         android:layout_height="fill_parent"
         android:id="@+id/owner_profile_viewPager"
         android:layout_weight="1"
-        android:background="#C8EB92">
+        android:background="#FFFFFF">
     </android.support.v4.view.ViewPager>
 
 </LinearLayout>

@@ -32,6 +32,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivities.SignUp_screen"
@@ -93,7 +98,7 @@
         </service>
 
         <activity
-            android:name=".MainActivities.Friend_requests_screen"
+            android:name=".MainActivities.friend_requests_screen"
             android:label="@string/title_activity_friend_requests_screen" >
         </activity>
         <activity

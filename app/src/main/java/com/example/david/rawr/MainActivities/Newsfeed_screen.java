@@ -340,7 +340,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             // En caso de que se de click al boton de solicitudes de amistad
             // se redirige a la pantalla Friend_requests_screen
             case R.id.newsfeed_imageView_localization:
-                intent = new Intent(this, Friend_requests_screen.class);
+                intent = new Intent(this, friend_requests_screen.class);
                 startActivity(intent);
                 break;
             // En caso de que se de click al boton de perfil

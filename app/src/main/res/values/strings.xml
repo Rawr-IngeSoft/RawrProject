@@ -16,6 +16,8 @@
     <string name="title_activity_lista_empresas">ListaEmpresas</string>
     <string name="title_activity_lista_animales">ListaAnimales</string>
     <string name="title_activity_perfil_persona">PerfilPersona</string>
+    <string name="title_activity_search_friend">a</string>
+    <string name="title_activity_politics_screen">b</string>
     <string name="title_activity_downloading_window">downloading_window</string>
     <string name="title_activity_Newsfeed">newsfeed_window</string>
     <string name="title_pet_profile">Amigos</string>
