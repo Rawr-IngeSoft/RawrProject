@@ -12,10 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.david.rawr.Interfaces.GetPhotoResponse;
+import com.example.david.rawr.Interfaces.SendFriendRequestResponse;
 import com.example.david.rawr.R;
 import com.example.david.rawr.Tasks.GetPhoto;
+import com.example.david.rawr.Tasks.SendFriendRequest;
 import com.example.david.rawr.otherClasses.RoundImage;
 
 import java.util.ArrayList;
@@ -24,18 +27,20 @@ import java.util.HashMap;
 /**
  * Created by david on 31/05/2015.
  */
-public class SearchFriendListAdapter  extends BaseAdapter{
+public class SearchFriendListAdapter  extends BaseAdapter implements SendFriendRequestResponse{
 
     HashMap<String, Bitmap> friends;
     ArrayList<Pair<String, String>> searchedFriendList;
     Context context;
+    String myUsername;
     private static LayoutInflater inflater;
 
-    public SearchFriendListAdapter(Context context, HashMap<String, Bitmap> friends, ArrayList<Pair<String, String>> searchedFriendList) {
+    public SearchFriendListAdapter(Context context, HashMap<String, Bitmap> friends, ArrayList<Pair<String, String>> searchedFriendList, String myUsername) {
         this.context = context;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.friends = friends;
         this.searchedFriendList = searchedFriendList;
+        this.myUsername = myUsername;
     }
 
     @Override
@@ -51,6 +56,15 @@ public class SearchFriendListAdapter  extends BaseAdapter{
     @Override
     public long getItemId(int i) {
         return i;
+    }
+
+    @Override
+    public void sendFriendRequestFinish(String status) {
+        if(status.compareTo("1") == 0){
+            Toast.makeText(context, "Request sended", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(context, "what? but... is your friend", Toast.LENGTH_SHORT).show();
+        }
     }
 
     static class ViewHolder{
@@ -70,14 +84,25 @@ public class SearchFriendListAdapter  extends BaseAdapter{
             holder = (ViewHolder) view.getTag();
         }
         Button sendRequest = (Button) view.findViewById(R.id.search_friend_sendRequest_button);
-        sendRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO send request
-            }
-        });
+        sendRequest.setOnClickListener(new imageViewClickListener(i, this));
         holder.petUsername.setText(searchedFriendList.get(i).first);
         holder.petPicture.setImageBitmap(RoundImage.getRoundedShape(friends.get(searchedFriendList.get(i).first)));
         return view;
+    }
+
+    class imageViewClickListener implements View.OnClickListener {
+        int position;
+        SearchFriendListAdapter searchFriendListAdapter;
+        public imageViewClickListener(int pos, SearchFriendListAdapter searchFriendListAdapter) {
+            this.position = pos;
+            this.searchFriendListAdapter = searchFriendListAdapter;
+        }
+
+        public void onClick(View v) {
+            {
+                SendFriendRequest sendFriendRequest = new SendFriendRequest(searchedFriendList.get(position).first, myUsername, searchFriendListAdapter.context, searchFriendListAdapter);
+                sendFriendRequest.execute();
+            }
+        }
     }
 }

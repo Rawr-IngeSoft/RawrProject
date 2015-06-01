@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -48,6 +49,7 @@ public class Search_friend_screen extends Activity implements GetPhotoResponse {
     int listPosition = 0;
     ListView friends;
     SQLiteHelper sqLiteHelper;
+    SharedPreferences sharedPreferences;
     // Background service connection declaration
     private ServiceConnection mConnection;
     protected IRemoteService service;
@@ -80,7 +82,8 @@ public class Search_friend_screen extends Activity implements GetPhotoResponse {
                 }
             }
         });
-        searchFriendListAdapter = new SearchFriendListAdapter(this, friendsList, searchedFriendList);
+        sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        searchFriendListAdapter = new SearchFriendListAdapter(this, friendsList, searchedFriendList, sharedPreferences.getString("petUsername",""));
         friends.setAdapter(searchFriendListAdapter);
 
         mConnection = new ServiceConnection() {
@@ -153,7 +156,7 @@ public class Search_friend_screen extends Activity implements GetPhotoResponse {
                 listPosition++;
             }
         }
-        searchFriendListAdapter = new SearchFriendListAdapter(Search_friend_screen.this, friendsList, searchedFriendList);
+        searchFriendListAdapter = new SearchFriendListAdapter(Search_friend_screen.this, friendsList, searchedFriendList, sharedPreferences.getString("petUsername",""));
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

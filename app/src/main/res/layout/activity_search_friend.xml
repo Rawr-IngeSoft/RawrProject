@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/create_post_button_style">
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="10dp" />
@@ -30,7 +31,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_height="30dp" />
                 <ImageView
-                    android:layout_weight="5"
+                    android:layout_weight="4"
                     android:layout_width="fill_parent"
                     android:layout_height="30dp"
                     android:id="@+id/search_friend_button"
