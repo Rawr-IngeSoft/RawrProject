@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.david.rawr.R;
+import com.example.david.rawr.otherClasses.Politics_screen;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -43,12 +44,17 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
 
     Button logIn;
     EditText userText, passText;
-    TextView signUp, forgotButton;
+    TextView signUp, forgotButton, politics;
     CallbackManager callbackManager;
     LoginButton faceLoginButton;
     String ownerName, ownerLastName, ownerId, ownerPicture;
     SharedPreferences sharedpreferences;
 
+    /**
+     * Revisa las conexiones con las que cuenta el telefono y sus respectivos estados
+     * @param  ctx contexto actual de la vista
+     * @return true si hay alguna conexion activa o false de lo contrario
+     */
     public static boolean checkConnection(Context ctx) {
         boolean isConnected = false;
         ConnectivityManager connec = (ConnectivityManager) ctx
@@ -62,6 +68,10 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
         return isConnected;
     }
 
+    /**
+     * Metodo auxiliar que imprime el hashkey que pide facebook.
+     * Util para desarrolladores
+     */
     private void getHashKey() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
@@ -83,17 +93,21 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
     getHashKey();
         // ---------------
 
-        setContentView(R.layout.login_screen);
+        setContentView(R.layout.activity_login_screen);
         logIn = (Button) findViewById(R.id.logInButton);
         userText = (EditText) findViewById(R.id.userText);
         passText = (EditText) findViewById(R.id.passText);
         signUp = (TextView) findViewById(R.id.signUp);
+        politics = (TextView) findViewById(R.id.politics);
         forgotButton = (TextView) findViewById(R.id.forgotPassButton);
         logIn.setOnClickListener(this);
         signUp.setOnClickListener(this);
+        politics.setOnClickListener(this);
         forgotButton.setOnClickListener(this);
         setupUI(this.findViewById(R.id.loginView));
         sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        // Si ya hay un username guardado en la base de datos significa que ya se ha logeado previamente
+        // Se redirige a loading_screen con tipo de conexion logged
         if (sharedpreferences.contains("username")) {
             Intent intent = new Intent(LogIn_screen.this, Loading_screen.class);
             intent.putExtra("serviceType", "logged");
@@ -104,7 +118,10 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
         faceLoginButton = (LoginButton)findViewById(R.id.faceLoginButton);
         faceLoginButton.setReadPermissions("email");
         callbackManager = CallbackManager.Factory.create();
+        // Revisar si el telefono cuenta con algun servicio de internet
         if (checkConnection(this) == true) {
+            // Manejo de boton de facebook. Se encarga de obtener la informacion de usuario de facebook.
+            // Se redirige a loading_screen con tipo de conexion facebook
             faceLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
@@ -156,20 +173,28 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
         }
     }
 
+    /**
+     * listener de eventos tipo click
+     * @param  v vista de donde proviene el evento
+     */
     @Override
     public void onClick(View v) {
         String username = userText.getText().toString();
         String password = passText.getText().toString();
         Intent intent;
+        // Se revisa que el telefono cuente con conexion a internet
         if(checkConnection(this) == true) {
             switch (v.getId()) {
+                // En caso de que el evento sea disparado por el boton de signUp
+                // se redirige a la pantalla de signUp_screen
                 case (R.id.signUp):
-                    // TODO
-                    Toast.makeText(this, "Sing Up", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Sign Up", Toast.LENGTH_LONG).show();
                     intent = new Intent(LogIn_screen.this, SignUp_screen.class);
                     startActivity(intent);
                     finish_screen();
                     break;
+                // En caso de que el evento sea disparado por el boton de logIn propio
+                // se redirige a la pantalla LogIn_screen
                 case (R.id.logInButton):
                     intent = new Intent(LogIn_screen.this, Loading_screen.class);
                     intent.putExtra("username", username);
@@ -178,8 +203,15 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
                     startActivity(intent);
                     finish_screen();
                     break;
+                // En caso de que el evento sea disparado por el boton de olvido contrasenha
+                // no esta implementado
+                // TODO funcionalidad para recuperar contrasenha
                 case (R.id.forgotPassButton):
                     Toast.makeText(this, "Sorry i don't know it", Toast.LENGTH_LONG).show();
+                    break;
+                case (R.id.politics):
+                    intent = new Intent(LogIn_screen.this, Politics_screen.class);
+                    startActivity(intent);
                     break;
             }
         }else{
@@ -187,8 +219,7 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
         }
     }
 
-
-
+    // Eliminar vista actual
     private void finish_screen(){
         this.finish();
     }
@@ -215,11 +246,13 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
+    // Funcion para ocultar el teclado
     public void hideSoftKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager)  this.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
 
+    // Funcion para ocultar el teclado
     public void setupUI(View view) {
 
         //Set up touch listener for non-text box views to hide keyboard.
@@ -229,7 +262,6 @@ public class LogIn_screen extends Activity implements View.OnClickListener {
 
                 public boolean onTouch(View v, MotionEvent event) {
 
-                  //ojo con esto
                     hideSoftKeyboard();
                     return false;
                 }

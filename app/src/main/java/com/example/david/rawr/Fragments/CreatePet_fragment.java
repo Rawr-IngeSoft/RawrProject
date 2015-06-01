@@ -27,7 +27,9 @@ import com.example.david.rawr.otherClasses.RoundImage;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-
+/**
+ * @Requirement REQ-014
+ */
 public class CreatePet_fragment extends android.support.v4.app.Fragment implements CreatePetResponse, View.OnClickListener {
 
     Button createPet;

@@ -21,7 +21,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 //REQ-048
-public class CreatePet_add_photo_screen extends Activity implements View.OnClickListener, UploadPhotoResponse {
+public class SignUp_add_photo_screen extends Activity implements View.OnClickListener, UploadPhotoResponse {
 
     Button selectButton, nextButton, omiteButton;
     ImageView photoImageView;
@@ -88,7 +88,7 @@ public class CreatePet_add_photo_screen extends Activity implements View.OnClick
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("pictureUri", pictureUri);
         editor.commit();
-        Intent intent = new Intent(CreatePet_add_photo_screen.this, Newsfeed_screen.class);
+        Intent intent = new Intent(SignUp_add_photo_screen.this, Newsfeed_screen.class);
         startActivity(intent);
         this.finish();
     }

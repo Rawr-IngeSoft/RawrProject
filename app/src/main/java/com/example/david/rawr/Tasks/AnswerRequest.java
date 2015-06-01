@@ -22,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * Created by david on 31/05/2015.
+ * @Requirements REQ-024
  */
 public class AnswerRequest extends AsyncTask<String, Integer, String> {
 

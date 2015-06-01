@@ -16,7 +16,7 @@ import com.example.david.rawr.R;
 /**
  * Created by alfredo on 04/04/15.
  */
-//REQ-001
+//@Requirement
 public class SignUp_screen extends Activity implements View.OnClickListener {
 
     Button singUp;
@@ -44,7 +44,6 @@ public class SignUp_screen extends Activity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
-        // TODO Auto-generated method stub
         super.onBackPressed();
         Intent intent;
         intent = new Intent(this, LogIn_screen.class);

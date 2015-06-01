@@ -20,7 +20,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -151,6 +150,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             username = sharedPreferences.getString("username", "");sharedPreferences.getString("username", "");
         }
 
+        // Conexion con servicio en background
         mConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -200,6 +200,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         friendsHeader.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         friendsHeader.setGravity(Gravity.CENTER_HORIZONTAL);
         friendsHeader.setHeight(50);
+        // En caso de dar click a un amigo se redirige a la pantalla de chat
         dList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
@@ -245,7 +246,7 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
             this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
         }
 
-        // Refresf post list
+        // Actualizando lista de posts
         final GetPosts getPosts = new GetPosts(sharedPreferences.getString("petUsername",""),this);
         postTimer = new Timer();
         postTimer.scheduleAtFixedRate(new TimerTask() {
@@ -260,7 +261,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
                 });
             }
         }, 2000, 10000);
-        // Refresh friend list
+
+        // Actualizando lista de amigos
         friendsConnectedTimer = new Timer();
         friendsConnectedTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -304,6 +306,8 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         postListAdapter.onActivityResult(requestCode, resultCode, data);
     }
 
+    // Despliega los posts en la lista de posts
+    // @Requirement REQ-022
     @Override
     public void getPostsFinish(ArrayList<Post> output) {
         postsList = output;
@@ -327,20 +331,26 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
 
         Intent intent;
         switch(v.getId()){
+            // En caso de que se de click al boton de buscar
+            // se redirige a la pantalla search_friend_screen
             case R.id.newsfeed_imageView_search:
                 intent = new Intent(this, Search_friend_screen.class);
                 startActivity(intent);
                 break;
+            // En caso de que se de click al boton de solicitudes de amistad
+            // se redirige a la pantalla Friend_requests_screen
             case R.id.newsfeed_imageView_localization:
                 intent = new Intent(this, Friend_requests_screen.class);
                 startActivity(intent);
                 break;
+            // En caso de que se de click al boton de perfil
+            // se redirige a la pantalla Owner_Profile_screen
             case R.id.newsfeed_imageView_profile:
                 intent = new Intent(this, Owner_Profile_screen.class);
                 startActivity(intent);
                 this.finish();
                 break;
-
+            // En caso de que se de click a la imagen de perfil se esconderan o apareceran los botones
             case R.id.newsfeed_imageView_profilePicture:
                 TranslateAnimation animation_notification, animation_profile, animation_search, animation_localization;
                 if (buttonsVisible == true){
@@ -476,12 +486,13 @@ public class Newsfeed_screen extends Activity implements GetPostsResponse, View.
         unbindService(mConnection);
     }
 
-
+    // Despliega la image de perfil de la mascota seleccionada
     @Override
     public void getPhotoFinish(Bitmap bitmap) {
         if(bitmap!= null){
             profilePicture.setImageBitmap(RoundImage.getRoundedShape(bitmap));
         }else{
+            // En caso de que no tenga imagen de perfil se despliega una almacenada por defecto
             profilePicture.setImageBitmap(RoundImage.getRoundedShape(BitmapFactory.decodeResource(getResources(), R.drawable.default_profilepicture_male)));
         }
     }

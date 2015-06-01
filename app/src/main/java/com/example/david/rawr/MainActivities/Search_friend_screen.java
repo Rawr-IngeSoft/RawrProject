@@ -39,7 +39,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+/*
+* @Requirements REQ-015
+ */
 public class Search_friend_screen extends Activity implements GetPhotoResponse {
 
     HashMap<String,Bitmap> friendsList = new HashMap<>();
@@ -61,6 +63,7 @@ public class Search_friend_screen extends Activity implements GetPhotoResponse {
         friends = (ListView)findViewById(R.id.search_friend_list);
         hint = (EditText) findViewById(R.id.search_friend_hint);
         final ImageView searchButton = (ImageView)findViewById(R.id.search_friend_button);
+        // Se consume el metodo search friend del servicio que corre en segundo plano
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,6 +89,7 @@ public class Search_friend_screen extends Activity implements GetPhotoResponse {
         searchFriendListAdapter = new SearchFriendListAdapter(this, friendsList, searchedFriendList, sharedPreferences.getString("petUsername",""));
         friends.setAdapter(searchFriendListAdapter);
 
+        // Conexion con el servicio que corre en segundo plano
         mConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -144,6 +148,10 @@ public class Search_friend_screen extends Activity implements GetPhotoResponse {
 
     }
 
+    /**
+     * Descarga las fotos de las mascotas encontradas al buscar por una palabra
+     * y las despliega en la vista
+     */
     private void downloadPhotos(){
         listPosition = 0;
         for ( int i = 0; i < searchedFriendList.size(); i++){

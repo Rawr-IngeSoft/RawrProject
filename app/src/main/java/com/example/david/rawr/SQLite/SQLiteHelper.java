@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class SQLiteHelper extends SQLiteOpenHelper {
 
 
+    // Variables para creacion de tablas
     String sqlCreatePET = "CREATE TABLE Pet (petName TEXT, petUsername TEXT PRIMARY KEY, petType TEXT, petGender TEXT, selected TEXT,path TEXT)";
     String sqlCreateFriend ="CREATE TABLE Friend (petName TEXT, petUsername TEXT PRIMARY KEY, profilePicture TEXT)";
     String sqlCreateMessagesHistory = "CREATE TABLE Message (message TEXT, sender TEXT, receiver TEXT, status TEXT, date TEXT, pictureUri TEXT)";
@@ -33,6 +34,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         super(context, "PetDB", null, 1);
     }
 
+    /**
+     * Crea todas las tablas en la base de datos local
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(sqlCreatePET);
@@ -47,6 +51,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Devuelve el historial de mensajes con una mascota
+     * @param  friend  username de la mascota amiga
+     * @return historial de mensajes
+     */
     public ArrayList<Message> getMessagesOf(String friend){
         String query = "select * from Message where sender = '" + friend + "' or " + "receiver = '" + friend + "'" ;
         ArrayList<Message> messages = new ArrayList<>();
@@ -63,6 +72,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return messages;
     }
 
+    /**
+     * Devuelve el historial de mensajes con uno mismo
+     * @param  petUsername  username de macota actual
+     * @return historial de mensajes
+     */
     public ArrayList<Message> getMyMessages(String petUsername){
         String query = "select * from Message where sender = '" + petUsername + "' and " + "receiver = '" + petUsername + "'" ;
         ArrayList<Message> messages = new ArrayList<>();
@@ -79,6 +93,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return messages;
     }
 
+    /**
+     * Devuelve el path de la foto de perfil de una mascota amiga
+     * @param  sender  username de la mascota amiga
+     * @return path de foto de perfil
+     */
     public String getFriendPhotoPath(String sender){
         String path = "null";
         String query = "select profilePicture from Friend where petUsername = '" + sender + "'";
@@ -92,6 +111,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return path;
     }
 
+    /**
+     * Devuelve la cantidad de mensajes no leidos con una mascota amiga
+     * @param  petUsername  username de la mascota amiga
+     * @return cantidad de mensajes no leidos
+     * @Requirement REQ-020
+     */
     public int getUnreadMessagesOf(String petUsername){
         String query = "select * from Message where sender = '" + petUsername + "' and status = 'unread'" ;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -105,6 +130,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
         return cantity;
     }
+
+    /**
+     * Agrega un mensaje a la base de datos local
+     * @param  message  mensaje a agregar
+     * @Requirement REQ-019
+     */
     public void addMessage(Message message){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -117,6 +148,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Agrega una solicitud de amistad a la base de datos local
+     * @param  friendRequest  solicitud de amistad a agregar
+     */
     public void addFriendRequest(FriendRequest friendRequest){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -135,6 +170,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Devuelve las solicitudes de amistad
+     * @return solicitudes de amistad
+     */
     public ArrayList<FriendRequest> getFriendRequests(){
         String query = "select * from FriendRequest";
         ArrayList<FriendRequest> friendRequests = new ArrayList<>();
@@ -150,6 +189,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
         return friendRequests;
     }
+
+    /**
+     * Agrega mascota a la base de datos local
+     * @param  pet  mascota a agregar
+     */
     public void addPet(Pet pet){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -163,6 +207,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Agrega una mascota buscada en la funcionalidad de buscar a la base
+     * de datos local
+     * @param  username username de la mascota amiga
+     * @param  path path de la foto de perfil de la mascota amiga
+     */
     public void addSearchedFriend(String username, String path){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -171,6 +221,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.insert("SearchedFriend",null,values);
         db.close();
     }
+
+    /**
+     * Agrega un amigo a la base de datos local
+     * @param  friend  amigo a agregar
+     */
     public void addFriend(Friend friend){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -181,6 +236,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Devuelve todos los amigos disponibles en la base de datos local
+     * @return lista de amigos
+     */
     public ArrayList<Friend> getFriends(){
         String query = "select * from Friend";
         ArrayList<Friend> friends = new ArrayList<>();
@@ -198,6 +257,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
         return friends;
     }
+
+    /**
+     * Devuelve la lista de mascotas disponibles en la base de datos local
+     * @return lista de mascotas
+     */
     public ArrayList<Pet> getPets(){
         String query = "select * from Pet";
         ArrayList<Pet> pets = new ArrayList<>();
@@ -220,6 +284,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return pets;
     }
 
+    /**
+     * Devuelve todos los amigos buscados en la funcionalidad de buscar disponibles
+     * en la base de datos local
+     * @return lista de amigos buscados
+     */
     public ArrayList<Pair<String,String>> getSearchedFriends(){
         String query = "select * from SearchedFriend";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -232,6 +301,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
         return searchedFriendList;
     }
+
+    /**
+     * Devuelve la mascota acorde al username provisto disponible en la base de datos local
+     * @param  petUsername  username de la mascota propia
+     * @return mascota propia
+     */
     public Pet getPet(String petUsername){
         String query = "select * from Pet where petUsername="+"'"+petUsername+"'";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -251,11 +326,23 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return pet;
     }
 
+    /**
+     * Elimina de la base de datos local la solicitud de amistad
+     * enviada por una mascota amiga
+     * @param  sender  username de la mascota amiga
+     */
     public void answerRequest(String sender){
         // Update db
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("FriendRequest", "petUsername=" + "'" + sender + "'",null);
     }
+
+    /**
+     * Actualizar campo selected en la tabla Pet de base de datos y colocar
+     * los datos de la mascota seleccionada en sharedPreferences
+     * @param  petUsername  username de una mascota propia
+     * @param sharedPreferences mini base de datos
+     */
     public void selectPet(String petUsername, SharedPreferences sharedPreferences){
 
         // Update db
@@ -280,7 +367,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-
+    /**
+     * Borrar todos los datos de la base de datos
+     */
     public void clearDB(){
         String query;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -297,6 +386,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Borrar todos los datos de la tabla de mascoas amigas
+     */
     public void clearFriends(){
         String query;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -305,6 +397,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Borrar todos los datos de la tabla de solicitudes de amistad
+     */
     public void clearFriendRequests(){
         String query;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -313,6 +408,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Borrar todos los datos de la tabla de amigos buscados
+     */
     public void clearSearchedFriends(){
         String query;
         SQLiteDatabase db = this.getWritableDatabase();

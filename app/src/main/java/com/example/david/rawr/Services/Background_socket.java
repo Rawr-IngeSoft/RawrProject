@@ -52,12 +52,20 @@ public  class Background_socket extends Service {
     SharedPreferences sharedPreferences;
     SQLiteHelper sqLiteHelper;
 
+    // Protocolo  de comunicacion con otros procesos
     IRemoteService.Stub myBinder = new IRemoteService.Stub() {
         @Override
         public List<String> getFriendsList() throws RemoteException {
             return friendsList;
         }
 
+        /**
+         * Envia un mensaje por medio de sockets
+         * @param  sender username de la mascota que envia el mensaje
+         * @param  receiver username de la mascota a la que se le envia el mensaje
+         * @param  msg mensaje a enviar
+         * @Requirement REQ-018
+         */
         @Override
         public void sendMessage(String sender, String receiver, String msg) throws RemoteException {
             JSONObject data = new JSONObject();
@@ -74,6 +82,10 @@ public  class Background_socket extends Service {
             mySocket.emit("chat_message", data);
         }
 
+        /**
+         * Se logea en el servido una nueva mascota
+         * @param  petUsername  username de la mascota por la cual se va a cambiar en el servidor
+         */
         @Override
         public void changePet(String petUsername) throws RemoteException {
             JSONObject data = new JSONObject();
@@ -85,6 +97,11 @@ public  class Background_socket extends Service {
             }
         }
 
+        /**
+         * Envia una solicitud de amistad a travez de sockets
+         * @param  sender  username de la mascota que envia la solicitud de amistad
+         * @param receiver username de la mascota a la que se le envia la solicitud de amistad
+         */
         @Override
         public void sendFriendRequest(String sender, String receiver) throws RemoteException {
             JSONObject data = new JSONObject();
@@ -97,6 +114,12 @@ public  class Background_socket extends Service {
             }
         }
 
+
+        /**
+         * Busca una mascota a partir de una pista dada a travez de sockets
+         * @param  hint  Palabra por la que se buscara una mascota
+         * @Requirements REQ-015
+         */
         @Override
         public void searchFriend(String hint) throws RemoteException {
             JSONObject data = new JSONObject();
@@ -134,6 +157,7 @@ public  class Background_socket extends Service {
             mySocket = IO.socket("http://178.62.233.249:3000");
             final JSONObject data = new JSONObject();
             sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+            // Listener al servidor para recibir lista de amigos aconectados
             startSession_listener = new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
@@ -151,7 +175,8 @@ public  class Background_socket extends Service {
                     }
                 }
             };
-
+            // listener al servidor para recibir mensajes directos
+            //@Requirement REQ-018
             chat_message_listener = new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
@@ -178,19 +203,11 @@ public  class Background_socket extends Service {
                     }
                 }
             };
-            notification_listener = new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    JSONObject data = (JSONObject)args[0];
-                    // write in sqlite
-                    /*try {
-                        sqLiteHelper.addFriendRequest(new FriendRequest(data.getString("sender")));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }*/
-                }
-            };
 
+            /*
+            * @Requirements REQ-015
+             */
+            // Listener al servidor para recibir la lista de mascotas que concuerdan con la busqueda
             hint_listener = new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
@@ -213,7 +230,6 @@ public  class Background_socket extends Service {
             friendsList= new ArrayList();
             mySocket.on("chat_message", chat_message_listener);
             mySocket.on("response_start_session", startSession_listener);
-            mySocket.on("notification", notification_listener);
             mySocket.on("hint", hint_listener);
             mySocket.connect();
             mySocket.emit("start_session", data);
@@ -241,7 +257,6 @@ public  class Background_socket extends Service {
         mySocket.disconnect();
         mySocket.off("response_start_session", startSession_listener);
         mySocket.off("chat_message", chat_message_listener);
-        mySocket.off("notification", notification_listener);
         mySocket.off("hint",hint_listener);
         mySocket = null;
     }

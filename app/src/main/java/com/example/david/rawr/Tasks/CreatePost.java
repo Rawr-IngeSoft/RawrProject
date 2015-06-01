@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * Created by david on 30/05/2015.
+ * @Requirements REQ-002
  */
 public class CreatePost extends AsyncTask<String, Integer, String> {
 

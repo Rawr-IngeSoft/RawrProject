@@ -13,6 +13,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 
+// Clase para generar imagenes con borde redondo
 public class RoundImage extends Drawable {
     private final Bitmap mBitmap;
     private final Paint mPaint;

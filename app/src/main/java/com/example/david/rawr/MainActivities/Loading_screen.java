@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,7 +24,6 @@ import com.example.david.rawr.Models.Pet;
 import com.example.david.rawr.R;
 import com.example.david.rawr.SQLite.SQLiteHelper;
 import com.example.david.rawr.Tasks.CreateOwner;
-import com.example.david.rawr.Tasks.CreatePet;
 import com.example.david.rawr.Tasks.GetFriendRequests;
 import com.example.david.rawr.Tasks.GetFriends;
 import com.example.david.rawr.Tasks.GetMessagesHistory;
@@ -50,17 +48,21 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         //AnimationDrawable frameAnimation = (AnimationDrawable) img.getBackground();
         //frameAnimation.start();
         serviceType = getIntent().getStringExtra("serviceType");
+        // Si el tipo de conexion es con el login propio se valida el usuario usando la tarea asincrona ValidateUser
         if(serviceType.compareTo("logIn") == 0) {
             username = getIntent().getStringExtra("username");
             String password = getIntent().getStringExtra("password");
             // Validate User
             ValidateUser validateUser = new ValidateUser(username, password, this);
             validateUser.execute();
+        // Si el tipo de conexion es con facebook se crea el usuario usando la tarea asincrona CreateOwner.
+        // En caso de que el usuario ya exista se hara caso omiso al retorno de la tarea asincrona.
         }else if (serviceType.compareTo("facebook") == 0){
             // Create facebook user
             username = sharedpreferences.getString("username","");
             CreateOwner createOwner = new CreateOwner(username,"facebook",sharedpreferences.getString("name",""), sharedpreferences.getString("lastName",""),this, this);
             createOwner.execute();
+        // Si el tipo de conexion es crear usuario con el servicio propio se creara usando la tarea asincrona CreateOwner
         }else if (serviceType.compareTo("signUp") == 0){
             // Create Owner
             username = getIntent().getStringExtra("username");
@@ -69,6 +71,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             String lastName = getIntent().getStringExtra("lastName");
             CreateOwner createOwner = new CreateOwner(username,password,name, lastName,this,this);
             createOwner.execute();
+        // En caso de que el usuario ya este logeado se redirigira al newsfeed
         }else if (serviceType.compareTo("logged") == 0) {
             String welcomeMsg = "Welcome " + sharedpreferences.getString("name", "") + " " + sharedpreferences.getString("lastName", "");
             Toast.makeText(getApplicationContext(), welcomeMsg, Toast.LENGTH_LONG).show();
@@ -101,6 +104,12 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Guarda en la base de datos local los datos del duenho en caso de ser una
+     * validacion exitosa.
+     * @param  data En este arreglo se encuentra el resultado de la validacion en la posicion 0,
+     *              el nombre del duenho en la posicion 1 y el apellido del duenho en la posicion 2.
+     */
     @Override
     public void validateFinish(ArrayList<String> data) {
         String status = data.get(0);
@@ -125,6 +134,10 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
 
     }
 
+    /**
+     * Muestra el resultado de la creacion de un duenho
+     * @param  status  Indica el resultado de la creacion: 1 si fue exitosa y 0 en caso contrario.
+     */
     @Override
     public void createFinish(String status) {
         Intent intent;
@@ -141,7 +154,7 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
             if (status.compareTo("1") == 0) {
                 String msg = "Welcome " + sharedpreferences.getString("name","") + " " + sharedpreferences.getString("lastName","");
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-                intent = new Intent(this, Newsfeed_screen.class);
+                intent = new Intent(this, SignUp_add_photo_screen.class);
             }else{
                 Toast.makeText(this, "This username is already in use", Toast.LENGTH_SHORT).show();
                 intent = new Intent(this, SignUp_screen.class);
@@ -151,6 +164,11 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         }
     }
 
+    /**
+     * Guarda en la base de datos local las mascotas amigas de la seleccionada
+     * @param  output En el se encuentran todas las mascotas amigas de la mascota
+     *                seleccionada actualmente
+     */
     @Override
     public void getFriendsFinish(ArrayList<Friend> output) {
         SQLiteHelper SQLiteHelper = new SQLiteHelper(this);
@@ -162,6 +180,10 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         getMessagesHistory.execute();
     }
 
+    /**
+     * Guarda en la base de datos local las mascotas del duenho conectado
+     * @param  output En el se encuentran todas las mascotas del duenho conectado
+     */
     @Override
     public void getPetsFinish(ArrayList<Pet> output) {
         for(Pet pet: output){
@@ -186,6 +208,11 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         }
     }
 
+    /**
+     * Guarda en la base de datos local las conversaciones de la mascota seleccionada
+     * @param  output En el se encuentran todas las conversaciones de la mascota
+     *                seleccionada actualmente
+     */
     @Override
     public void getMessageHistoryFinish(ArrayList<Message> output) {
         for(Message message: output){
@@ -198,6 +225,12 @@ public class Loading_screen extends Activity implements ValidateResponse, Create
         this.finish();
     }
 
+    /**
+     * Guarda en la base de datos local las solicitudes de amistad de la
+     * mascota seleccionada
+     * @param  output En el se encuentran todas las solicitudes de amistad
+     *                de la mascota seleccionada actualmente
+     */
     @Override
     public void getRequestsFinish(ArrayList<FriendRequest> output) {
         for (FriendRequest friendRequest: output){

@@ -25,6 +25,7 @@ import java.util.TimerTask;
 
 /**
  * Created by Estudiante on 24/04/2015.
+ * @Requirement REQ-022
  */
 public class GetPosts extends AsyncTask<String, Integer, String> implements GetPhotoResponse{
 

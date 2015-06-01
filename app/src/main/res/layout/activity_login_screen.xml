@@ -82,16 +82,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp" />
-
-            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/registerUser"
-                android:id="@+id/signUp"
-                android:layout_gravity="center_horizontal" />
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/registerUser"
+                    android:layout_marginRight="80dp"
+                    android:id="@+id/signUp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Politics"
+                    android:id="@+id/politics" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

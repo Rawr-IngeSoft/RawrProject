@@ -78,6 +78,7 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
             messages = SQLiteHelper.getMessagesOf(receiver);
         }
         checkSenderVisibility();
+        // Instanciando todos los componentes del XML
         TextView petLabel = (TextView)findViewById(R.id.chat_window_petLabel);
         petPicture = (ImageView)findViewById(R.id.chat_window_profilePic);
         petLabel.setText(petUsername);;
@@ -118,6 +119,7 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
             connected_friends_intent.setAction("service.Chat");
             this.bindService(connected_friends_intent, mConnection, BIND_AUTO_CREATE);
         }
+        // Se obtienen los mensajes de la base de datos cada segundo
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -140,9 +142,14 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
         }, 1000,1000);
     }
 
+    /*
+    @Requirements REQ-018
+     */
     @Override
     public void onClick(View v) {
         switch(v.getId()){
+            // En caso de dar click en el boton de post se consume el metodo sendMessage del servicio que corre
+            // en background y se actualiza la lista de mensajes
             case R.id.chat_window_send_button:
                 try {
                     if(message.getText().toString().trim().length() > 0) {
@@ -169,6 +176,11 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
         }
     }
 
+    /**
+     * Revisa la visibilidad de la foto que aparece al lado del mensaje.
+     * Quita la visibilidad en caso de que el mensaje anterior provenga
+     * del mismo remitente
+     */
     private static void checkSenderVisibility(){
 
         for (int i = 0; i < messages.size(); i++){
@@ -196,6 +208,10 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
         this.finish();
     }
 
+    /**
+     * En caso de dar click a un mensaje del chat aparecera la fecha en que fue enviado.
+     * Al dar click nuevamente desaparecera.
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TextView dateTV = (TextView)view.findViewById(R.id.messages_list_row_date);
@@ -213,6 +229,10 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
 
     }
 
+    /**
+     * Despliega las imagenes de perfil del usuario y del amigo con el que se esta chateando
+     * @param  bitmap bitmap de la foto solicitada cuando se instancio la clase GetPhoto
+     */
     @Override
     public void getPhotoFinish(Bitmap bitmap) {
         if(senderBitmap == null){
@@ -221,7 +241,6 @@ public class Chat_window extends Activity implements View.OnClickListener, Adapt
             }else{
                 senderBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_profile_picture_female);
             }
-            Log.e(petUsername, sharedPreferences.getString("petPicture",""));
             GetPhoto getPhoto = new GetPhoto(sharedPreferences.getString("petPicture",""), petUsername, this);
             getPhoto.execute();
         }else {

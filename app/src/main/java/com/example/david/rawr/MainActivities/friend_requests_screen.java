@@ -15,17 +15,18 @@ import com.example.david.rawr.SQLite.SQLiteHelper;
 
 import java.util.ArrayList;
 
-
+/*
+@Requirements REQ-024
+ */
 public class Friend_requests_screen extends FragmentActivity implements GetFriendRequestsResponse {
 
     FriendsRequestAdapter friendRequestAdapter;
-    SQLiteHelper SQLiteHelper;
-    ViewPager friendRequestViewPager;
+    ViewPager friendRequestViewPager; // Adaptador para los friend requests
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_requests_screen);
-        SQLiteHelper = new SQLiteHelper(this);
         friendRequestViewPager = (ViewPager) findViewById(R.id.friend_request_viewPager);
         FragmentManager fm = getSupportFragmentManager();
         friendRequestAdapter = new FriendsRequestAdapter(fm, this);

@@ -34,8 +34,687 @@
     <string name="title_activity_chat_window">Chat_window</string>
     <string name="title_activity_friend_requests_screen">friend_requests_screen</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_search_friend">Search_friend</string>
+    <string name="privacity_politics">RAWR es una red social de mascotas exclusiva para usuarios registrados,
 
+pensada para amantes de las mascotas que deseen ponerse en contacto entre sí, 
+
+ya sea para ofrecer un servicio (Usuarios empresas) o bien para adoptar o generar 
+
+amistades entre perros (Usuarios dueños o futuros dueños).
+
+Al utilizar la aplicación RAWR tanto los usuarios registrados como los visitantes 
+
+ocasionales manifiestan haber leído y comprendido los Términos y Condiciones 
+
+enunciados en esta sección. Los mismos podrán ser cambiados, modificados, 
+
+ampliados o eliminados total o parcialmente por RAWR en cualquier momento y 
+
+sin previo aviso. En tal caso, RAWR publicará los términos y condiciones 
+
+modificados en esta misma sección, especificando en la parte superior de la 
+
+misma la fecha de última revisión de los mismos. Si luego de dichas 
+
+modificaciones los usuarios o visitantes ocasionales usaran la aplicación, estarían 
+
+aceptando implícitamente el acuerdo con los nuevos Términos y Condiciones. Por 
+
+el contrario, si los usuarios o visitantes ocasionales no aceptaran los Términos y 
+
+Condiciones actuales o futuros, no deberían acceder ni utilizar la aplicación. Si 
+
+bien RAWR fomenta la consulta regular de sus Términos y Condiciones, son los 
+
+usuarios responsables de efectuarlo y estar al tanto de las actualizaciones 
+
+realizadas.
+
+Los usuarios de RAWR deberán leer atentamente estos Términos y Condiciones, 
+
+dado que contienen información importante acerca de sus derechos legales, los 
+
+medios para hacer valer tales derechos y sus obligaciones. Estos Términos y 
+
+Condiciones incluyen, además, diversas limitaciones y exclusiones, así como una 
+
+cláusula de resolución de conflictos que regula el modo en que se solventará 
+
+cualquier controversia.</string>
+    
+    <string name="admition_politics"> La admisión como miembro de los servicios provistos por RAWR no será posible 
+
+en aquellos supuestos en que esté prohibida. Esta aplicación está destinada 
+
+exclusivamente a usuarios mayores de 13 años. El registro en a la aplicación, su 
+
+uso o el acceso al mismo por parte de personas menores de 13 años no está 
+
+permitido, no se autoriza bajo licencia y constituye una infracción de los presentes 
+
+Términos y Condiciones de uso. Al utilizar los servicios de la aplicación, los 
+
+usuarios manifiestan y garantizan ser mayores de 13 años, y de ese modo 
+
+aceptan y se comprometen a cumplir todos los Términos y Condiciones aquí 
+
+expuestos.</string>
+    
+    <string name="register_politics">Los usuarios registrados en RAWR acceden a: 
+
+(a) Suministrar información verdadera, actualizada y completa sobre sí mismos
+
+como puede ser requerida por cualquiera de los formularios de registro de la
+
+aplicación.
+
+(b) Mantener la seguridad de su contraseña e identificación.
+
+(c) Mantener y actualizar puntualmente los datos de registro y cualquier otra
+
+información suministrada a RAWR para mantenerla correcta, actualizada y
+
+completa, tanto la suya como la de sus mascotas.
+
+(d) Hacerse totalmente responsables de todo uso de su cuenta, así como de
+
+cualquier acción que tenga lugar mediante el uso de la misma.</string>
+
+    <string name="content_politics">Todo el contenido de la aplicación y todo el contenido disponible a través del
+
+servicio, incluyendo diseños, texto, gráficos, imágenes, vídeo, información, 
+
+aplicaciones, software, música, sonido y otros archivos, así como su selección y 
+
+disposición (el "Contenido de la aplicación"), son propiedad exclusiva de la RAWR, 
+
+de sus usuarios o de sus licenciantes, con todos los derechos reservados. 
+
+Ninguna parte del contenido de la aplicación podrá ser modificada, copiada, 
+
+distribuida, enmarcada, reproducida, republicada, descargada, mostrada, 
+
+publicada, transmitida o vendida en modo alguno o por ningún medio, total o 
+
+parcialmente, sin el previo consentimiento por escrito de RAWR.
+
+ 
+
+En el caso de los usuarios registrados, RAWR les otorga una licencia limitada para 
+
+usar y acceder a la aplicación y al contenido de la aplicación, y para descargar o 
+
+imprimir una copia de cualquier parte del contenido de la aplicación a la que hayan 
+
+obtenido acceso legítimamente y sólo para su uso personal y no comercial, 
+
+siempre y cuando mantengan intactas todas las advertencias sobre derechos de 
+
+autor y propiedad intelectual.
+
+ 
+
+A excepción de sus propias cuentas, los usuarios de RAWR no podrán cargar o 
+
+volver a publicar contenido de la aplicación en ningún sitio de Internet, Intranet o 
+
+Extranet ni integrar la información en ninguna otra base de datos o compilación. 
+
+Cualquier otro uso del contenido de la aplicación queda estrictamente prohibido. 
+
+Esta licencia queda sujeta a los presentes Términos y Condiciones, y no incluye el 
+
+uso de métodos de recopilación o extracción de datos (data minning, robots o 
+
+similares).
+
+ 
+
+El uso de la aplicación o del contenido de la aplicación de modo distinto al 
+
+específicamente autorizado en los presentes Términos y Condiciones de uso, sin 
+
+el previo consentimiento por escrito de RAWR, queda estrictamente prohibido y 
+
+revocará la licencia otorgada en virtud de lo comentado en esta sección. El uso no 
+
+autorizado podrá constituir asimismo una infracción de la legislación aplicable, 
+
+incluyendo las leyes de marcas y derechos de autor, y de las normativas y 
+
+reglamentos aplicables en materia de comunicaciones. Salvo que se indique 
+
+expresamente lo contrario en los presentes Términos y condiciones, nada de lo 
+
+dispuesto aquí deberá interpretarse en el sentido de otorgar una licencia sobre 
+
+derechos de propiedad intelectual, ya sea por impedimento legal, implícitamente o 
+
+de cualquier otra forma. Esta licencia podrá ser revocada en cualquier momento y 
+
+sin preaviso, con o sin causa.</string>
+    
+    <string name="brand_politics">RAWR es una marca Colombiana. Las marcas e imágenes de marca no podrán
+
+utilizarse, ni siquiera como parte de marcas o nombres de dominio, en relación con 
+
+ningún producto o servicio de forma que puedan causar confusión. Tampoco 
+
+podrán copiarse, imitarse o utilizarse, total o parcialmente, sin el previo 
+
+consentimiento por escrito de los propietarios de la marca.</string>
+    
+    <string name="user_politics">El servicio y la aplicación se ofrecen de forma exclusiva para el uso personal y no
+
+comercial de los usuarios. Los mismos declaran, garantizan y aceptan que
+
+ninguno de los materiales enviados a través de sus cuenta o que publiquen,
+
+transmitan o compartan a través de la aplicación infringirá los derechos de
+
+cualquier tercero, incluyendo los derechos de autor, marca, privacidad, publicidad
+
+u otros derechos personales o de propiedad intelectual. Asimismo, se
+
+comprometen a no incluir ningún contenido denigrante, difamatorio o ilegal.
+
+Además, aceptan no utilizar el servicio o la aplicación para:
+
+ Recopilar direcciones de correo electrónico u otra información de contacto de otros
+
+usuarios a través del servicio o la aplicación por medios electrónicos u otros
+
+medios con la finalidad de enviar correos electrónicos no solicitados u otras
+
+comunicaciones no solicitadas;
+
+ Usar el servicio o la aplicación de forma ilegal o de forma que pueda dañar,
+
+deshabilitar, sobrecargar o perjudicar a la aplicación;
+
+ Usar secuencias de comandos automatizadas para recopilar información a través
+
+del servicio o la aplicación   o para interactuar de cualquier otro modo con los
+
+mismos;
+
+ Cargar, publicar, transmitir, compartir, almacenar o facilitar cualquier contenido
+
+que se considere dañino, amenazante, ilegal, difamatorio, infractor, abusivo,
+
+incendiario, acosador, vulgar, obsceno, fraudulento, que vulnere el derecho a la
+
+intimidad y la propia imagen, que sea malicioso o cuestionable por motivos de
+
+raza, etnia o cualquier otro;
+
+ Cargar, publicar, transmitir, compartir, almacenar o facilitar vídeos o fotografías
+
+que no sean de naturaleza personal y que no: (i) sean relativos al usuario, sus
+
+mascotas o sus amigos, (ii) hayan sido grabados por el usuario o por sus amigos,
+
+o (iii) sean obras o animaciones originales creadas por el usuario o por sus
+
+amigos;
+
+ Registrar más de una cuenta de usuario, registrar una cuenta de usuario en
+
+nombre de otra persona o registrar una cuenta de usuario en nombre de un grupo
+
+o entidad;
+
+ Hacerse pasar por otra persona o entidad, realizar manifestaciones falsas o
+
+proporcionar información falsa acerca del usuario, su edad o su relación con
+
+cualquier persona o entidad;
+
+ Cargar, publicar, transmitir, compartir, almacenar o facilitar publicidad no solicitada
+
+o no autorizada, ofrecimientos ilícitos, materiales promocionales, "correo basura",
+
+"spam", "cartas encadenadas", "esquemas piramidales" o cualquier otro tipo de
+
+comunicaciones ilícitas;
+
+ Cargar, publicar, transmitir, compartir, almacenar o facilitar en la aplicación  datos
+
+personales de cualquier tercero, incluyendo direcciones, números de teléfono,
+
+direcciones de correo electrónico, números de obra social o números de tarjetas
+
+de crédito;
+
+ Solicitar datos personales a menores de 13 años o solicitar contraseñas o datos
+
+de carácter personal con fines comerciales o ilícitos;
+
+ Cargar, publicar, transmitir, compartir o facilitar material que contenga virus
+
+informáticos o cualquier otro código, archivo o programa informático diseñado para
+
+interrumpir, destruir o limitar la funcionalidad de cualquier software o hardware o
+
+equipo de telecomunicaciones;
+
+ Intimidar o acosar a otras personas;
+
+ Cargar, publicar, transmitir, compartir, almacenar o facilitar contenido que
+
+constituya, incite o proporcione instrucciones para cometer delitos, que infrinja los
+
+derechos de un tercero, dé lugar a responsabilidades o vulnere cualquier ley de
+
+ámbito local, estatal, nacional o internacional;
+
+ Usar o intentar usar la cuenta, el servicio o el sistema de otra persona sin la
+
+autorización de la RAWR, o crear una identidad falsa para usar el servicio o a la
+
+aplicación;
+
+ Cargar, publicar, transmitir, compartir, almacenar o facilitar contenido que, a juicio
+
+exclusivo de RAWR, sea cuestionable o que restrinja o impida el uso o disfrute de
+
+la aplicación por otras personas, o que pueda exponer a la RAWR o a sus
+
+usuarios a daños o responsabilidades de cualquier tipo.</string>
+    
+    <string name="share_politics">Los usuarios serán enteramente responsable de las fotos, perfiles (incluyendo 
+
+nombre, imagen y representación de sus mascotas), mensajes, notas, texto, 
+
+información y demás contenido que carguen, publiquen o muestren (en adelante, 
+
+"publicar") en la aplicación o que transmitan a otros usuarios o compartan con 
+
+otros usuarios.
+
+Los usuarios no podrán publicar, transmitir o compartir contenido en la aplicación 
+
+que no hayan creado o que no estén autorizados a publicar. Los mismos 
+
+reconocen y aceptan que RAWR podrá, sin constituir su obligación, revisar la 
+
+aplicación y eliminar o retirar (sin previo aviso) cualquier contenido de la aplicación 
+
+a su elección exclusiva, con o sin causa, incluyendo aquel contenido de usuario 
+
+que, a juicio exclusivo de la RAWR, infrinja los presentes Términos y condiciones, 
+
+que pueda ser ofensivo o ilegal o que infrinja los derechos o dañe o amenace la 
+
+seguridad de los usuarios u otras personas.
+
+ 
+
+Los usuarios de RAWR se comprometen a publicar material real y veraz acercar 
+
+de sus mascotas. RAWR no se responsabiliza por la falta de honestidad de los 
+
+usuarios, en caso de que, por ejemplo, publiquen imágenes de mascotas que no 
+
+les pertenecen o bien que no existen.
+
+ 
+
+Cada vez que los usuarios publican contenido en a la aplicación, autorizan a 
+
+RAWR a realizar las copias de seguridad que consideren necesarias para facilitar 
+
+la publicación y el almacenamiento del contenido de usuario en a la aplicación.
+
+ 
+
+Los usuarios podrán eliminar el contenido de la aplicación en cualquier momento. 
+
+Si así lo decidieran, la licencia otorgada conforme a lo dispuesto anteriormente 
+
+quedará automáticamente anulada. No obstante lo anterior, RAWR podrá 
+
+conservar copias archivadas del contenido de sus usuarios. RAWR no reivindica 
+
+ningún derecho de propiedad sobre el contenido de sus usuarios y reconoce, con 
+
+sujeción a los derechos que lo asisten en virtud de los presentes Términos y 
+
+Condiciones, que los usuarios conservarán la titularidad exclusiva de todo su 
+
+contenido y cualesquiera derechos de propiedad intelectual o autor vinculados al 
+
+mismo.</string>
+    
+    <string name="enterprise_politics">Las personas jurídicas podrán registrarse como usuario de la aplicación móvil. En 
+
+ese caso, deberán identificarse con una persona física que sirva de contacto con 
+
+la empresa registrada. RAWR podrá establecer, según su criterio, servicios 
+
+específicos para empresas.
+
+Aquellos usuarios que se registren como empresas proveedoras de servicios para 
+
+mascotas, no deberán abonar un costo por el espacio brindado en la aplicación 
+
+cualquier inquietud podrá consultarse enviando un mail a rawrdevp.gmail.com. Las 
+
+empresas aparecerán publicadas en un directorio dentro de una sección exclusiva 
+
+de la aplicación, y organizadas según la categoría de servicio ofrecido (veterinaria, 
+
+paseador, adiestrador, criador, residencia, accesorios). RAWR no se hace 
+
+responsable por el éxito o fracaso comercial de las empresas a través de la 
+
+aplicación así como tampoco garantiza a los usuarios -potenciales clientes de las 
+
+empresas- de RAWR la calidad del servicio prestado por las empresas. Las partes 
+
+intervinientes en cualquier operación serán enteramente responsables de todas 
+
+las interacciones que realicen entre ellas, así como de organizar el pago e 
+
+intercambio de los productos adquiridos o los servicios contratados, en su caso, y 
+
+de los resultados de cualquier relación u operación formalizada a través de los 
+
+servicios de oferta de servicios en RAWR. Los usuarios reconocen que RAWR no 
+
+será responsable de los actos u omisiones de cualquiera de las partes 
+
+intervinientes en una operación, ni de la falta de prestación, la falta de pago o la 
+
+falta de entrega de cualesquiera bienes o servicios de conformidad con las 
+
+condiciones pactadas, ni de ningún otro aspecto relacionado con la operación.</string>
+    
+    <string name="copyrigth_politics">RAWR respeta los derechos de propiedad intelectual de terceros y prohíbe que los
+
+usuarios carguen, publiquen o transmitan en a la aplicación web o en el servicio de 
+
+RAWR cualquier material que infrinja los derechos de propiedad intelectual de un 
+
+tercero. Llegado el caso de que RAWR reciba formalmente una advertencia de 
+
+presunta infracción de derechos de autor, retirará o deshabilitará inmediatamente 
+
+el acceso al material presuntamente infractor y cerrará la cuenta de cualquier 
+
+infractor reincidente. 
+
+Si algún usuario considerase que algún material de la aplicación infringe cualquier 
+
+derecho de autor del que sea titular o que se encuentre bajo su control, podrá 
+
+notificar por escrito dicha infracción a rawrdevp.gmail.com.</string>
+
+    <string name="recidentials_politics">RAWR ha adoptado, como política, la expulsión de aquellos usuarios que
+
+considere infractores reincidentes en determinadas circunstancias y a su elección 
+
+exclusiva. RAWR podrá asimismo y a su libre elección limitar el acceso a la 
+
+aplicación o expulsar a aquellos usuarios que infrinjan los derechos de propiedad 
+
+intelectual de terceros, con independencia de que hayan reincidido o no en la 
+
+comisión de la infracción.</string>
+    
+    <string name="lostPets_politics">Todas las mascotas publicadas en los servicios de adopción y búsqueda de 
+
+mascotas perdidas de RAWR y todas las operaciones realizadas en relación con 
+
+dichos servicios se regirán por los presentes Términos y condiciones. Al utilizar 
+
+dicho servicio de cualquier forma, los usuarios aceptan cumplir las demás normas 
+
+de aplicación que se establecen en los presentes Términos y condiciones. Dichas 
+
+normas podrán ser modificadas sin previo aviso y en cualquier momento, a 
+
+elección exclusiva de la RAWR, por lo que los usuarios deberán consultarlas cada 
+
+vez que utilicen los servicios de RAWR. RAWR no se hace responsable por 
+
+aquellos casos en los que un usuario ponga en adopción a una mascota que no 
+
+exista o que no sea de su propiedad, o publique un anuncio falso de una mascota 
+
+perdida/encontrada. Las partes intervinientes en cualquier solicitud de adopción 
+
+serán enteramente responsables de todas las interacciones que realicen entre 
+
+ellas, así como de organizar la entrega de las mascotas adoptadas o encontradas, 
+
+en su caso, y de los resultados de cualquier relación u operación formalizada a 
+
+través de los servicios de oferta de servicios en RAWR. Los usuarios reconocen 
+
+que RAWR no será responsable de los actos u omisiones de cualquiera de las 
+
+partes intervinientes en una operación, de conformidad con las condiciones 
+
+pactadas, ni de ningún otro aspecto relacionado con la operación.</string>
+    
+    <string name="friend_politics">RAWR no se hace responsable de los términos en los que se efectúen amistades
+
+entre mascotas y/o dueños usuarios de la aplicación, ni de la naturaleza de los
+
+mensajes que puedan enviarse entre sí o el tipo de vínculo que generen por fuera
+
+de la aplicación. La aceptación o rechazo de las solicitudes de amistad queda a
+
+criterio de cada usuario, que no tiene la obligación de aceptar las solicitudes que
+
+reciba y que tampoco será condenado por rechazarlas.</string>
+    
+    <string name="video_politics">RAWR permite a los usuarios poseedores de cuentas en YouTube ingresar el link 
+
+de un video por mascota, a ser reproducido desde el perfil público de la misma. 
+
+RAWR no se hace responsable por el contenido de los videos publicados. Antes 
+
+de su publicación en RAWR, los usuarios deberán consultar los Términos y 
+
+Condiciones de la aplicación web de YouTube a los efectos de corroborar que 
+
+ninguna de sus disposiciones esté siendo violada por un uso indebido del servicio. 
+
+http://www.youtube.com/t/term</string>
+    
+    <string name="conflicts_politics">RAWR queda exento de la obligación de mediar en los conflictos que puedan
+
+generarse entre usuarios. Sin embargo, en caso de que la situación lo amerite, 
+
+RAWR intervendrá tomando las medidas que considere pertinentes para resolver 
+
+el conflicto.</string>
+    
+    <string name="exclution_politics">RAWR no es responsable en modo alguno de ningún contenido de usuario
+
+publicado en a la aplicación o en relación al servicio. A pesar de que RAWR 
+
+establece normas relativas a la conducta de los usuarios y a las publicaciones, no 
+
+modera lo que los usuarios publican, transmiten o comparten en a la aplicación, y 
+
+no es por tanto responsable de ello ni de ningún contenido ofensivo, inapropiado, 
+
+obsceno, ilegal o cuestionable que los usuarios puedan encontrar en a la 
+
+aplicación o en relación con cualquier contenido de usuario. RAWR no es 
+
+responsable de la conducta, online u offline, de ningún usuario de la aplicación o 
+
+del servicio.
+
+ 
+
+Ocasionalmente, a la aplicación y el servicio podrán no estar disponibles 
+
+temporalmente por motivos de mantenimiento o por otras causas. RAWR no 
+
+asume ningún tipo de responsabilidad por errores, omisiones, interrupciones, 
+
+eliminaciones, defectos, retrasos de funcionamiento o de transmisión, fallos de la 
+
+línea de comunicaciones, robos, destrucción, acceso no autorizado o alteración de 
+
+las comunicaciones del usuario.
+
+RAWR no se hace responsable de ninguna avería técnica ni de ningún otro 
+
+problema de la red o el servicio telefónico, de los sistemas informáticos, servidores 
+
+o proveedores, equipos informáticos o de telefonía móvil, software, fallos del 
+
+correo electrónico o los servidores ocasionados por problemas técnicos o 
+
+congestión de tráfico en Internet o en cualquier sitio (o en una combinación de 
+
+éstos), incluyendo lesiones o daños en el ordenador, el teléfono móvil o cualquier 
+
+otro elemento de hardware o software del usuario o de otra persona, derivados de 
+
+la utilización o de la descarga de materiales en relación con a la aplicación o con 
+
+el servicio, incluyendo el software del cliente móvil.  RAWR no será en ningún 
+
+caso responsable de pérdidas o daños, incluyendo cualesquiera pérdidas o daños 
+
+sobre el contenido de usuario o lesiones personales o muertes, derivados de la 
+
+utilización por parte de cualquier persona de la aplicación, el servicio, cualquier 
+
+contenido de usuario o las aplicaciones, software o contenido de terceros 
+
+publicados en a la aplicación o el servicio o transmitidos a usuarios, o de las 
+
+interacciones entre los usuarios de la aplicación, ya sean online u offline.
+
+ 
+
+A la aplicación, el servicio, las aplicaciones de la plataforma y el contenido de la 
+
+aplicación se proporcionan "tal cual " y RAWR excluye expresamente todas las 
+
+declaraciones y garantías, expresas o implícitas, incluyendo las garantías 
+
+implícitas de propiedad, comerciabilidad, adecuación a un fin concreto y no 
+
+infracción. RAWR no puede garantizar y no promete ningún resultado específico 
+
+derivado del uso de la aplicación, el servicio o cualquier aplicación de la 
+
+plataforma. RAWR no declara ni garantiza que el software, el contenido o los 
+
+materiales de la aplicación, el servicio o las aplicaciones de la plataforma sean 
+
+exactos, completos o fiables o que estén actualizados o libres de errores, o que a 
+
+la aplicación, el servicio, sus servidores o las aplicaciones de la plataforma estén 
+
+libres de virus u otros componentes dañinos. En consecuencia, los usuarios 
+
+deberán tener precaución cuando utilicen y descarguen dicho software, contenido 
+
+o material y emplear algún software para la detección y desinfección de virus 
+
+reconocido en el sector. Sin limitación del carácter general de la anterior 
+
+disposición, los usuarios reconocen y aceptan que descargan u obtienen 
+
+contenido, material, datos o software a través del servicio y de cualesquiera 
+
+aplicaciones de la plataforma por su cuenta y riesgo, y que serán los únicos 
+
+responsables del uso que realicen de los mismos, de cualesquiera daños que 
+
+pueda sufrir su dispositivo móvil o sistema informático, y de las pérdidas de datos 
+
+u otros daños que puedan derivarse.
+
+ 
+
+RAWR se reserva el derecho a modificar cualquier contenido, software y demás 
+
+elementos utilizados o incluidos en a la aplicación y en cualesquiera servicios y 
+
+aplicaciones de la plataforma ofrecidos en cualquier momento y sin previo aviso. 
+
+Las referencias a productos, servicios, procesos u otras informaciones mediante 
+
+nombres comerciales, marcas, fabricantes, proveedores u otros, no constituyen ni 
+
+implican que RAWR apruebe, patrocine o recomiende tales productos, servicios, 
+
+procesos o informaciones, ni que tenga ninguna relación con éstos.</string>
+    
+    <string name="responsability_politics">
+        En ningún caso será RAWR o sus directivos, empleados o agentes responsables 
+
+frente a los usuarios u otros terceros por cualesquiera daños indirectos, 
+
+emergentes, ejemplarizantes, derivados, especiales o punitivos, incluyendo 
+
+pérdidas de beneficios o datos derivados de su utilización de la aplicación o el 
+
+servicio, las aplicaciones de la plataforma, el contenido de la aplicación u otros 
+
+materiales a los que se haya accedido a través de la aplicación o descargados de 
+
+éste, aun cuando RAWR sea consciente o haya sido advertido de la posibilidad de 
+
+dichos daños. Sin perjuicio de cualquier disposición prevista en contrario en los 
+
+presentes Términos y condiciones, la responsabilidad de RAWR frente a los 
+
+usuarios empresa por cualquier causa, y con independencia de la forma de 
+
+actuación es nula. Los usuarios empresa reconocen únicamente tendrán derecho 
+
+a la adopción de medidas cautelares, salvo que la ley permita lo contrario, y no 
+
+tendrán derecho a ningún tipo de indemnización por parte de RAWR en concepto 
+
+de daños y perjuicios, con independencia de la causa de acción.
+
+ 
+
+Determinadas leyes de ámbito nacional no permiten la limitación de garantías 
+
+implícitas ni la exclusión o limitación de determinados daños. Si estas leyes son de 
+
+aplicación, es posible que la totalidad o alguna parte de las anteriores 
+
+disposiciones sobre exclusión, exoneración o limitación de responsabilidad no 
+
+sean de aplicación, y que los usuarios sean asistidos por derechos adicionales.
+    </string>
+    
+    <string name="cancelation">
+        RAWR podrá cancelar la condición de miembro de los usuarios, eliminar su perfil y
+
+cualquier contenido o información que hayan publicado en a la aplicación o a 
+
+través de cualquier aplicación de la plataforma o prohibirles que utilicen el servicio, 
+
+a la aplicación o cualquier aplicación de la plataforma, o que o accedan a éstos (o 
+
+a cualquier parte, aspecto o función del servicio o a la aplicación o cualquier 
+
+aplicación de la plataforma) por cualquier causa, o sin causa, en cualquier 
+
+momento y a elección exclusiva de RAWR, con o sin preaviso, incluyendo cuando 
+
+considere que el usuario es menor de 13 años.
+    </string>
+
+    <string name="note_politics">Nota: La anterior declaración de términos y condiciones no fue elaborada por
+
+RAWR, es una modificación de la declaración de la página Mascota social, que
+
+puede encontrar en www.mascotasocial.com/</string>
 </resources>

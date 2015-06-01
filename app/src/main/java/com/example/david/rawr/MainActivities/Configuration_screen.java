@@ -28,9 +28,15 @@ public class Configuration_screen extends Activity  {
         list = (ListView)findViewById(R.id.configuration_screen_list);
         list.setAdapter(new ConfigurationListAdapter(this));
         list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        /*
+        * @Requirements REQ-009
+         */
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            // Listener de eventos de click de items de la lista
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // En el caso de que sea la opcion de logout se borran todos los datos de la base
+                // de datos local y se redirige a la pagina de LogIn_screen
                 if (position == 5) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     SQLiteHelper SQLiteHelper = new SQLiteHelper(Configuration_screen.this);

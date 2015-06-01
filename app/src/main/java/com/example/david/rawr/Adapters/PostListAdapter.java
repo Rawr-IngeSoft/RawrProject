@@ -80,6 +80,7 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
             SharedPreferences sharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
             CreatePost createPost = new CreatePost(sharedPreferences.getString("petUsername", ""), "post", response.get(2), textPost.getText().toString(), this, context);
             createPost.execute();
+            textPost.setText("");
         }else{
             Log.e("status", "Error uploading the photo");
         }
@@ -150,11 +151,15 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
             holder.senderPicture.setImageBitmap(data.get(position - 1).getSenderPhotoBitmap());
         }else{
             Button postButton = (Button)convertView.findViewById(R.id.newsfeed_post_button);
+            /*
+            @Requirements REQ-002
+             */
             postButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     SharedPreferences sharedPreferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
                     if (sharedPreferences.contains("petUsername")) {
+
                         postPhoto.setImageBitmap(null);
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         params.width = 0;
@@ -168,9 +173,10 @@ public class PostListAdapter extends BaseAdapter implements UploadPhotoResponse,
                             if (textPost.getText().toString().compareTo("") != 0) {
                                 CreatePost createPost = new CreatePost(sharedPreferences.getString("petUsername", ""), "post", "null", textPost.getText().toString(), PostListAdapter.this, context);
                                 createPost.execute();
+                                textPost.setText("");
                             }
                         }
-                        textPost.setText("");
+
                     }else{
                         Toast.makeText(context, "First... Create you pet", Toast.LENGTH_LONG).show();
                     }

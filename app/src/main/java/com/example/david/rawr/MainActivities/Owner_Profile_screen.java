@@ -129,6 +129,7 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         this.finish();
     }
 
+    // Despliega la foto de perfil del duenho
     @Override
     public void getPhotoFinish(Bitmap bitmap) {
         if (bitmap != null) {
@@ -158,6 +159,10 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         return false;
     }
 
+    /**
+     * Actualiza toda la informacion d ela aplicacion a la mascota seleccionada
+     * @param  petUsername  username de la mascota por la que se va a cambiar
+     */
     public void update(String petUsername){
 
         // Updating service
@@ -176,6 +181,11 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         getFriendRequests.execute();
     }
 
+    /**
+     * Actualiza en la base de datos local la foto de perfil de la mascota creada y la despliega en la vista
+     * @param  targetUri  Path de la foto de perfil de la mascota
+     * @param  petPicture ImageView de la foto de perfil de la mascota
+     */
     public void refreshCreatedPetPicture(Uri targetUri, ImageView petPicture){
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("pictureUri", targetUri.toString());
@@ -188,6 +198,8 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
             e.printStackTrace();
         }
     }
+
+    // Guarda en la base de datos local los amigos de una mascota seleccionada
     @Override
     public void getFriendsFinish(ArrayList<Friend> output) {
 
@@ -209,6 +221,7 @@ public class Owner_Profile_screen extends FragmentActivity implements GetPhotoRe
         super.onDestroy();
     }
 
+    // Guarda en la base de datos local las solicitudes de amistad de una mascota seleccionada
     @Override
     public void getRequestsFinish(ArrayList<FriendRequest> output) {
         SQLiteHelper sqLiteHelper = new SQLiteHelper(this);
