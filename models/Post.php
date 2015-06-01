@@ -13,11 +13,18 @@ class Post extends Model{
   	protected $status;
   	protected $price;
 
-
+    /**
+     * name of the table in data base
+     * @return name of the table in db related to this model
+     */
     public static function tableName(){
         return 'Post';
     }
 
+    /**
+     * get the names of the atributes of this model in an array
+     * @return array with the names of the attributes of this model
+     */
     public function getAttributes(){
         $attributes = array(
           'username'  => $this->username,

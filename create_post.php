@@ -2,6 +2,7 @@
 /*
  * crear un post
  * @param  input, información del post en formato JSON
+ * @ requirement 02
 */
 error_reporting(E_ALL);
 ini_set('display_errors', 1);

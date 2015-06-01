@@ -6,6 +6,10 @@
  * @param extension, extensión de la foto
  * @param username, nombre de usuario del dueño de la foto
  * @return Lista de peticiones de amistad
+ * @ requirement 01
+ * @ requirement 02
+ * @ requirement 06
+ * @ requirement 14
 */
     error_reporting(E_ALL);
     ini_set('display_errors', 1);

@@ -5,6 +5,7 @@
  * 	a la que se le envía petición
  * @param sender, nombre de usuario de la persona que envía la petición
  * @return Lista de peticiones de amistad
+ * @ requirement 13
 */
 error_reporting(E_ALL);
 ini_set('display_errors', 1);

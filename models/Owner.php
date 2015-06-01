@@ -14,10 +14,18 @@ class Owner extends User{
     protected $birth_date;
     protected $gender;
 
+    /**
+     * name of the table in data base
+     * @return name of the table in db related to this model
+     */
     public static function tableName(){
         return 'Owner';
     }
 
+    /**
+     * get the names of the atributes of this model in an array
+     * @return array with the names of the attributes of this model
+     */
     public function getAttributes(){
       $attributes = array(
         'username'  => $this->username,

@@ -21,6 +21,8 @@ class User extends Model{
     /**
      * overload of parent function save
      * saves a user row first then calls the parent fuction
+     * @return array with status 1 or 0 telling if the query was
+     *         successful or not
      */
     public function save(){
         $conn = DB::dbConnect();

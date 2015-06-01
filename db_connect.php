@@ -9,6 +9,7 @@ class DB{
   /**
    * dbConnect
    * @return connection to data base
+   * @ requirement DB-3	
    */
   public static function dbConnect() {
       /** Create connection **/

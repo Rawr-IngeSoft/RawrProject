@@ -21,7 +21,7 @@ class Model {
 
   /**
    * Saves the model in the data base.
-   * @return json with status 1 or 0 telling if the query was
+   * @return array with status 1 or 0 telling if the query was
    *         successful or not
    */
   public function save()

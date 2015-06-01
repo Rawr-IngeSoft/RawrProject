@@ -5,6 +5,7 @@
  * Dar todos los mensajes enviados y recibidos por un usuario
  * @param username, identificador de nombre de usuario
  * @return Lista de posts en formato JSON
+ * @ requirement 20
 */
 
 error_reporting(E_ALL);

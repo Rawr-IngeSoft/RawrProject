@@ -5,6 +5,7 @@
  * Dar todos los comentarios de uin post
  * @param post_id, identificador del post
  * @return lista de posts en formato JSON
+ * @ requirement 38
 */
 
 include 'db_connect.php';

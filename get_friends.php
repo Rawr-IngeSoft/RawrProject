@@ -3,6 +3,9 @@
  * Dar todos los comentarios de un post
  * @param username, identificador de las mascotas
  * @return lista de amigos en formato JSON
+ * @ requirement 22
+ * @ requirement 18
+ * @ requirement 20
 */
 
 

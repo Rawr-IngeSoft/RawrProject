@@ -4,6 +4,8 @@
  * Obtener todos los posts de un usuario
  * @param username, nombre de usuario dueño
  * @return Lista de posts de una mascota
+ * @ requirement 22
+ * @ requirement 23
 */
  error_reporting(E_ALL);
  ini_set('display_errors', 1);
@@ -20,7 +22,7 @@ $sql =
  FROM (
 	 (
 	  SELECT p.idPost, p.username, p.text, p.date,  ph.path, p.type, p.status, p.price, p.likes, pet.name
-	  FROM Post p, Photo ph, Pet pet  
+	  FROM Post p, Photo ph, Pet pet
       WHERE pet.username=p.username AND p.idPhoto = ph.idPhoto AND p.username in
          	 (SELECT username_friend FROM Friends WHERE username = '$username'
 		  UNION
@@ -71,4 +73,3 @@ if ($result->num_rows > 0) {
  }else{
     echo 'pasó algo muy raro';
  }
-

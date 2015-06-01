@@ -3,6 +3,7 @@
  * Obtener todos los pets de un usuario
  * @param username, nombre de usuario dueño
  * @return Lista de mascotas del usuario dueño en formato JSON
+ * @ requirement 29
 */
 
 include 'db_connect.php';
