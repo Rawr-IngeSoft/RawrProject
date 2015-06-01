@@ -1,8 +1,10 @@
 <?php
+
 /*
- * Create a new Pet row
- * atributes read from HTTP Post Request as json
- */
+ * crear un usuario mascota
+ * @param  input, información del usuario mascota en formato JSON
+*/
+
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);

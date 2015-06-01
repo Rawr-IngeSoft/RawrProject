@@ -1,4 +1,9 @@
 <?php
+
+/*
+ * Create a new post row
+ * atributes read from HTTP Post Request as json
+ */
 require '../../db_connect.php';
 
 

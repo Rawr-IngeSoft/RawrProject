@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * Subir una imagen al servidor y almacenarla
+ * @param photo, foto en fotmato base64
+ * @param extension, extensión de la foto
+ * @param username, nombre de usuario del dueño de la foto
+ * @return Lista de peticiones de amistad
+*/
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     include_once 'models/Photo.php';

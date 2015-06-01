@@ -1,4 +1,12 @@
 <?php
+
+
+/*
+ * Dar todos los comentarios de uin post
+ * @param post_id, identificador del post
+ * @return lista de posts en formato JSON
+*/
+
 include 'db_connect.php';
 // header para mostrar que se va a recbir un JSON
 header("Content-Type: application/json; charset=UTF-8");

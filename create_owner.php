@@ -1,8 +1,10 @@
 <?php
+
 /*
- * Create a new Owner row
- * atributes read from HTTP Post Request as json
- */
+ * crear un usuario dueño
+ * @param  input, información del usuario dueño en formato JSON
+*/
+
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);

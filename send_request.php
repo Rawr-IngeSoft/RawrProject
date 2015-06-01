@@ -1,9 +1,11 @@
 <?php
 /*
- * Create a new Request row
- * atributes read from HTTP Post Request as json
- */
-
+ * Enviar una petición de amistad a una mascota
+ * @param receiver, nombre de usuario de la mascota
+ * 	a la que se le envía petición
+ * @param sender, nombre de usuario de la persona que envía la petición
+ * @return Lista de peticiones de amistad
+*/
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

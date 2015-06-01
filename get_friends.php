@@ -1,4 +1,11 @@
 <?php
+/*
+ * Dar todos los comentarios de un post
+ * @param username, identificador de las mascotas
+ * @return lista de amigos en formato JSON
+*/
+
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include 'db_connect.php';

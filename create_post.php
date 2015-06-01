@@ -1,9 +1,8 @@
 <?php
 /*
- * Create a new Post row
- * atributes read from HTTP Post Request as json
- */
-
+ * crear un post
+ * @param  input, información del post en formato JSON
+*/
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

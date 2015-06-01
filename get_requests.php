@@ -1,4 +1,10 @@
 <?php
+
+/*
+ * Obtener todos las peticiones de amistad de un usuario
+ * @param username, nombre de usuario dueño
+ * @return Lista de peticiones de amistad
+*/
 include 'db_connect.php';
 // header para mostrar que se va a recbir un JSON
 header("Content-Type: application/json; charset=UTF-8");

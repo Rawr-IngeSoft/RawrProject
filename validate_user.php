@@ -1,4 +1,11 @@
 <?php
+
+/*
+ * Validar un usuario
+ * @param username, nombre de usuario dueño
+ * @param password, contraseña
+*/
+
 ini_set('display_errors', true);
  error_reporting(E_ALL);
 

@@ -1,5 +1,12 @@
 
 <?php
+
+/*
+ * Dar todos los mensajes enviados y recibidos por un usuario
+ * @param username, identificador de nombre de usuario
+ * @return Lista de posts en formato JSON
+*/
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include 'db_connect.php';

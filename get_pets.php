@@ -1,4 +1,10 @@
 <?php
+/*
+ * Obtener todos los pets de un usuario
+ * @param username, nombre de usuario dueño
+ * @return Lista de mascotas del usuario dueño en formato JSON
+*/
+
 include 'db_connect.php';
 // header para mostrar que se va a recbir un JSON
 header("Content-Type: application/json; charset=UTF-8");

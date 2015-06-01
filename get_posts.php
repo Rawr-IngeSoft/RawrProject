@@ -1,4 +1,10 @@
 <?php
+
+/*
+ * Obtener todos los posts de un usuario
+ * @param username, nombre de usuario dueño
+ * @return Lista de posts de una mascota
+*/
  error_reporting(E_ALL);
  ini_set('display_errors', 1);
 
